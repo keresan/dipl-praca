@@ -1,7 +1,6 @@
 #-------------------------------------------------
-#
-# Project created by QtCreator 2014-02-25T14:19:29
-#
+# Martin Michalek, FIT VUTBR
+# 2014
 #-------------------------------------------------
 
 QT       += core gui opengl
@@ -11,14 +10,11 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = diplomka
 TEMPLATE = app
 
-
 #-------------------------------------------------
 # opencv libraries
 #-------------------------------------------------
 INCLUDEPATH += /opt/local/include
 LIBS += -L/opt/local/lib
-#LIBS += -lopencv_core -lopencv_highgui -lopencv_imgproc
-#LIBS += -lopencv_core -lopencv_highgui
 LIBS += -lopencv_contrib \
 	-lopencv_core -v\
 	-lopencv_features2d \
@@ -39,9 +35,23 @@ cache()
 #-------------------------------------------------
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    mesh.cpp \
+    landmarks.cpp \
+    landmarkdetector.cpp \
+    glwidget.cpp \
+    facealigner.cpp \
+    common.cpp \
+    averageface.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    mesh.h \
+    landmarks.h \
+    landmarkdetector.h \
+    glwidget.h \
+    facealigner.h \
+    common.h \
+    averageface.h
 
 
 FORMS    += mainwindow.ui
