@@ -80,6 +80,8 @@ void GLWidget::refreshData()
 
 void GLWidget::paintGL()
 {
+
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
     //glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
@@ -102,6 +104,8 @@ void GLWidget::paintGL()
     //pokus o priehladnu tvar
     //glEnable (GL_BLEND);
     //glBlendFunc (GL_ONE, GL_ONE);
+
+
     foreach(const Mesh *face, faces)
     {
         float color[] = {face->_color.redF(), face->_color.greenF(), face->_color.blueF()};
@@ -110,6 +114,7 @@ void GLWidget::paintGL()
         //pokus o priehladnu tvar
         //float color[] = {face->_color.redF(), face->_color.greenF(), face->_color.blueF(), face->_color.alphaF()};
         //glColor4fv(color);
+
 
         if (face->triangles.count() == 0)
         {
@@ -202,6 +207,7 @@ void GLWidget::paintGL()
     }
 
 
+
     /* paint landmarks */
     foreach(Landmarks *l, landmarks) {
         glDisable(GL_LIGHTING);
@@ -214,7 +220,7 @@ void GLWidget::paintGL()
         QVector<cv::Point3d>* landmarkArray;
         landmarkArray = l->getLandmarks();
 
-        for(unsigned int i =0; i < l->getLandmarks()->count(); i++) {
+        for( int i =0; i < l->getLandmarks()->count(); i++) {
             if(l->is(i)) {
                 if(i == Landmarks::mean) {
                     cv::Point3d p = l->pos(i);
@@ -277,6 +283,8 @@ void GLWidget::paintGL()
         glVertex3f(0, 0, 10);
 
     glEnd();*/
+
+
 }
 
 

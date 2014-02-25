@@ -485,7 +485,7 @@ Mesh Mesh::getClosedPoints(Mesh &inputMesh, cv::flann::Index &index, float *dist
 
 }
 
-Mesh Mesh::getExtract2dGrid(Mesh &grid) {
+void Mesh::getExtract2dGrid(Mesh &grid, Mesh &dst) {
 
     VectorOfPoints newPoints;
     VectorOfColors newColors;
@@ -517,10 +517,19 @@ Mesh Mesh::getExtract2dGrid(Mesh &grid) {
         }
     }
 
-    Mesh result = Mesh::fromPointcloud(newPoints, false, true);
-    result.colors = newColors;
+    dst = Mesh::fromPointcloud(newPoints, false, true);
+    dst.colors = newColors;
 
-    return result;
+}
+
+Mesh Mesh::getExtract2dGrid(Mesh &grid) {
+
+    Mesh destination;
+    getExtract2dGrid(grid, destination);
+
+    return destination;
+
+
 
 }
 

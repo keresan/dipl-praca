@@ -74,6 +74,7 @@ public:
     //grid
     static Mesh create2dGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY);
     Mesh getExtract2dGrid(Mesh &grid);
+    void getExtract2dGrid(Mesh &grid, Mesh &dst);
     Mesh getClosedPoints(Mesh &inputMesh, cv::flann::Index &index, float *distance);
     int getClosed2dPoint(cv::Point2d point);
 

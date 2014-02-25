@@ -20,13 +20,9 @@ private:
     uint8_t rgb[640*480*3];
 
 public:
-    /**
-     * Constructor
-     */
+
     GLWidget(QWidget *parent = 0);
-    /**
-     * Destructor
-     */
+
     ~GLWidget();
     /**
      * Occurs when widget is resized

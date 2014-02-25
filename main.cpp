@@ -1,4 +1,4 @@
-//#include "mainwindow.h"
+#include "mainwindow.h"
 
 #include "averageface.h"
 #include "facealigner.h"
@@ -40,19 +40,19 @@ int main(int argc, char *argv[]) {
     //qDebug() << "expectedPoints: " << gridMesh.pointsMat.rows;
     //qDebug() << "new mesh: " << newMesh.pointsMat.rows;
 
-    Mesh gridMesh = Mesh::create2dGrid(cv::Point3d(-70,130,0), cv::Point3d(70,100,0),2,2);
+    //Mesh gridMesh = Mesh::create2dGrid(cv::Point3d(-70,130,0), cv::Point3d(70,100,0),2,2);
 
-    Mesh newMesh = face1.getExtract2dGrid(gridMesh);
+    //Mesh newMesh = face1.getExtract2dGrid(gridMesh);
     //face1 = face1.crop(cv::Point3d(0,0,0),70,70,130,100);
 
     //newMesh.writeOBJ("/Users/martin/Documents/skola/diplomka/pomocne/02463d548.abs_grid_2.obj",'.');
 
-    GLWidget window;
-    window.setWindowTitle("pokus1");
+    //GLWidget window;
+    //window.setWindowTitle("pokus1");
     //window.addFace(&gridMesh);
 
-    window.addFace(&newMesh);
-    window.show();
+    //window.addFace(&newMesh);
+    //window.show();
 
 
     //Mesh newMesh;
@@ -123,8 +123,8 @@ int main(int argc, char *argv[]) {
 
     //Common::printMatrix(inverseMatrix);
 
-    //MainWindow w;
-    //w.show();
+    MainWindow w;
+    w.show();
 
     return a.exec();
 }

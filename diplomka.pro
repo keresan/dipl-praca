@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     glwidget.cpp \
     facealigner.cpp \
     common.cpp \
-    averageface.cpp
+    averageface.cpp \
+    run.cpp
 
 HEADERS  += mainwindow.h \
     mesh.h \
@@ -51,7 +52,8 @@ HEADERS  += mainwindow.h \
     glwidget.h \
     facealigner.h \
     common.h \
-    averageface.h
+    averageface.h \
+    run.h
 
 
 FORMS    += mainwindow.ui
