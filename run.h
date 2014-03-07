@@ -11,12 +11,17 @@
  */
 class Run {
 public:
-    Run();
+    Run(QMainWindow *parent = 0);
 
     void test1();
 
+    void test_show();
+    void test_alignFace();
+
+
 
     GLWidget *window;
+    QMainWindow *parent;
 };
 
 

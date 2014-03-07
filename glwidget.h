@@ -30,6 +30,8 @@ public:
      * @param height new height
      */
     void resizeGL(int width, int height);
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
 
     void addFace(const Mesh *f) { faces << f; updateGL(); }
     void addLandmarks(Landmarks *landmarks) { this->landmarks << landmarks; }

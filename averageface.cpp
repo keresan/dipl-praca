@@ -205,6 +205,7 @@ void AverageFace::translate(QVector<cv::Point3d> &v, cv::Point3d shift) {
 }
 
 void AverageFace::translate(Matrix &m, cv::Point3d shift) {
+
     for (int r = 0; r < m.rows; r++) {
         m(r, 0) += shift.x;
         m(r, 1) += shift.y;
@@ -221,6 +222,7 @@ void AverageFace::transform(cv::Point3d &p, const Matrix &m){
 
 
 void AverageFace::transform(QVector<cv::Point3d> &points, const Matrix &m) {
+
     int n = points.count();
     for (int i = 0; i < n; i++) {
         cv::Point3d &p = points[i];
@@ -229,6 +231,7 @@ void AverageFace::transform(QVector<cv::Point3d> &points, const Matrix &m) {
 }
 
 void AverageFace::transform(Matrix &points, const Matrix &m) {
+
     points = points*m.t(); //.inv();
 }
 

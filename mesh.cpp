@@ -420,11 +420,6 @@ void Mesh::writeOBJ(const QString &path, char decimalPoint)
 }
 
 
-
-
-
-
-
 void Mesh::printStats()
 {
     qDebug() << "x-range: " << minx << maxx;
@@ -433,9 +428,6 @@ void Mesh::printStats()
     qDebug() << "points: "<< pointsMat.rows;
     qDebug() << "triangles: "<< triangles.count();
 }
-
-
-
 
 
 QVector<cv::Point3d>* Mesh::getVectorOfPoint3d() {
@@ -485,6 +477,11 @@ Mesh Mesh::getClosedPoints(Mesh &inputMesh, cv::flann::Index &index, float *dist
 
 }
 
+/**
+ * @brief Mesh::getExtract2dGrid - extract
+ * @param grid
+ * @param dst
+ */
 void Mesh::getExtract2dGrid(Mesh &grid, Mesh &dst) {
 
     VectorOfPoints newPoints;
@@ -501,16 +498,25 @@ void Mesh::getExtract2dGrid(Mesh &grid, Mesh &dst) {
     pointsMat2d.convertTo(features, CV_32F);
     index.build(features, cv::flann::LinearIndexParams());
 
+    //iterate over grid's pointsMat - point by point
     for (int r = 0; r < inputPointsMat2d.rows; r++) {
-        cv::Mat query;
-        inputPointsMat2d.row(r).convertTo(query, CV_32F);
+
+        //convert query point
+        cv::Mat queryPoint;
+        inputPointsMat2d.row(r).convertTo(queryPoint, CV_32F);
 
         std::vector<int> resultIndicies;
         std::vector<float> resultDistances;
-        index.knnSearch(query, resultIndicies, resultDistances, 1);
+
+        //search for 1 nearest point
+        index.knnSearch(queryPoint, resultIndicies, resultDistances, 1);
+
+
         int pIndex = resultIndicies[0];
 
+        //save nearest matrix's point
         cv::Point3d p(pointsMat(pIndex, 0),pointsMat(pIndex, 1),pointsMat(pIndex, 2));
+
         newPoints.append(p);
         if (colors.count() > 0) {
             newColors << colors[pIndex];
@@ -528,23 +534,16 @@ Mesh Mesh::getExtract2dGrid(Mesh &grid) {
     getExtract2dGrid(grid, destination);
 
     return destination;
-
-
-
 }
-
 
 Mesh Mesh::zLevelSelect(double zValue)
 {
     VectorOfPoints newPoints;
     VectorOfColors newColors;
-    for (int r = 0; r < pointsMat.rows; r++)
-    {
-        if (pointsMat(r, 2) >= zValue)
-        {
+    for (int r = 0; r < pointsMat.rows; r++) {
+        if (pointsMat(r, 2) >= zValue) {
             newPoints << cv::Point3d(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2));
-            if (colors.count() > 0)
-            {
+            if (colors.count() > 0) {
                 newColors << colors[r];
             }
         }
@@ -559,14 +558,11 @@ Mesh Mesh::radiusSelect(double radius, cv::Point3d center)
 {
     VectorOfPoints newPoints;
     VectorOfColors newColors;
-    for (int r = 0; r < pointsMat.rows; r++)
-    {
+    for (int r = 0; r < pointsMat.rows; r++) {
         cv::Point3d p(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2));
-        if (euclideanDistance(p, center) <= radius)
-        {
+        if (euclideanDistance(p, center) <= radius) {
             newPoints << p;
-            if (colors.count() > 0)
-            {
+            if (colors.count() > 0) {
                 newColors << colors[r];
             }
         }
@@ -613,7 +609,6 @@ Mesh Mesh::crop(cv::Point3d center, int deltaPX, int deltaMX, int deltaPY, int d
         if (colors.count() > 0){
             newColors.append(colors[r]);
         }
-
     }
     Mesh result = Mesh::fromPointcloud(newPoints, false, true);
     result.colors = newColors;
@@ -663,7 +658,16 @@ int Mesh::getClosed2dPoint(cv::Point2d point) {
 }
 
 
+/**
+ * @brief Mesh::create2dGrid - vytvori 3D grid
+ * @param topLeft
+ * @param bottomRight
+ * @param stepX
+ * @param stepY
+ * @return
+ */
 Mesh Mesh::create2dGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY) {
+
     VectorOfPoints newPoints;
     int gridSizeX = (abs(topLeft.x) + abs(bottomRight.x))  / stepX +1;
     int gridSizeY = (abs(topLeft.y) + abs(bottomRight.y))  / stepY +1;
@@ -685,9 +689,6 @@ Mesh Mesh::create2dGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX,
 
     return result;
 }
-
-
-
 
 
 Mesh Mesh::selectGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY) {

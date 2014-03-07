@@ -4,16 +4,30 @@
 #include "mesh.h"
 #include "averageface.h"
 
-struct transformValues {
-     QVector<Matrix> rotation;
-     QVector<cv::Point3d> translate;
+
+struct tTransformValue {
+    Matrix rotation;
+    cv::Point3d translate;
 };
 
 class FaceAligner {
 public:
     FaceAligner();
 
-    static transformValues *align(Mesh &still, Mesh &moving, int maxIterations, int threshold);
+
+    void computeAlign(Mesh &still, Mesh &moving, int maxIterations, int threshold);
+
+    void alignFace(Mesh &face);
+    void alignFaceFast(Mesh &face);
+
+
+    QVector<tTransformValue> transformValues;
+
+
+
+
+private:
+
 
 };
 

@@ -6,20 +6,28 @@
 #include <OpenGL/glu.h>
 #include <QColor>
 
-GLWidget::GLWidget(QWidget* parent) : QGLWidget(parent)
-{
+GLWidget::GLWidget(QWidget* parent) : QGLWidget(parent) {
     init();
 }
 
-void GLWidget::init()
-{
+GLWidget::~GLWidget() {
+}
+
+QSize GLWidget::sizeHint() const {
+     return QSize(600, 600);
+}
+
+QSize GLWidget::minimumSizeHint() const {
+     return QSize(200, 200);
+}
+
+void GLWidget::init() {
     //refreshData();
     xnew = ynew = znew = xold = yold = zold = xx1 = yy1 = zz1 = stav = 0;
     //startTimer(100);
 }
 
-void GLWidget::deleteAll()
-{
+void GLWidget::deleteAll() {
     for (int i = 0; i < faces.count(); i++)
         delete faces[i];
     faces.clear();
@@ -31,21 +39,15 @@ void GLWidget::deleteAll()
     curves.clear();
 }
 
-void GLWidget::clearAll()
-{
+void GLWidget::clearAll() {
     faces.clear();
     landmarks.clear();
     curves.clear();
 }
 
-GLWidget::~GLWidget()
-{
-}
+
 
 void GLWidget::initializeGL() {
-
-    qDebug() << "GLWidget::initializeGL()";
-
     glClearColor(0.78f,0.78f,0.78f,0.0f);
 
     //glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
@@ -53,15 +55,11 @@ void GLWidget::initializeGL() {
     //glEnable( GL_CULL_FACE );
     glEnable( GL_DEPTH_TEST );
 
-
-
-
     //glEnable(GL_COLOR_MATERIAL);
     //glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 }
 
-void GLWidget::refreshData()
-{
+void GLWidget::refreshData() {
     /*if (!Kinect::getRGB(rgb))
     {
         std::cout << "Kinect rgb error" << std::endl;
@@ -78,15 +76,12 @@ void GLWidget::refreshData()
     updateGL();*/
 }
 
-void GLWidget::paintGL()
-{
-
+void GLWidget::paintGL() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
     //glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glLoadIdentity();
-
 
     glTranslatef(0.0, 0.0, -400.0);
     glTranslatef(0, 0, znew);
@@ -288,8 +283,7 @@ void GLWidget::paintGL()
 }
 
 
-void GLWidget::resizeGL(int width, int height)
-{
+void GLWidget::resizeGL(int width, int height) {
     //proces resize keep good aspect ratio for 3D scene
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -303,8 +297,7 @@ void GLWidget::resizeGL(int width, int height)
     glMatrixMode(GL_MODELVIEW);
 }
 
-void GLWidget::mousePressEvent(QMouseEvent *event)
-{
+void GLWidget::mousePressEvent(QMouseEvent *event) {
   int x = event->y();
   int y = event->x();
 
@@ -322,8 +315,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
   updateGL();
 }
 
-void GLWidget::mouseReleaseEvent(QMouseEvent *event)
-{
+void GLWidget::mouseReleaseEvent(QMouseEvent *event) {
     //int x = event->y();
     //int y = event->x();
 
@@ -339,8 +331,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
     updateGL();
 }
 
-void GLWidget::mouseMoveEvent(QMouseEvent *event)
-{
+void GLWidget::mouseMoveEvent(QMouseEvent *event) {
     //std::cout << "move " << stav << " ";
     int x = event->y();
     int y = event->x();

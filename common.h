@@ -8,10 +8,15 @@
 
 #include <opencv2/opencv.hpp>
 
+
+
 typedef cv::Mat_<double> Matrix;
 typedef cv::Mat_<cv::Vec3b> ImageBGR;
 typedef cv::Mat_<uint8_t> ImageGrayscale;
 
+/**
+ * @brief The Common class
+ */
 class Common {
 public:
     //static double absSum(Matrix &m);
