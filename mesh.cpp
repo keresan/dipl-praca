@@ -478,7 +478,7 @@ Mesh Mesh::getClosedPoints(Mesh &inputMesh, cv::flann::Index &index, float *dist
 }
 
 /**
- * @brief Mesh::getExtract2dGrid - extract
+ * @brief Mesh::getExtract2dGrid - extract grid from face, use only x,y coords
  * @param grid
  * @param dst
  */
@@ -489,7 +489,7 @@ void Mesh::getExtract2dGrid(Mesh &grid, Mesh &dst) {
 
     //convert 3d to 2d
     Matrix pointsMat2d(pointsMat.operator ()(cv::Range::all(),cv::Range(0,2)));
-    Matrix inputPointsMat2d(grid.pointsMat.operator ()(cv::Range::all(),cv::Range(0,2)));
+    Matrix gridPointsMat2d(grid.pointsMat.operator ()(cv::Range::all(),cv::Range(0,2)));
 
     cv::flann::Index index;
     cv::Mat features;
@@ -499,18 +499,17 @@ void Mesh::getExtract2dGrid(Mesh &grid, Mesh &dst) {
     index.build(features, cv::flann::LinearIndexParams());
 
     //iterate over grid's pointsMat - point by point
-    for (int r = 0; r < inputPointsMat2d.rows; r++) {
+    for (int r = 0; r < gridPointsMat2d.rows; r++) {
 
         //convert query point
         cv::Mat queryPoint;
-        inputPointsMat2d.row(r).convertTo(queryPoint, CV_32F);
+        gridPointsMat2d.row(r).convertTo(queryPoint, CV_32F);
 
         std::vector<int> resultIndicies;
         std::vector<float> resultDistances;
 
         //search for 1 nearest point
         index.knnSearch(queryPoint, resultIndicies, resultDistances, 1);
-
 
         int pIndex = resultIndicies[0];
 
@@ -525,7 +524,6 @@ void Mesh::getExtract2dGrid(Mesh &grid, Mesh &dst) {
 
     dst = Mesh::fromPointcloud(newPoints, false, true);
     dst.colors = newColors;
-
 }
 
 Mesh Mesh::getExtract2dGrid(Mesh &grid) {
@@ -535,6 +533,80 @@ Mesh Mesh::getExtract2dGrid(Mesh &grid) {
 
     return destination;
 }
+
+/**
+ * @brief Mesh::getExtract2dGrid - extract grid from face, use only x,y coords,
+ *  if distance of closed point is higher then maxDistance, skip it
+ * @param grid
+ * @param dst
+ */
+void Mesh::getExtract2dGrid_2(Mesh &grid, Mesh &dst) {
+
+    //count distance between 2 poinst of grid
+    float x = abs(grid.pointsMat(0,0) - grid.pointsMat(1,0)); //x
+    float y = abs(grid.pointsMat(0,1) - grid.pointsMat(1,1)); //x
+    float maxDistance = sqrt(x*x + y*y)/2;
+    //qDebug() << "max distance: " << maxDistance;
+
+    VectorOfPoints newPoints;
+    VectorOfColors newColors;
+
+    //convert 3d to 2d
+    Matrix pointsMat2d(pointsMat.operator ()(cv::Range::all(),cv::Range(0,2)));
+    Matrix gridPointsMat2d(grid.pointsMat.operator ()(cv::Range::all(),cv::Range(0,2)));
+
+    cv::flann::Index index;
+    cv::Mat features;
+    features = cv::Mat(pointsMat2d.rows, 2, CV_32F);
+
+    pointsMat2d.convertTo(features, CV_32F);
+    index.build(features, cv::flann::LinearIndexParams());
+
+    //iterate over grid's pointsMat - point by point
+    for (int r = 0; r < gridPointsMat2d.rows; r++) {
+
+        //convert query point
+        cv::Mat queryPoint;
+        gridPointsMat2d.row(r).convertTo(queryPoint, CV_32F);
+
+        std::vector<int> resultIndicies;
+        std::vector<float> resultDistances;
+
+        //search for 1 nearest point
+        index.knnSearch(queryPoint, resultIndicies, resultDistances, 1);
+
+        int pIndex = resultIndicies[0];
+
+
+        /*
+        qDebug("[%.1f:%.1f:%.1f] -> [%.3f:%.3f:%.3f] = %0.2f",
+               grid.pointsMat(r,0), grid.pointsMat(r,1), grid.pointsMat(r,2),
+               pointsMat(pIndex,0), pointsMat(pIndex,1), pointsMat(pIndex,2),
+               resultDistances[0]);
+        */
+        cv::Point3d p;
+        if(resultDistances[0] > maxDistance) {
+            //save grid point
+            //p = cv::Point3d(grid.pointsMat(r, 0),grid.pointsMat(r, 1),grid.pointsMat(r, 2));
+            ;
+        } else {
+            //save nearest matrix's point
+            p = cv::Point3d(pointsMat(pIndex, 0),pointsMat(pIndex, 1),pointsMat(pIndex, 2));
+            newPoints.append(p);
+            if (colors.count() > 0) {
+                newColors << colors[pIndex];
+            }
+        }
+
+
+
+    }
+
+    dst = Mesh::fromPointcloud(newPoints, false, true);
+    dst.colors = newColors;
+
+}
+
 
 Mesh Mesh::zLevelSelect(double zValue)
 {

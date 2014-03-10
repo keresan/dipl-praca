@@ -18,6 +18,8 @@ public:
     void test_show();
     void test_alignFace();
 
+    void test_depth();
+
 
 
     GLWidget *window;

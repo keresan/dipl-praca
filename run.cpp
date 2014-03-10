@@ -98,4 +98,26 @@ void Run::test_alignFace() {
     */
 }
 
+void Run::test_depth() {
+    QTime myTimer;
+    myTimer.start();
+    Mesh *face = new Mesh(Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d548.abs", true));
+    qDebug() << "nacitanie tvare: "<< myTimer.elapsed() << "ms";
+    myTimer.restart();
 
+    Mesh *gridMesh = new Mesh(Mesh::create2dGrid(cv::Point3d(-100,150,-50), cv::Point3d(100,150,-50),5,5));
+    gridMesh->_color =  QColor(Qt::green);
+
+    qDebug() << "vytvorenie gridu: "<< myTimer.elapsed() << "ms";
+    myTimer.restart();
+
+    Mesh *newMesh = new Mesh();
+    face->getExtract2dGrid_2(*gridMesh,*newMesh);
+    qDebug() << "extrahovanie tvare: "<< myTimer.elapsed() << "ms";
+    qDebug() << "pocet bodov: " << newMesh->pointsMat.rows;
+    myTimer.restart();
+
+    //window->addFace(face);
+    //window->addFace(gridMesh);
+    window->addFace(newMesh);
+}

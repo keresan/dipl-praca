@@ -13,11 +13,11 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setCentralWidget(testToRun.window);
 
     testToRun.test_alignFace();
-   // testToRun.test1();
-
+   //testToRun.test1();
 
     //testToRun.test2_show();
 
+    //testToRun.test_depth();
 }
 
 MainWindow::~MainWindow() {
