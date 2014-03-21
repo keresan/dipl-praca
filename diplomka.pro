@@ -7,16 +7,18 @@ QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
+
 TARGET = diplomka
 TEMPLATE = app
 
 #-------------------------------------------------
 # opencv libraries
 #-------------------------------------------------
-#INCLUDEPATH += /opt/local/include
-#LIBS += -L/opt/local/lib
 INCLUDEPATH += /usr/local/include
 LIBS += -L/usr/local/lib
+#INCLUDEPATH += /usr/local/Cellar/opencv/2.4.8.2/include
+#LIBS += -L//usr/local/Cellar/opencv/2.4.8.2/lib
 #INCLUDEPATH += ~/Users/martin/macports/include
 #LIBS += -L~/Users/martin/macports/lib
 LIBS += -lopencv_contrib \
@@ -62,4 +64,4 @@ HEADERS  += mainwindow.h \
     depthmap.h
 
 
-FORMS    += mainwindow.ui
+#FORMS    += mainwindow.ui

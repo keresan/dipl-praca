@@ -4,7 +4,7 @@
 #include "mesh.h"
 #include "common.h"
 
-
+ #include <QVarLengthArray>
 
 class DepthMap {
 public:
@@ -20,7 +20,7 @@ public:
     bool mapPointToIndecies(cv::Point2d p, int &row, int &col);
     bool mapIndeciesToPoint(int row, int col, cv::Point2f &p);
 
-    void selectFromDepthMap(cv::Rect rectangle, QVector<cv::Point2f> &vector);
+    int selectFromDepthMap(cv::Point2d tl, cv::Point2d br, QVector<cv::Point2f> &vector);
 
     double averageValueInTraignle(cv::Point2f queryPoint, Mesh &face);
 
@@ -28,6 +28,40 @@ public:
 
     void printPoints();
 
+    double weightedArtMean(double x, double y, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2);
+
+
+    inline double max(double a, double b, double c) {
+        if(a>b) {
+            if(a>c) {
+                return a;
+            } else {
+                return c;
+            }
+        } else {
+            if(b>c) {
+                return b;
+            } else {
+                return c;
+            }
+        }
+    }
+
+    inline double min(double a, double b, double c) {
+        if(a<b) {
+            if(a<c) {
+                return a;
+            } else {
+                return c;
+            }
+        } else {
+            if(b<c) {
+                return b;
+            } else {
+                return c;
+            }
+        }
+    }
 
 };
 

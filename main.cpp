@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
     //face 1
-    Mesh face1 = Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d548.abs", true);
+   // Mesh face1 = Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d548.abs", true);
 //    Mesh face1 = Mesh::fromABS("/Users/martin/Documents/sklad/frgc_data/Fall2003range/02463d548.abs","/Users/martin/Documents/sklad/frgc_data/Fall2003range/02463d549.ppm", true);
 
     //face2

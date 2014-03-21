@@ -181,7 +181,7 @@ void Run::test_depth_select() {
 
     qDebug() << "jedem";
 
-    map.selectFromDepthMap(cv::Rect(cv::Point(-6,-6), cv::Point(6,6)), vector);
+    map.selectFromDepthMap(cv::Point2d(-38.043,38.813), cv::Point2d(-35.781,43.810), vector);
 
     qDebug() << "selected points: ";
     for(int i = 0; i < vector.count(); i++) {
@@ -189,7 +189,7 @@ void Run::test_depth_select() {
     }
 
 
-    map.printPoints();
+   // map.printPoints();
 
 }
 

@@ -1,12 +1,10 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+//#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow) {
+    QMainWindow(parent)
+   {
 
-
-    //ui->setupUi(this);
 
     Run testToRun(this);
 
@@ -18,10 +16,11 @@ MainWindow::MainWindow(QWidget *parent) :
    // testToRun.test_show();
 
    // testToRun.test_depth2();
-    testToRun.test_depth3();
+   testToRun.test_depth3();
     //testToRun.test_depth_select();
+
 }
 
 MainWindow::~MainWindow() {
-    delete ui;
+
 }
