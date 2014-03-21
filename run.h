@@ -3,6 +3,7 @@
 
 #include "averageface.h"
 #include "facealigner.h"
+#include "depthmap.h"
 #include "glwidget.h"
 #include <QTime>
 
@@ -19,6 +20,9 @@ public:
     void test_alignFace();
 
     void test_depth();
+    void test_depth2();
+    void test_depth3();
+    void test_depth_select();
 
 
 

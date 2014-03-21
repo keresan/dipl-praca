@@ -89,8 +89,7 @@ void Mesh::transform(Matrix &m) {
     recalculateMinMax();
 }
 
-void Mesh::calculateTriangles()
-{
+void Mesh::calculateTriangles() {
     QVector<cv::Point2d> points2d;
     for (int r = 0; r < pointsMat.rows; r++)
     {
@@ -418,7 +417,6 @@ void Mesh::writeOBJ(const QString &path, char decimalPoint)
         outStream << "f " << (t[0]+1) << " " << (t[1]+1) << " " << (t[2]+1) << endl;
     }
 }
-
 
 void Mesh::printStats()
 {

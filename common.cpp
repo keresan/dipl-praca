@@ -27,17 +27,20 @@ void Common::printMatrix(const Matrix &m)
     QDebug deb = qDebug();
     for (int r = 0; r < m.rows; r++)
     {
-        for (int c = 0; c < m.cols; c++)
-            deb << m(r,c);
+        for (int c = 0; c < m.cols; c++) {
+            //QString str = QString("%1").arg(m(r,c),7);
+
+            deb <<  QString::number( m(r,c),'f',3);
             //std::cout << m(r,c) << " ";
+        }
         deb << "\n";
         //std::cout << std::endl;
     }
 }
 
-void Common::delay(int sec)
+void Common::delay(int msec)
 {
-    QTime dieTime= QTime::currentTime().addSecs(sec);
+    QTime dieTime= QTime::currentTime().addMSecs(msec);
     while( QTime::currentTime() < dieTime )
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
@@ -199,6 +202,11 @@ double Common::absSum(Matrix &m)
 }
 */
 
+/**
+ * @brief Common::delaunayTriangulation - Delaunay triangulation
+ * @param points
+ * @return
+ */
 QVector<cv::Vec3i> Common::delaunayTriangulation(QVector<cv::Point2d> &points) {
     int n = points.count();
     QVector<cv::Vec3i> result;
@@ -228,8 +236,7 @@ QVector<cv::Vec3i> Common::delaunayTriangulation(QVector<cv::Point2d> &points) {
     CvRect rect = cv::Rect(minx, miny, maxx-minx, maxy-miny);
     cv::Subdiv2D subdiv(rect);
     std::vector<cv::Point2f> fPoints(n);
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         float x = points[i].x;
         float y = points[i].y;
         fPoints[i] = cv::Point2f(x, y);
@@ -241,8 +248,7 @@ QVector<cv::Vec3i> Common::delaunayTriangulation(QVector<cv::Point2d> &points) {
     subdiv.getTriangleList(triangleList);
 
     //int edge;
-    for (unsigned int i = 0; i < triangleList.size(); i++)
-    {
+    for (unsigned int i = 0; i < triangleList.size(); i++) {
         cv::Vec6f &triangle = triangleList.at(i);
         //int v1,v2,v3;
         cv::Point2f p1(triangle[0],triangle[1]);
@@ -267,6 +273,7 @@ QVector<cv::Vec3i> Common::delaunayTriangulation(QVector<cv::Point2d> &points) {
         //subdiv.locate(p2, edge, v2);
         //subdiv.locate(p3, edge, v3);
 
+        //save indecies of triangles points
         cv::Vec3i triangleIndicies;
         triangleIndicies[0] = coord2Index[QPair<float, float>(p1.x, p1.y)];
         triangleIndicies[1] = coord2Index[QPair<float, float>(p2.x, p2.y)];
@@ -274,6 +281,11 @@ QVector<cv::Vec3i> Common::delaunayTriangulation(QVector<cv::Point2d> &points) {
 
         result.append(triangleIndicies);
     }
+
+    for(int i= 0; i < result.count(); i++) {
+      ;//  qDebug("%7d %7d %7d", result.at(i)[0], result.at(i)[1], result.at(i)[2]);
+    }
+
     return result;
 }
 

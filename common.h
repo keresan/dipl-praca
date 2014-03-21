@@ -23,7 +23,7 @@ public:
     static QVector<cv::Vec3i> delaunayTriangulation(QVector<cv::Point2d> &points);
 
     static void printMatrix(const Matrix &m);
-    static void delay(int sec);
+    static void delay(int msec);
 
     /*
     static void printMatrix(CvMat *m);

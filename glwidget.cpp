@@ -111,8 +111,7 @@ void GLWidget::paintGL() {
         //glColor4fv(color);
 
 
-        if (face->triangles.count() == 0)
-        {
+        if (face->triangles.count() == 0) {
             glDisable(GL_LIGHTING);
             glDisable(GL_LIGHT0);
 
@@ -127,9 +126,7 @@ void GLWidget::paintGL() {
 
             }
             glEnd();
-        }
-        else
-        {
+        } else {
             bool texture = face->colors.size() == face->pointsMat.rows;
             if (!texture)
             {
@@ -200,8 +197,6 @@ void GLWidget::paintGL() {
             glEnd();
         }
     }
-
-
 
     /* paint landmarks */
     foreach(Landmarks *l, landmarks) {

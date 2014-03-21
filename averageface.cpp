@@ -25,7 +25,7 @@ AverageFace::AverageFace(QString pathToLandmarks, QString startFile) {
     //get list of files
     _dir.setPath(_pathToLandmarks);
     _dir.setFilter(QDir::Files | QDir::NoSymLinks);
-    _dir.setNameFilters(QStringList()<<"*_landmarks.txt");
+    _dir.setNameFilters(QStringList()<<"*_land marks.txt");
     _listOfFiles = _dir.entryList();
 }
 

@@ -13,8 +13,12 @@ TEMPLATE = app
 #-------------------------------------------------
 # opencv libraries
 #-------------------------------------------------
-INCLUDEPATH += /opt/local/include
-LIBS += -L/opt/local/lib
+#INCLUDEPATH += /opt/local/include
+#LIBS += -L/opt/local/lib
+INCLUDEPATH += /usr/local/include
+LIBS += -L/usr/local/lib
+#INCLUDEPATH += ~/Users/martin/macports/include
+#LIBS += -L~/Users/martin/macports/lib
 LIBS += -lopencv_contrib \
 	-lopencv_core -v\
 	-lopencv_features2d \
@@ -43,7 +47,8 @@ SOURCES += main.cpp\
     facealigner.cpp \
     common.cpp \
     averageface.cpp \
-    run.cpp
+    run.cpp \
+    depthmap.cpp
 
 HEADERS  += mainwindow.h \
     mesh.h \
@@ -53,7 +58,8 @@ HEADERS  += mainwindow.h \
     facealigner.h \
     common.h \
     averageface.h \
-    run.h
+    run.h \
+    depthmap.h
 
 
 FORMS    += mainwindow.ui
