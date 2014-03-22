@@ -1,23 +1,23 @@
 #include "mainwindow.h"
 //#include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent)
-   {
+MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
 
-    Run testToRun(this);
+	Run testToRun(this);
 
-    this->setCentralWidget(testToRun.window);
+	this->setCentralWidget(testToRun.window);
 
-    //testToRun.test_alignFace();
-   //testToRun.test1();
+	//testToRun.test_alignFace();
+   //testToRun.test_selectGrid();
 
-   // testToRun.test_show();
+	//testToRun.test_crop();
 
-   // testToRun.test_depth2();
-   testToRun.test_depth3();
-    //testToRun.test_depth_select();
+   //testToRun.test_show();
+
+	//testToRun.depthMapMapping();
+	testToRun.showDepthMap();
+	//testToRun.test_depth_select();
 
 }
 

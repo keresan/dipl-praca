@@ -14,14 +14,16 @@ class Run {
 public:
     Run(QMainWindow *parent = 0);
 
-    void test1();
+    void test_selectGrid();
 
     void test_show();
     void test_alignFace();
 
+	void test_crop();
+
     void test_depth();
-    void test_depth2();
-    void test_depth3();
+	void depthMapMapping();
+	void showDepthMap();
     void test_depth_select();
 
 

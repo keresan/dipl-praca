@@ -254,25 +254,28 @@ void GLWidget::paintGL() {
         }
     }
 
-    /*glBegin(GL_LINES);
+	glBegin(GL_LINES);
 
-        glLineWidth(5);
+		glLineWidth(5);
         glDisable(GL_LIGHTING);
         glDisable(GL_LIGHT0);
 
+		//x
         glColor3f(1, 0, 0);
         glVertex3f(0, 0, 0);
-        glVertex3f(10, 0, 0);
+		glVertex3f(200, 0, 0);
 
-        glColor3f(0, 1, 0);
-        glVertex3f(0, 0, 0);
-        glVertex3f(0, 10, 0);
+		//y
+		glColor3f(0, 1, 0);
+		glVertex3f(0, 0, 0);
+		glVertex3f(0, 200, 0);
 
-        glColor3f(0, 0, 1);
-        glVertex3f(0, 0, 0);
-        glVertex3f(0, 0, 10);
+		//z
+		glColor3f(0, 0, 1);
+		glVertex3f(0, 0, 0);
+		glVertex3f(0, 0, 200);
 
-    glEnd();*/
+	glEnd();
 
 
 }

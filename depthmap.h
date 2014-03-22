@@ -8,60 +8,64 @@
 
 class DepthMap {
 public:
-    DepthMap();
-
-    void createDepthMap(Mesh &face);
+	DepthMap(Mesh &face, cv::Point2d topLeft = cv::Point2d(-150,150),
+			 cv::Point2d bottomRight = cv::Point2d(150,-150),
+			 int pixelsX = 300,
+			 int piselxY = 300);
 
     cv::Mat depthMap;
 
-    //spread of depthMap
-    cv::Point2d topLeft, bottomRight;
+	bool mapPointToIndecies(cv::Point2d p, int &row, int &col);
+	bool mapIndeciesToPoint(int row, int col, cv::Point2f &p);
 
-    bool mapPointToIndecies(cv::Point2d p, int &row, int &col);
-    bool mapIndeciesToPoint(int row, int col, cv::Point2f &p);
-
-    int selectFromDepthMap(cv::Point2d tl, cv::Point2d br, QVector<cv::Point2f> &vector);
-
-    double averageValueInTraignle(cv::Point2f queryPoint, Mesh &face);
-
-    void test1(Mesh &face);
+	int selectFromDepthMap(cv::Point2d tl, cv::Point2d br, QVector<cv::Point2f> &vector);
 
     void printPoints();
 
-    double weightedArtMean(double x, double y, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2);
+private:
+	double _min, _max;
+	//spread of depthMap
+	cv::Point2d _topLeft, _bottomRight;
 
+	void createDepthMap(Mesh &face);
 
-    inline double max(double a, double b, double c) {
-        if(a>b) {
-            if(a>c) {
-                return a;
-            } else {
-                return c;
-            }
-        } else {
-            if(b>c) {
-                return b;
-            } else {
-                return c;
-            }
-        }
-    }
+	double weightedArtMean(double x, double y, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2);
+	double linearInterpolation(double x, double y, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2);
 
-    inline double min(double a, double b, double c) {
-        if(a<b) {
-            if(a<c) {
-                return a;
-            } else {
-                return c;
-            }
-        } else {
-            if(b<c) {
-                return b;
-            } else {
-                return c;
-            }
-        }
-    }
+	void normalize(double min = -150, double max = 100);
+	void computeMinMax();
+
+	inline double max(double a, double b, double c) {
+		if(a>b) {
+			if(a>c) {
+				return a;
+			} else {
+				return c;
+			}
+		} else {
+			if(b>c) {
+				return b;
+			} else {
+				return c;
+			}
+		}
+	}
+
+	inline double min(double a, double b, double c) {
+		if(a<b) {
+			if(a<c) {
+				return a;
+			} else {
+				return c;
+			}
+		} else {
+			if(b<c) {
+				return b;
+			} else {
+				return c;
+			}
+		}
+	}
 
 };
 

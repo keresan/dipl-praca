@@ -660,6 +660,32 @@ void Mesh::averageMesh(Mesh &src, Mesh &dst, int dstWeight) {
 
 }
 
+Mesh Mesh::crop(cv::Point3d topLeft, cv::Point3d bottomRight) {
+	VectorOfPoints newPoints;
+	VectorOfColors newColors;
+	 for (int r = 0; r < pointsMat.rows; r++) {
+		 cv::Point3d p(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2));
+
+		 if(p.x < topLeft.x || p.y > topLeft.y) {
+			 continue;
+		 }
+		 if(p.x > bottomRight.x || p.y < bottomRight.y) {
+			 continue;
+		 }
+
+
+		 newPoints.append(p);
+		 if (colors.count() > 0){
+			 newColors.append(colors[r]);
+		 }
+
+
+	 }
+	 Mesh result = Mesh::fromPointcloud(newPoints, false, true);
+	 result.colors = newColors;
+	 return result;
+}
+
 Mesh Mesh::crop(cv::Point3d center, int deltaPX, int deltaMX, int deltaPY, int deltaMY) {
     VectorOfPoints newPoints;
     VectorOfColors newColors;
@@ -739,8 +765,12 @@ int Mesh::getClosed2dPoint(cv::Point2d point) {
 Mesh Mesh::create2dGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY) {
 
     VectorOfPoints newPoints;
-    int gridSizeX = (abs(topLeft.x) + abs(bottomRight.x))  / stepX +1;
-    int gridSizeY = (abs(topLeft.y) + abs(bottomRight.y))  / stepY +1;
+	int gridSizeX = abs(bottomRight.x - topLeft.x)  / stepX +1;
+	int gridSizeY = abs(bottomRight.y - topLeft.y)  / stepY +1;
+
+	qDebug() <<"gridSizeX:" << gridSizeX;
+	qDebug() <<"gridSizeY:" << gridSizeY;
+
 
     cv::Point3d p = topLeft;
 

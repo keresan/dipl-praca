@@ -22,8 +22,7 @@ void Common::printMatrix(CvMat *m)
 }
 */
 
-void Common::printMatrix(const Matrix &m)
-{
+void Common::printMatrix(const Matrix &m) {
     QDebug deb = qDebug();
     for (int r = 0; r < m.rows; r++)
     {
@@ -38,8 +37,7 @@ void Common::printMatrix(const Matrix &m)
     }
 }
 
-void Common::delay(int msec)
-{
+void Common::delay(int msec) {
     QTime dieTime= QTime::currentTime().addMSecs(msec);
     while( QTime::currentTime() < dieTime )
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
