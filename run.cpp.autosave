@@ -264,6 +264,8 @@ void Run::showDepthMap() {
 
 void Run::createAverageFace() {
 
+	//celkovo 75 tvari pouzitych
+	
 	QString pathToLandmarks("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range_marked/");
 	QString pathToFaces("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/");
 	QString pathToFirstFace("02463d550.abs_landmarks.txt");

@@ -14,7 +14,7 @@
  */
 class AverageFace {
 public:
-    AverageFace(QString pathToLandmarks, QString startFile);
+	AverageFace(QString pathToLandmarks, QString pathToFaces, QString startFileLandmark);
 
     static cv::Point3d getMeanPoint(QVector<cv::Point3d>& points);
     static void readVector3dPointsFromFile(QString path, QVector<cv::Point3d> &v);
@@ -37,13 +37,14 @@ public:
 
     static void averageMatrices(Matrix &src, Matrix &dst, int dstWeight);
 
-    void process(QString resultPath);
+	void process(QString resultFilePath);
 
     static void rotate(Matrix &points, double x, double y, double z);
     static Matrix getRotateMatrix(double x, double y, double z);
 
 private:
     QString _pathToLandmarks;
+	QString _pathToFaces;
     QStringList _listOfFiles;
     QDir _dir;
     QString _dirPath;

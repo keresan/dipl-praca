@@ -26,6 +26,8 @@ public:
 	void showDepthMap();
     void test_depth_select();
 
+	void createAverageFace();
+
 
 
     GLWidget *window;

@@ -1,14 +1,16 @@
 #include "averageface.h"
 #include "glwidget.h"
 
-AverageFace::AverageFace(QString pathToLandmarks, QString startFile) {
+AverageFace::AverageFace(QString pathToLandmarks, QString pathToFaces, QString startFileLandmark) {
 
-    _gridMesh = Mesh::create2dGrid(cv::Point3d(-50,60,0), cv::Point3d(50,-60,0),2,2);
+	_gridMesh = Mesh::create2dGrid(cv::Point3d(-100,120,0), cv::Point3d(100,-100,0),2,2);
 
     _pathToLandmarks = pathToLandmarks;
-    readVector3dPointsFromFile(pathToLandmarks+startFile, _startVector);
+	_pathToFaces = pathToFaces;
 
-    _startModel = Mesh::fromABS(pathToLandmarks+startFile.split('_').at(0),false);
+	readVector3dPointsFromFile(pathToLandmarks+startFileLandmark, _startVector);
+
+	_startModel = Mesh::fromABS(_pathToFaces+startFileLandmark.split('_').at(0),false);
 
     cv::Point3d meanV(getMeanPoint(_startVector));
 
@@ -20,18 +22,21 @@ AverageFace::AverageFace(QString pathToLandmarks, QString startFile) {
     _averageModel = _startModel;
     _weight = 1;
 
-    qDebug() << pathToLandmarks+startFile.split('_').at(0);
+	qDebug() << pathToLandmarks+startFileLandmark.split('_').at(0);
 
     //get list of files
     _dir.setPath(_pathToLandmarks);
     _dir.setFilter(QDir::Files | QDir::NoSymLinks);
-    _dir.setNameFilters(QStringList()<<"*_land marks.txt");
+	_dir.setNameFilters(QStringList()<<"*abs_landmarks.txt");
     _listOfFiles = _dir.entryList();
 }
 
-void AverageFace::process(QString resultPath) {
+void AverageFace::process(QString resultFilePath) {
+
 
     foreach (QString actualFile, _listOfFiles) {
+
+
 
         qDebug() << _weight << ": actual file:" << actualFile;
         QVector<cv::Point3d> actualVector;
@@ -46,17 +51,13 @@ void AverageFace::process(QString resultPath) {
 
         rotation = getOptimalRotation(actualVector,_startVector);
 
-        actualModel = Mesh::fromABS(_pathToLandmarks+actualFile.split('_').at(0), false);
+		actualModel = Mesh::fromABS(_pathToFaces+actualFile.split('_').at(0), false);
 
         actualModel.translate(shift);
 
         actualModel.transform(rotation);
 
         actualModel = actualModel.getExtract2dGrid(_gridMesh);
-
-        //actualModel.centralize();
-        //actualModel.writeOBJ(resultPath+"_act1.obj",'.');
-
 
         //add matrix to average:
 
@@ -66,17 +67,14 @@ void AverageFace::process(QString resultPath) {
 
         //len pre testovanie
 
-        if(_weight == 10) {
-            qDebug() << "ENDE";
-            break;
-        }
+
 
 
     }
 
 
     _averageModel.centralize();
-    _averageModel.writeOBJ(resultPath+"_10.obj",'.');
+	_averageModel.writeOBJ(resultFilePath,'.');
     qDebug() << "ENDE";
 
 }
@@ -118,7 +116,7 @@ cv::Point3d AverageFace::getMeanPoint(QVector<cv::Point3d> &points) {
  * @return
  */
 void AverageFace::readVector3dPointsFromFile(QString path, QVector<cv::Point3d> &v) {
-    QFile f(path);
+	QFile f(path);
     bool exists = f.exists();
     assert(exists);
     bool opened = f.open(QIODevice::ReadOnly);

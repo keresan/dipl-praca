@@ -141,49 +141,31 @@ void DepthMap::printPoints() {
  */
 double DepthMap::weightedArtMean(double x, double y, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2) {
 
-	/* double sa neda porovnavat
-	if(x == x0 && y == y0) {
-		return z0;
-	}
-
-	if(x == x1 && y == y1) {
-		return z1;
-	}
-
-	if(x == x2 && y == y2) {
-		return z2;
-	}
-	*/
 	double dist0 = sqrt((x0-x)*(x0-x) + (y0-y)*(y0-y));
 	double dist1 = sqrt((x1-x)*(x1-x) + (y1-y)*(y1-y));
 	double dist2 = sqrt((x2-x)*(x2-x) + (y2-y)*(y2-y));
 
 	double z = (1/dist0*z0 + 1/dist1*z1 + 1/dist2*z2) / (1/dist0 + 1/dist1 + 1/dist2);
 
-
-
 	return z;
-
 }
 
 double DepthMap::linearInterpolation(double x, double y, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2) {
-	if (x0 == x1 && y0 == y1 && x0 == x2 && y0 == y2)
-		{
-			return (z0+z1+z2)/3;
-		}
+	if (x0 == x1 && y0 == y1 && x0 == x2 && y0 == y2) {
+		return (z0+z1+z2)/3;
+	}
 
-		// Ax + By + Cz + D = 0
-		double A = y0*(z1 - z2) + y1*(z2 - z0) + y2*(z0 - z1);
-		double B = z0*(x1 - x2) + z1*(x2 - x0) + z2*(x0 - x1);
-		double C = x0*(y1 - y2) + x1*(y2 - y0) + x2*(y0 - y1);
-		double D = -A*x0 - B*y0 - C*z0;
+	// Ax + By + Cz + D = 0
+	double A = y0*(z1 - z2) + y1*(z2 - z0) + y2*(z0 - z1);
+	double B = z0*(x1 - x2) + z1*(x2 - x0) + z2*(x0 - x1);
+	double C = x0*(y1 - y2) + x1*(y2 - y0) + x2*(y0 - y1);
+	double D = -A*x0 - B*y0 - C*z0;
 
-		double result = -(A/C)*x - (B/C)*y - D/C;
-		if (result != result)
-		{
-			return (z0+z1+z2)/3;
-		}
-		return result;
+	double result = -(A/C)*x - (B/C)*y - D/C;
+	if (result != result) {
+		return (z0+z1+z2)/3;
+	}
+	return result;
 }
 
 
@@ -240,6 +222,7 @@ void DepthMap::createDepthMap(Mesh &face) {
 			int result = cv::pointPolygonTest(contour, vector[j], false);
 
 			if(result >= 0) {
+
 
 				//vazeny priemer vs linearna interpolacia: vysledky sa lisia v stotinach
 				double z = linearInterpolation(vector.at(j).x, vector.at(j).y,
