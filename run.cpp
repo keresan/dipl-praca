@@ -65,42 +65,39 @@ void Run::test_crop() {
 void Run::test_alignFace() {
 
     Mesh *face = new Mesh(Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d548.abs", true));
-    Mesh *averageFace = new Mesh(Mesh::fromOBJ("/Users/martin/Documents/[]sklad/frgc_data/averageFace.obj_final.obj",true));
+	Mesh *averageFace = new Mesh(Mesh::fromOBJ("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_final_norm.obj",true));
+
+	averageFace->_color = QColor(Qt::green);
 
 	qDebug() << "averageFace:";
 	qDebug() << "pocet bodov:" << averageFace->pointsMat.rows;
 	qDebug() << "pocet trojuholnikov:" << averageFace->triangles.count();
 
-	Mesh *gridMesh = new Mesh(Mesh::Mesh::create2dGrid(cv::Point3d(-50,60,0), cv::Point3d(50,-60,0),4,4));
-	Mesh *newAverageFace = new Mesh(averageFace->getExtract2dGrid(*gridMesh));
-
-	qDebug() << "newAverageFace:";
-	qDebug() << "pocet bodov:" << newAverageFace->pointsMat.rows;
-	qDebug() << "pocet trojuholnikov:" << newAverageFace->triangles.count();
 
     window->setWindowTitle("test rotate");
     window->addFace(face);
-	window->addFace(newAverageFace);
+	window->addFace(averageFace);
 
-	//face->rotate(0,0,0.0);
-    //window->repaint(); // ??
-    parent->show();
+	face->rotate(0.1,0.1,0.1);
+	//window->repaint(); // ??
+	parent->show();
 
-	newAverageFace->_color = QColor(Qt::green);
+	Common::delay(2000);
 
     FaceAligner faceAligner;
 
     QTime myTimer;
     myTimer.start();
 
-	face->centralize();
-	newAverageFace->centralize();
-	faceAligner.computeAlign(*face, *newAverageFace, 500, 200);
+	//face->centralize();
+	//newAverageFace->centralize();
+	int iterations = faceAligner.computeAlign(*face, *averageFace, 100, 100);
     qDebug() << "vypocet zarovnania: "<< myTimer.elapsed() << "ms";
+	qDebug() << "pocet iteracii: " << iterations;
     myTimer.restart();
 
     faceAligner.alignFaceFast(*face);
-	faceAligner.alignFaceFast(*newAverageFace);
+	faceAligner.alignFaceFast(*averageFace);
     qDebug() << "zarovnanie: "<< myTimer.elapsed() << "ms";
 
     parent->centralWidget()->repaint();
@@ -264,6 +261,8 @@ void Run::showDepthMap() {
 
 void Run::createAverageFace() {
 
+	//celkovo 75 tvari pouzitych
+
 	QString pathToLandmarks("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range_marked/");
 	QString pathToFaces("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/");
 	QString pathToFirstFace("02463d550.abs_landmarks.txt");
@@ -274,4 +273,33 @@ void Run::createAverageFace() {
 
 
 
+}
+
+void Run::normalizeAverageFace() {
+	Mesh *averageFace = new Mesh(Mesh::fromOBJ("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_final.obj", true));
+
+	averageFace->centralize();
+
+	//averageFace->rotate(0,0,0);
+
+	qDebug() << "averageFace:";
+	qDebug() << "pocet bodov:" << averageFace->pointsMat.rows;
+	qDebug() << "pocet trojuholnikov:" << averageFace->triangles.count();
+
+	Mesh *croped = new Mesh(averageFace->crop(cv::Point3d(-60,70,0), cv::Point3d(60,-65,0)));
+
+	qDebug() << "croped:";
+	qDebug() << "pocet bodov:" << croped->pointsMat.rows;
+	qDebug() << "pocet trojuholnikov:" << croped->triangles.count();
+
+
+	Mesh *gridMesh = new Mesh(Mesh::create2dGrid(cv::Point3d(-60,70,0), cv::Point3d(60,-65,0),6,6));
+	Mesh *finalMesh = new Mesh(croped->getExtract2dGrid(*gridMesh));
+
+	qDebug() << "finalMesh:";
+	qDebug() << "pocet bodov:" << finalMesh->pointsMat.rows;
+	qDebug() << "pocet trojuholnikov:" << finalMesh->triangles.count();
+	window->addFace(finalMesh);
+
+	finalMesh->writeOBJ("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_final_norm.obj",'.');
 }

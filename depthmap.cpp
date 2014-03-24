@@ -8,9 +8,12 @@ DepthMap::DepthMap(Mesh &face, cv::Point2d topLeft, cv::Point2d bottomRight, int
 
 	createDepthMap(face);
 
-	normalize();
-}
+	computeMinMax();
+	qDebug() << _min << _max;
 
+	normalize(-50,100);
+
+}
 
 int DepthMap::selectFromDepthMap(cv::Point2d tl, cv::Point2d br, QVector<cv::Point2f> &vector) {
 
@@ -265,7 +268,7 @@ void DepthMap::normalize(double min, double max) {
 				depthMap.at<double>(r, c) = 1;
 				qDebug() << z;
 			} else {
-				depthMap.at<double>(r, c) =  (abs(min)+z)/(abs(min)+abs(max));
+				depthMap.at<double>(r, c) =  (z+abs(min))/255.0;//(abs(min)+abs(max));
 
 				//qDebug() <<r <<c << ":"<< z << "->" << depthMap.at<double>(r, c);
 			}

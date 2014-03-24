@@ -769,8 +769,6 @@ Mesh Mesh::create2dGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX,
 	int gridSizeX = abs(bottomRight.x - topLeft.x)  / stepX +1;
 	int gridSizeY = abs(bottomRight.y - topLeft.y)  / stepY +1;
 
-	qDebug() <<"gridSizeX:" << gridSizeX;
-	qDebug() <<"gridSizeY:" << gridSizeY;
 
 
     cv::Point3d p = topLeft;

@@ -15,9 +15,9 @@ public:
     FaceAligner();
 
 
-    void computeAlign(Mesh &still, Mesh &moving, int maxIterations, int threshold);
+	int computeAlign(Mesh &still, Mesh &moving, int maxIterations, int threshold);
 
-	void computeAlignFast(Mesh &still, Mesh &moving, int maxIterations, int threshold);
+
 
     void alignFace(Mesh &face);
     void alignFaceFast(Mesh &face);

@@ -27,6 +27,7 @@ public:
     void test_depth_select();
 
 	void createAverageFace();
+	void normalizeAverageFace();
 
 
 

@@ -4,7 +4,7 @@ FaceAligner::FaceAligner() {
 
 }
 
-void FaceAligner::computeAlign(Mesh &still, Mesh &moving, int maxIterations, int threshold) {
+int FaceAligner::computeAlign(Mesh &still, Mesh &moving, int maxIterations, int threshold) {
 
     //pokus o vytvorenie meshu still s mensim poctom bodov
     //vysledok: celkovy vypocet trva 4x dlhsie => treba urychlit getExtract2dGrid()
@@ -12,6 +12,7 @@ void FaceAligner::computeAlign(Mesh &still, Mesh &moving, int maxIterations, int
     //Mesh *stillDeprived = new Mesh();
     //still.getExtract2dGrid_2(grid, *stillDeprived);
 
+	int iterations;
 
     //Matrix rotateMatrixMul = Matrix::ones(3,3);
     //transformValues* values = new transformValues;
@@ -26,7 +27,7 @@ void FaceAligner::computeAlign(Mesh &still, Mesh &moving, int maxIterations, int
     still.pointsMat.convertTo(features, CV_32F);
     index.build(features, cv::flann::KMeansIndexParams());
 
-    for(int iter = 0; iter < maxIterations; iter++) {
+	for(iterations = 0; iterations < maxIterations; iterations++) {
         float distance = 0.0f;
         Mesh closedPoints = moving.getClosedPoints(still, index, &distance);
 
@@ -46,6 +47,8 @@ void FaceAligner::computeAlign(Mesh &still, Mesh &moving, int maxIterations, int
         moving.transform(transValue.rotation);
         lastDistance = distance;
     }
+
+	return iterations;
 }
 
 
