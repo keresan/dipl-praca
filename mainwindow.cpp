@@ -9,18 +9,25 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 	this->setCentralWidget(testToRun.window);
 
 	//testToRun.createAverageFace();
+
 	//testToRun.normalizeAverageFace();
 
-	testToRun.test_alignFace();
+	//testToRun.test_alignFace();
+	//testToRun.test_alignFace2();
 
 	//testToRun.test_selectGrid();
 	//testToRun.test_crop();
    //testToRun.test_show();
 
 	//testToRun.depthMapMapping();
+
 	//testToRun.showDepthMap();
+
 	//testToRun.test_depth_select();
 
+	testToRun.createDepthMaps();
+
+	//testToRun.eigenface();
 }
 
 MainWindow::~MainWindow() {

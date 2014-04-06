@@ -5,6 +5,7 @@
 #include "facealigner.h"
 #include "depthmap.h"
 #include "glwidget.h"
+#include "eigenface.h"
 #include <QTime>
 
 /**
@@ -18,16 +19,23 @@ public:
 
     void test_show();
     void test_alignFace();
+	void test_alignFace2();
 
 	void test_crop();
 
     void test_depth();
 	void depthMapMapping();
+
 	void showDepthMap();
-    void test_depth_select();
+
+	void createDepthMaps();
+
+	void test_depth_select();
 
 	void createAverageFace();
 	void normalizeAverageFace();
+
+	void eigenface();
 
 
 

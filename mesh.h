@@ -6,6 +6,7 @@
 #include <QString>
 #include <QRect>
 #include <QColor>
+#include <QRegularExpression>
 
 #include "Opencv/cv.h"
 
@@ -38,15 +39,18 @@ public:
 
     Matrix pointsMat;
     VectorOfTriangles triangles;
-    VectorOfColors colors;
+   // VectorOfColors colors;
 
     double minx, maxx, miny, maxy, minz, maxz;
     QColor _color;
+
+	QString name;
 
     //static cv::Point3d UNKNOWN_POINT;
 
     Mesh();
     Mesh(const Mesh &src);
+	Mesh(const QString path, bool centralizeLoadedMesh = false);
     virtual ~Mesh();
 
     void printStats();
@@ -58,19 +62,26 @@ public:
     void rotate(double x, double y, double z);
 
     //selections
-    Mesh crop(cv::Point3d center, int deltaPX, int deltaMX, int deltaPY, int deltaMY);
+	Mesh crop(cv::Point3d center, int deltaPX, int deltaMX, int deltaPY, int deltaMY);
 	Mesh crop(cv::Point3d topLeft, cv::Point3d bottomRight);
+
+	void  cropMe(cv::Point3d topLeft, cv::Point3d bottomRight);
+
     Mesh selectGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY);
     Mesh zLevelSelect(double zValue);
     Mesh radiusSelect(double radius, cv::Point3d center = cv::Point3d(0,0,0));
 
     //read, write
     void writeOBJ(const QString &path, char decimalPoint);
-    static Mesh fromABS(const QString &filename, bool centralizeLoadedMesh = false);
-    static Mesh fromABS(const QString &filename, const QString &texture, bool centralizeLoadedMesh = false);
-    static Mesh fromOBJ(const QString &filename, bool centralizeLoadedMesh = false);
-    static Mesh fromPointcloud(VectorOfPoints &pointcloud, bool centralizeLoadedMesh = false, bool calculateTriangles = true);
 
+	static Mesh fromABS(const QString &filename, bool centralizeLoadedMesh = false);
+    static Mesh fromOBJ(const QString &filename, bool centralizeLoadedMesh = false);
+
+	static Mesh fromPointcloud(VectorOfPoints &pointcloud, bool centralizeLoadedMesh = false, bool calculateTriangles = true);
+
+	void loadFromABS(const QString &filename, bool centralizeLoadedMesh = false);
+	void loadFromOBJ(const QString &filename, bool centralizeLoadedMesh = false);
+	void loadFromPointcloud(VectorOfPoints &pointcloud, bool centralizeLoadedMesh = false, bool calculateTriangles = true);
 
     //grid
     static Mesh create2dGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY);
@@ -79,6 +90,7 @@ public:
     void getExtract2dGrid_2(Mesh &grid, Mesh &dst);
 
     Mesh getClosedPoints(Mesh &inputMesh, cv::flann::Index &index, float *distance);
+	float getClosedDistance(cv::flann::Index &index);
     int getClosed2dPoint(cv::Point2d point);
 
     //void rotate(cv::Vec3d xyz);
@@ -92,7 +104,8 @@ public:
     void calculateTriangles();
     void recalculateMinMax();
 
-
+private:
+	void init();
 
 };
 

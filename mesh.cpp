@@ -13,10 +13,67 @@
 #include "averageface.h"
 //#include "procrustes.h"
 
+Mesh::Mesh() {
+	this->init();
+}
+
+Mesh::Mesh(const Mesh &src) {
+	minx = src.minx;
+	maxx = src.maxx;
+	miny = src.miny;
+	maxy = src.maxy;
+	minz = src.minz;
+	maxz = src.maxz;
+
+	pointsMat = src.pointsMat.clone();
+	triangles = src.triangles;
+	//colors = src.colors;
+	_color = src._color;
+	name = src.name;
+
+}
 
 
-void Mesh::recalculateMinMax()
-{
+Mesh::Mesh(const QString path, bool centralizeLoadedMesh) {
+
+	this->init();
+
+	if(path.endsWith(".abs", Qt::CaseInsensitive)) {
+		loadFromABS(path,centralizeLoadedMesh);
+
+	} else if(path.endsWith(".obj", Qt::CaseInsensitive)) {
+		loadFromOBJ(path,centralizeLoadedMesh);
+	} else {
+		assert(false);
+	}
+
+	//parse name
+	QString editPath(path);
+	int slashPos = editPath.lastIndexOf('/');
+	if(slashPos >= 0) {
+		editPath = editPath.mid(slashPos+1);
+	}
+	editPath.chop(4);
+	name = editPath;
+
+}
+
+Mesh::~Mesh() {
+	//qDebug() << "deleting mesh";
+}
+
+void Mesh::init() {
+	minx = 1e300;
+	maxx = -1e300;
+	miny = 1e300;
+	maxy = -1e300;
+	minz = 1e300;
+	maxz = -1e300;
+	_color = QColor(Qt::red);
+}
+
+
+void Mesh::recalculateMinMax() {
     cv::minMaxIdx(pointsMat.colRange(0,1), &minx, &maxx);
     cv::minMaxIdx(pointsMat.colRange(1,2), &miny, &maxy);
     cv::minMaxIdx(pointsMat.colRange(2,3), &minz, &maxz);
@@ -103,6 +160,67 @@ void Mesh::calculateTriangles() {
     //triangles = Delaunay::process(points2d);
 }
 
+void Mesh::loadFromABS(const QString &filename, bool centralizeLoadedMesh) {
+	//qDebug() << "loading" << filename;
+	assert(filename.endsWith(".abs", Qt::CaseInsensitive));
+	QFile f(filename);
+	bool exists = f.exists();
+	assert(exists);
+	bool opened = f.open(QIODevice::ReadOnly);
+	assert(opened);
+	QTextStream in(&f);
+
+	int mapHeight;
+	in >> mapHeight;
+	in.readLine();
+	int mapwidth;
+	in >> mapwidth;
+
+	in.readLine();
+	in.readLine();
+
+	int total = mapwidth*mapHeight;
+
+	int flags[total];
+	double *xPoints = new double[total];
+	double *yPoints = new double[total];
+	double *zPoints = new double[total];
+
+	for (int i = 0; i < total; i++) {
+		in >> (flags[i]);
+	}
+
+	for (int i = 0; i < total; i++) {
+		in >> (xPoints[i]);
+	}
+
+	for (int i = 0; i < total; i++) {
+		in >> (yPoints[i]);
+	}
+
+	for (int i = 0; i < total; i++) {
+		in >> (zPoints[i]);
+	}
+
+	VectorOfPoints points;
+	for (int i = 0; i < total; i++) {
+		if (flags[i])
+		{
+			cv::Point3d p;
+			p.x = xPoints[i];
+			p.y = yPoints[i];
+			p.z = zPoints[i];
+			points.append(p);
+		}
+	}
+
+	delete [] xPoints;
+	delete [] yPoints;
+	delete [] zPoints;
+
+	this->loadFromPointcloud(points, centralizeLoadedMesh);
+
+}
 
 Mesh Mesh::fromABS(const QString &filename, bool centralizeLoadedMesh) {
     //qDebug() << "loading" << filename;
@@ -170,79 +288,27 @@ Mesh Mesh::fromABS(const QString &filename, bool centralizeLoadedMesh) {
     return Mesh::fromPointcloud(points, centralizeLoadedMesh);
 }
 
-Mesh Mesh::fromABS(const QString &filename, const QString &texture, bool centralizeLoadedMesh) {
-    assert(filename.endsWith(".abs", Qt::CaseInsensitive));
 
-    cv::Mat_<cv::Vec3b> image = cv::imread(texture.toStdString());
 
-    //qDebug() << "loading" << filename;
-    QFile f(filename);
-    bool exists = f.exists();
-    assert(exists);
-    bool opened = f.open(QIODevice::ReadOnly);
-    assert(opened);
-    QTextStream in(&f);
+void Mesh::loadFromPointcloud(VectorOfPoints &pointcloud, bool centralizeLoadedMesh, bool calculateTriangles) {
 
-    int mapHeight;
-    in >> mapHeight;
-    in.readLine();
-    int mapwidth;
-    in >> mapwidth;
+	int n = pointcloud.count();
+	this->pointsMat = Matrix(n, 3);
+	for (int i = 0; i < n; i++) {
+		const cv::Point3d &p = pointcloud.at(i);
+		this->pointsMat(i, 0) = p.x;
+		this->pointsMat(i, 1) = p.y;
+		this->pointsMat(i, 2) = p.z;
+	}
 
-    in.readLine();
-    in.readLine();
+	if (calculateTriangles) {
+		this->calculateTriangles();
+	}
+	this->recalculateMinMax();
 
-    int total = mapwidth*mapHeight;
-    //qDebug() << "total points" << total;
-
-    int flags[total];
-    double *xPoints = new double[total];
-    double *yPoints = new double[total];
-    double *zPoints = new double[total];
-
-    for (int i = 0; i < total; i++) {
-        in >> (flags[i]);
-    }
-    //qDebug() << "flags loaded";
-
-    for (int i = 0; i < total; i++) {
-        in >> (xPoints[i]);
-    }
-    //qDebug() << "x points loaded";
-
-    for (int i = 0; i < total; i++) {
-        in >> (yPoints[i]);
-    }
-    //qDebug() << "y points loaded";
-
-    for (int i = 0; i < total; i++) {
-        in >> (zPoints[i]);
-    }
-    //qDebug() << "z points loaded";
-
-    VectorOfPoints points;
-    VectorOfColors colors;
-    for (int i = 0; i < total; i++) {
-        if (flags[i]) {
-            cv::Point3d p;
-            p.x = xPoints[i];
-            p.y = yPoints[i];
-            p.z = zPoints[i];
-            points.append(p);
-
-            int x = i % 640;
-            int y = i / 640;
-            colors << image(y, x);
-        }
-    }
-
-    delete [] xPoints;
-    delete [] yPoints;
-    delete [] zPoints;
-
-    Mesh mesh = Mesh::fromPointcloud(points, centralizeLoadedMesh);
-    mesh.colors = colors;
-    return mesh;
+	if (centralizeLoadedMesh) {
+		this->centralize();
+	}
 }
 
 Mesh Mesh::fromPointcloud(VectorOfPoints &pointcloud, bool centralizeLoadedMesh, bool calculateTriangles) {
@@ -320,9 +386,46 @@ Mesh Mesh::fromMap(Map &depth, Map &intensities, bool centralizeLoadedMesh)
     return mesh;
 }
 */
-Mesh Mesh::fromOBJ(const QString &filename, bool centralizeLoadedMesh)
-{
-    qDebug() << "loading" << filename;
+
+void Mesh::loadFromOBJ(const QString &filename, bool centralizeLoadedMesh) {
+	assert(filename.endsWith(".obj", Qt::CaseInsensitive));
+	QFile f(filename);
+	bool fileExists = f.exists();
+	assert(fileExists);
+	bool fileOpened = f.open(QIODevice::ReadOnly);
+	assert(fileOpened);
+	QTextStream in(&f);
+
+	VectorOfPoints points;
+	VectorOfTriangles triangles;
+	while (!in.atEnd())
+	{
+		QString line = in.readLine();
+		QStringList items = line.split(QChar(' '));
+
+		if (items[0].compare("v") == 0)
+		{
+			double x = items[1].toDouble();
+			double y = items[2].toDouble();
+			double z = items[3].toDouble();
+
+			points << cv::Point3d(x,y,z);
+		}
+		else if (items[0].compare("f") == 0)
+		{
+			int t1 = items[1].toInt()-1;
+			int t2 = items[2].toInt()-1;
+			int t3 = items[3].toInt()-1;
+
+			triangles << cv::Vec3i(t1, t2, t3);
+		}
+	}
+
+	this->loadFromPointcloud(points, centralizeLoadedMesh, false);
+	this->triangles = triangles;
+}
+
+Mesh Mesh::fromOBJ(const QString &filename, bool centralizeLoadedMesh) {
     assert(filename.endsWith(".obj", Qt::CaseInsensitive));
     QFile f(filename);
     bool fileExists = f.exists();
@@ -361,36 +464,6 @@ Mesh Mesh::fromOBJ(const QString &filename, bool centralizeLoadedMesh)
     return result;
 }
 
-Mesh::Mesh()
-{
-    minx = 1e300;
-    maxx = -1e300;
-    miny = 1e300;
-    maxy = -1e300;
-    minz = 1e300;
-    maxz = -1e300;
-    _color = QColor(Qt::red);
-}
-
-Mesh::Mesh(const Mesh &src)
-{
-    minx = src.minx;
-    maxx = src.maxx;
-    miny = src.miny;
-    maxy = src.maxy;
-    minz = src.minz;
-    maxz = src.maxz;
-
-    pointsMat = src.pointsMat.clone();
-    triangles = src.triangles;
-    colors = src.colors;
-}
-
-
-Mesh::~Mesh()
-{
-    //qDebug() << "deleting mesh";
-}
 
 QString formatNumber(double n, char decimalPoint)
 {
@@ -475,6 +548,30 @@ Mesh Mesh::getClosedPoints(Mesh &inputMesh, cv::flann::Index &index, float *dist
 
 }
 
+float Mesh::getClosedDistance(cv::flann::Index &index) {
+	float distance = 0;
+
+	QTime myTimer;
+	myTimer.start();
+
+	for (int r = 0; r < pointsMat.rows ; r++) {
+
+		cv::Mat query;
+		pointsMat.row(r).convertTo(query, CV_32F);
+
+		std::vector<int> resultIndicies;
+		std::vector<float> resultDistances;
+		index.knnSearch(query, resultIndicies, resultDistances, 1);
+		//int pIndex = resultIndicies[0];
+
+		//cv::Point3d p(inputMesh.pointsMat(pIndex, 0),inputMesh.pointsMat(pIndex, 1),inputMesh.pointsMat(pIndex, 2));
+		distance += resultDistances[0];
+
+	}
+
+	return distance;
+}
+
 /**
  * @brief Mesh::getExtract2dGrid - extract grid from face, use only x,y coords
  * @param grid
@@ -515,13 +612,9 @@ void Mesh::getExtract2dGrid(Mesh &grid, Mesh &dst) {
         cv::Point3d p(pointsMat(pIndex, 0),pointsMat(pIndex, 1),pointsMat(pIndex, 2));
 
         newPoints.append(p);
-        if (colors.count() > 0) {
-            newColors << colors[pIndex];
-        }
     }
 
     dst = Mesh::fromPointcloud(newPoints, false, true);
-    dst.colors = newColors;
 }
 
 Mesh Mesh::getExtract2dGrid(Mesh &grid) {
@@ -547,7 +640,7 @@ void Mesh::getExtract2dGrid_2(Mesh &grid, Mesh &dst) {
     //qDebug() << "max distance: " << maxDistance;
 
     VectorOfPoints newPoints;
-    VectorOfColors newColors;
+
 
     //convert 3d to 2d
     Matrix pointsMat2d(pointsMat.operator ()(cv::Range::all(),cv::Range(0,2)));
@@ -591,9 +684,7 @@ void Mesh::getExtract2dGrid_2(Mesh &grid, Mesh &dst) {
             //save nearest matrix's point
             p = cv::Point3d(pointsMat(pIndex, 0),pointsMat(pIndex, 1),pointsMat(pIndex, 2));
             newPoints.append(p);
-            if (colors.count() > 0) {
-                newColors << colors[pIndex];
-            }
+
         }
 
 
@@ -601,7 +692,7 @@ void Mesh::getExtract2dGrid_2(Mesh &grid, Mesh &dst) {
     }
 
     dst = Mesh::fromPointcloud(newPoints, false, true);
-    dst.colors = newColors;
+
 
 }
 
@@ -613,14 +704,12 @@ Mesh Mesh::zLevelSelect(double zValue)
     for (int r = 0; r < pointsMat.rows; r++) {
         if (pointsMat(r, 2) >= zValue) {
             newPoints << cv::Point3d(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2));
-            if (colors.count() > 0) {
-                newColors << colors[r];
-            }
+
         }
     }
 
     Mesh result = Mesh::fromPointcloud(newPoints, false, true);
-    result.colors = newColors;
+
     return result;
 }
 
@@ -632,14 +721,10 @@ Mesh Mesh::radiusSelect(double radius, cv::Point3d center)
         cv::Point3d p(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2));
         if (euclideanDistance(p, center) <= radius) {
             newPoints << p;
-            if (colors.count() > 0) {
-                newColors << colors[r];
-            }
         }
     }
 
     Mesh result = Mesh::fromPointcloud(newPoints, false, true);
-    result.colors = newColors;
     return result;
 }
 
@@ -664,7 +749,8 @@ void Mesh::averageMesh(Mesh &src, Mesh &dst, int dstWeight) {
 Mesh Mesh::crop(cv::Point3d topLeft, cv::Point3d bottomRight) {
 	VectorOfPoints newPoints;
 	VectorOfColors newColors;
-	 for (int r = 0; r < pointsMat.rows; r++) {
+
+	for (int r = 0; r < pointsMat.rows; r++) {
 		 cv::Point3d p(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2));
 
 		 if(p.x < topLeft.x || p.y > topLeft.y) {
@@ -674,18 +760,32 @@ Mesh Mesh::crop(cv::Point3d topLeft, cv::Point3d bottomRight) {
 			 continue;
 		 }
 
-
 		 newPoints.append(p);
-		 if (colors.count() > 0){
-			 newColors.append(colors[r]);
-		 }
-
-
 	 }
 	 Mesh result = Mesh::fromPointcloud(newPoints, false, true);
-	 result.colors = newColors;
 	 return result;
 }
+
+void Mesh::cropMe(cv::Point3d topLeft, cv::Point3d bottomRight) {
+	VectorOfPoints newPoints;
+	VectorOfColors newColors;
+	for (int r = 0; r < pointsMat.rows; r++) {
+		 cv::Point3d p(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2));
+
+		 if(p.x < topLeft.x || p.y > topLeft.y) {
+			 continue;
+		 }
+		 if(p.x > bottomRight.x || p.y < bottomRight.y) {
+			 continue;
+		 }
+
+		newPoints.append(p);
+
+	 }
+	loadFromPointcloud(newPoints,false, true);
+
+}
+
 
 Mesh Mesh::crop(cv::Point3d center, int deltaPX, int deltaMX, int deltaPY, int deltaMY) {
     VectorOfPoints newPoints;
@@ -703,12 +803,10 @@ Mesh Mesh::crop(cv::Point3d center, int deltaPX, int deltaMX, int deltaPY, int d
         }
         //point is IN, so add it to new mesh
         newPoints.append(p);
-        if (colors.count() > 0){
-            newColors.append(colors[r]);
-        }
-    }
+
+	}
     Mesh result = Mesh::fromPointcloud(newPoints, false, true);
-    result.colors = newColors;
+
     return result;
 
 }
@@ -811,9 +909,7 @@ Mesh Mesh::selectGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, i
             qDebug();
 
             newPoints.append(cv::Point3d(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2)));
-            if (colors.count() > 0){
-                newColors.append(colors[r]);
-            }
+
             //next
 
         }
@@ -821,7 +917,7 @@ Mesh Mesh::selectGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, i
     }
 
     Mesh result = Mesh::fromPointcloud(newPoints, false, true);
-    result.colors = newColors;
+
 
     return result;
 }

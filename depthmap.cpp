@@ -9,9 +9,9 @@ DepthMap::DepthMap(Mesh &face, cv::Point2d topLeft, cv::Point2d bottomRight, int
 	createDepthMap(face);
 
 	computeMinMax();
-	qDebug() << _min << _max;
+	//qDebug() << _min << _max;
 
-	normalize(-50,100);
+	policing(_min,_max);
 
 }
 
@@ -179,7 +179,7 @@ double DepthMap::linearInterpolation(double x, double y, double x0, double y0, d
  */
 void DepthMap::createDepthMap(Mesh &face) {
 
-    qDebug() << "triangles:" << face.triangles.count();
+	//qDebug() << "depthmap triangles:" << face.triangles.count();
 
 	//dopredu alokovany priestor, zrychluje vypocet o cca 10 ms
 	QVector<cv::Point2f> vector(100);
@@ -256,22 +256,25 @@ void DepthMap::createDepthMap(Mesh &face) {
 }
 
 
-void DepthMap::normalize(double min, double max) {
+void DepthMap::policing(double min, double max) {
 
 	for (int r = 0; r < depthMap.rows; r++) {
 		for (int c = 0; c < depthMap.cols; c++) {
 			double z = depthMap.at<double>(r, c);
 
 			if(z <= min) {
-				depthMap.at<double>(r, c) = 0;
+				depthMap.at<double>(r, c) = min;
 			} else if(z >= max) {
-				depthMap.at<double>(r, c) = 1;
-				qDebug() << z;
-			} else {
+				depthMap.at<double>(r, c) = max;
+				//qDebug() << z;
+			}
+			/*
+			else {
 				depthMap.at<double>(r, c) =  (z+abs(min))/255.0;//(abs(min)+abs(max));
 
-				//qDebug() <<r <<c << ":"<< z << "->" << depthMap.at<double>(r, c);
+				qDebug() <<r <<c << ":"<< z << "->" << depthMap.at<double>(r, c);
 			}
+			*/
 
 		}
 
@@ -281,8 +284,8 @@ void DepthMap::normalize(double min, double max) {
 void DepthMap::computeMinMax() {
 
 	//nemoze byt priamo na urcity prvok, pretoze ten moze obsahovat -999
-	_min = 10;
-	_max = 10;
+	_min = 100;
+	_max = -100;
 
 
 	for (int r = 0; r < depthMap.rows; r++) {

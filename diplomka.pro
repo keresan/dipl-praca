@@ -50,7 +50,8 @@ SOURCES += main.cpp\
     common.cpp \
     averageface.cpp \
     run.cpp \
-    depthmap.cpp
+    depthmap.cpp \
+    eigenface.cpp
 
 HEADERS  += mainwindow.h \
     mesh.h \
@@ -61,7 +62,8 @@ HEADERS  += mainwindow.h \
     common.h \
     averageface.h \
     run.h \
-    depthmap.h
+    depthmap.h \
+    eigenface.h
 
 
 #FORMS    += mainwindow.ui

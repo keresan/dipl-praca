@@ -32,7 +32,7 @@ private:
 	double weightedArtMean(double x, double y, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2);
 	double linearInterpolation(double x, double y, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2);
 
-	void normalize(double min = -150, double max = 100);
+	void policing(double min = -250, double max = 200);
 	void computeMinMax();
 
 	inline double max(double a, double b, double c) {

@@ -96,57 +96,37 @@ void GLWidget::paintGL() {
 
     //glColor3fv(color);
 
-    //pokus o priehladnu tvar
-    //glEnable (GL_BLEND);
-    //glBlendFunc (GL_ONE, GL_ONE);
 
-
-    foreach(const Mesh *face, faces)
-    {
+	//paint faces
+	foreach(const Mesh *face, faces) {
         float color[] = {face->_color.redF(), face->_color.greenF(), face->_color.blueF()};
         glColor3fv(color);
-
-        //pokus o priehladnu tvar
-        //float color[] = {face->_color.redF(), face->_color.greenF(), face->_color.blueF(), face->_color.alphaF()};
-        //glColor4fv(color);
-
-
         if (face->triangles.count() == 0) {
             glDisable(GL_LIGHTING);
             glDisable(GL_LIGHT0);
 
             glBegin(GL_POINTS);
-            int n = face->pointsMat.rows;
-            for (int i = 0; i < n; i++)
-            {
-                const Matrix &p = face->pointsMat;
-                const Color &c = face->colors[i];
-                glColor3b(c[2]/2,c[1]/2,c[0]/2);
+			for (int i = 0; i < face->pointsMat.rows; i++) {
+				const Matrix &p = face->pointsMat;
+				//const Color &c = face->colors[i];
+				//glColor3b(c[2]/2,c[1]/2,c[0]/2);
                 glVertex3f(p(i, 0)/10, p(i, 1)/10, p(i, 2)/10);
 
             }
             glEnd();
         } else {
-            bool texture = face->colors.size() == face->pointsMat.rows;
-            if (!texture)
-            {
-                glEnable(GL_LIGHTING);
-                glEnable(GL_LIGHT0);
-                glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
-            }
-            else
-            {
-                glDisable(GL_LIGHTING);
-                glDisable(GL_LIGHT0);
-            }
+
+			glEnable(GL_LIGHTING);
+			glEnable(GL_LIGHT0);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
+
 
             glShadeModel(GL_SMOOTH);//nefunguje
             glPointSize(1);
             glBegin(GL_TRIANGLES);
             int c = face->triangles.count();
             const Matrix &p = face->pointsMat;
-            for (int i = 0; i < c; i++)
-            {
+			for (int i = 0; i < c; i++) {
                 int p1 = face->triangles[i][0];
                 int p2 = face->triangles[i][1];
                 int p3 = face->triangles[i][2];
@@ -175,22 +155,8 @@ void GLWidget::paintGL() {
                 // flat shading
                 glNormal3f(nx, ny, nz);
 
-                if (texture)
-                {
-                    glColor3b(face->colors[p1][2]/2,face->colors[p1][1]/2,face->colors[p1][0]/2);
-                }
                 glVertex3f(p(p1, 0), p(p1, 1), p(p1, 2));
-
-                if (texture)
-                {
-                    glColor3b(face->colors[p2][2]/2,face->colors[p2][1]/2,face->colors[p2][0]/2);
-                }
                 glVertex3f(p(p2, 0), p(p2, 1), p(p2, 2));
-
-                if (texture)
-                {
-                    glColor3b(face->colors[p3][2]/2,face->colors[p3][1]/2,face->colors[p3][0]/2);
-                }
                 glVertex3f(p(p3, 0), p(p3, 1), p(p3, 2));
             }
 
@@ -198,7 +164,7 @@ void GLWidget::paintGL() {
         }
     }
 
-    /* paint landmarks */
+	//paint landmarks
     foreach(Landmarks *l, landmarks) {
         glDisable(GL_LIGHTING);
         glDisable(GL_LIGHT0);
@@ -229,17 +195,15 @@ void GLWidget::paintGL() {
     }
 
 
-
-    if (curves.count() > 0)
-    {
+	//paint curves
+	if (curves.count() > 0) {
         glDisable(GL_LIGHTING);
         glDisable(GL_LIGHT0);
 
         glLineWidth(3);
         glColor3f(1,1,0);
 
-        foreach (const QVector<cv::Point3d> &curve, curves)
-        {
+		foreach (const QVector<cv::Point3d> &curve, curves) {
             glBegin(GL_LINE_STRIP);
             int n = curve.count();
             for (int i = 0; i < n; i++)
@@ -254,30 +218,28 @@ void GLWidget::paintGL() {
         }
     }
 
+	glLineWidth(2);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_LIGHT0);
+
 	glBegin(GL_LINES);
 
-		glLineWidth(5);
-        glDisable(GL_LIGHTING);
-        glDisable(GL_LIGHT0);
+	//x
+	glColor3f(1, 0, 1); //purple
+	glVertex3f(0, 0, 0);
+	glVertex3f(200, 0, 0);
 
-		//x
-        glColor3f(1, 0, 0);
-        glVertex3f(0, 0, 0);
-		glVertex3f(200, 0, 0);
+	//y
+	glColor3f(1, 1, 0); //yellow
+	glVertex3f(0, 0, 0);
+	glVertex3f(0, 200, 0);
 
-		//y
-		glColor3f(0, 1, 0);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 200, 0);
-
-		//z
-		glColor3f(0, 0, 1);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 0, 200);
+	//z
+	glColor3f(0, 0, 1); //blue
+	glVertex3f(0, 0, 0);
+	glVertex3f(0, 0, 200);
 
 	glEnd();
-
-
 }
 
 
