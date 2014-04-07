@@ -239,6 +239,20 @@ void GLWidget::paintGL() {
 	glVertex3f(0, 0, 0);
 	glVertex3f(0, 0, 200);
 
+
+	//temporary lines
+	glColor3f(0, 1, 1); //blue
+	glVertex3f(0, 100, 60);
+	glVertex3f(0, -100, 60);
+
+	glVertex3f(40, 100, 30);
+	glVertex3f(40, -100, 30);
+
+	glVertex3f(-40, 100, 30);
+	glVertex3f(-40, -100, 30);
+
+
+
 	glEnd();
 }
 

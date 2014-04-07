@@ -9,6 +9,15 @@
 #include <cmath>
 #include <QStringList>
 
+const cv::Point3d Common::averageFaceTL = cv::Point3d(-50,70,0);
+const cv::Point3d Common::averageFaceBR = cv::Point3d(50,-10,0);
+
+const cv::Point2d Common::depthMapTL = cv::Point2d(-70,90);
+const cv::Point2d Common::depthMapBR = cv::Point2d(70,-70);
+
+const int Common::depthMapPixelsX = 140*2;
+const int Common::depthMapPixelsY = 160*2;
+
 /*
 void Common::printMatrix(CvMat *m)
 {

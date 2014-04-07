@@ -8,10 +8,10 @@
 
 class DepthMap {
 public:
-	DepthMap(Mesh &face, cv::Point2d topLeft = cv::Point2d(-150,150),
-			 cv::Point2d bottomRight = cv::Point2d(150,-150),
-			 int pixelsX = 300,
-			 int piselxY = 300);
+	DepthMap(Mesh &face, cv::Point2d topLeft = Common::depthMapTL,
+			 cv::Point2d bottomRight = Common::depthMapBR,
+			 int pixelsX = Common::depthMapPixelsX,
+			 int piselxY = Common::depthMapPixelsY);
 
     cv::Mat depthMap;
 
@@ -23,19 +23,19 @@ public:
     void printPoints();
 
 private:
-	double _min, _max;
+	float _min, _max;
 	//spread of depthMap
 	cv::Point2d _topLeft, _bottomRight;
 
 	void createDepthMap(Mesh &face);
 
-	double weightedArtMean(double x, double y, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2);
-	double linearInterpolation(double x, double y, double x0,double y0,double z0,double x1,double y1,double z1,double x2,double y2,double z2);
+	float weightedArtMean(float x, float y, float x0,float y0,float z0,float x1,float y1,float z1,float x2,float y2,float z2);
+	float linearInterpolation(float x, float y, float x0,float y0,float z0,float x1,float y1,float z1,float x2,float y2,float z2);
 
-	void policing(double min = -250, double max = 200);
+	void policing(float min = -250, float max = 200, bool shiftToZero = true);
 	void computeMinMax();
 
-	inline double max(double a, double b, double c) {
+	inline float max(float a, float b, float c) {
 		if(a>b) {
 			if(a>c) {
 				return a;
@@ -51,7 +51,7 @@ private:
 		}
 	}
 
-	inline double min(double a, double b, double c) {
+	inline float min(float a, float b, float c) {
 		if(a<b) {
 			if(a<c) {
 				return a;

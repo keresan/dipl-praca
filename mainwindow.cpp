@@ -8,11 +8,12 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
 	this->setCentralWidget(testToRun.window);
 
-	//testToRun.createAverageFace();
+	// !!! testToRun.createAverageFace();
 
 	//testToRun.normalizeAverageFace();
 
 	//testToRun.test_alignFace();
+
 	//testToRun.test_alignFace2();
 
 	//testToRun.test_selectGrid();
@@ -27,7 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
 	testToRun.createDepthMaps();
 
+	//testToRun.loadImages();
+
 	//testToRun.eigenface();
+	//testToRun.eigenface_pca();
 }
 
 MainWindow::~MainWindow() {

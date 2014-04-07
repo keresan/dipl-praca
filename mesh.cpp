@@ -766,7 +766,7 @@ Mesh Mesh::crop(cv::Point3d topLeft, cv::Point3d bottomRight) {
 	 return result;
 }
 
-void Mesh::cropMe(cv::Point3d topLeft, cv::Point3d bottomRight) {
+void Mesh::cropMe(cv::Point2d topLeft, cv::Point2d bottomRight) {
 	VectorOfPoints newPoints;
 	VectorOfColors newColors;
 	for (int r = 0; r < pointsMat.rows; r++) {

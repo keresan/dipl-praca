@@ -18,7 +18,6 @@ public:
 
 	void findBestStartingPosition(Mesh &face, Mesh &modelFace, int  rangeX = 30, int rangeY = 30, int step = 15);
 
-
 	int computeAlign(Mesh &still, Mesh &moving, int maxIterations, int threshold);
 
     void alignFace(Mesh &face);

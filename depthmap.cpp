@@ -2,7 +2,7 @@
 
 DepthMap::DepthMap(Mesh &face, cv::Point2d topLeft, cv::Point2d bottomRight, int pixelsX, int piselxY) {
 
-	depthMap = cv::Mat(piselxY,pixelsX,CV_64F, cv::Scalar(-999.0));
+	depthMap = cv::Mat(piselxY,pixelsX,CV_32F, cv::Scalar(-999.0));
 	_topLeft = topLeft;
 	_bottomRight = bottomRight;
 
@@ -94,16 +94,16 @@ bool DepthMap::mapPointToIndecies(cv::Point2d p, int &row, int &col) {
 	qDebug("====[%8.2f;%8.2f]",p.x,p.y);
 	qDebug() << "size: " << abs(topLeft.x - bottomRight.x) <<  " x " <<abs(topLeft.y - bottomRight.y);
 	qDebug() << "dephMap RxC: " << depthMap.rows << depthMap.cols;
-	double stepX = abs(topLeft.x - bottomRight.x) / (double)(depthMap.cols-1);
-	double stepY = abs(topLeft.y - bottomRight.y) / (double)(depthMap.rows-1);
+	float stepX = abs(topLeft.x - bottomRight.x) / (float)(depthMap.cols-1);
+	float stepY = abs(topLeft.y - bottomRight.y) / (float)(depthMap.rows-1);
 	qDebug("step: %5.2f;%5.2f",stepX,stepY);
 
 	qDebug() << "rozdiel od tl.x:" << p.x - topLeft.x;
 	qDebug() << "rozdiel od tl.y:" << p.y - topLeft.y;
 	*/
 
-	col = abs(qRound((p.x - _topLeft.x) /( abs(_topLeft.x - _bottomRight.x)/(double)(depthMap.cols-1))));
-	row = abs(qRound((p.y - _topLeft.y) /( abs(_topLeft.y - _bottomRight.y)/(double)(depthMap.rows-1))));
+	col = abs(qRound((p.x - _topLeft.x) /( abs(_topLeft.x - _bottomRight.x)/(float)(depthMap.cols-1))));
+	row = abs(qRound((p.y - _topLeft.y) /( abs(_topLeft.y - _bottomRight.y)/(float)(depthMap.rows-1))));
 
 	//qDebug() << "RxS:" << row << col;
 
@@ -142,29 +142,29 @@ void DepthMap::printPoints() {
  * @param z2
  * @return
  */
-double DepthMap::weightedArtMean(double x, double y, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2) {
+float DepthMap::weightedArtMean(float x, float y, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2) {
 
-	double dist0 = sqrt((x0-x)*(x0-x) + (y0-y)*(y0-y));
-	double dist1 = sqrt((x1-x)*(x1-x) + (y1-y)*(y1-y));
-	double dist2 = sqrt((x2-x)*(x2-x) + (y2-y)*(y2-y));
+	float dist0 = sqrt((x0-x)*(x0-x) + (y0-y)*(y0-y));
+	float dist1 = sqrt((x1-x)*(x1-x) + (y1-y)*(y1-y));
+	float dist2 = sqrt((x2-x)*(x2-x) + (y2-y)*(y2-y));
 
-	double z = (1/dist0*z0 + 1/dist1*z1 + 1/dist2*z2) / (1/dist0 + 1/dist1 + 1/dist2);
+	float z = (1/dist0*z0 + 1/dist1*z1 + 1/dist2*z2) / (1/dist0 + 1/dist1 + 1/dist2);
 
 	return z;
 }
 
-double DepthMap::linearInterpolation(double x, double y, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2) {
+float DepthMap::linearInterpolation(float x, float y, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2) {
 	if (x0 == x1 && y0 == y1 && x0 == x2 && y0 == y2) {
 		return (z0+z1+z2)/3;
 	}
 
 	// Ax + By + Cz + D = 0
-	double A = y0*(z1 - z2) + y1*(z2 - z0) + y2*(z0 - z1);
-	double B = z0*(x1 - x2) + z1*(x2 - x0) + z2*(x0 - x1);
-	double C = x0*(y1 - y2) + x1*(y2 - y0) + x2*(y0 - y1);
-	double D = -A*x0 - B*y0 - C*z0;
+	float A = y0*(z1 - z2) + y1*(z2 - z0) + y2*(z0 - z1);
+	float B = z0*(x1 - x2) + z1*(x2 - x0) + z2*(x0 - x1);
+	float C = x0*(y1 - y2) + x1*(y2 - y0) + x2*(y0 - y1);
+	float D = -A*x0 - B*y0 - C*z0;
 
-	double result = -(A/C)*x - (B/C)*y - D/C;
+	float result = -(A/C)*x - (B/C)*y - D/C;
 	if (result != result) {
 		return (z0+z1+z2)/3;
 	}
@@ -191,12 +191,12 @@ void DepthMap::createDepthMap(Mesh &face) {
         int ind1 = face.triangles.at(i)[1];
         int ind2 = face.triangles.at(i)[2];
 
-		double p0x = face.pointsMat(ind0,0);
-		double p0y = face.pointsMat(ind0,1);
-		double p1x = face.pointsMat(ind1,0);
-		double p1y = face.pointsMat(ind1,1);
-		double p2x = face.pointsMat(ind2,0);
-		double p2y = face.pointsMat(ind2,1);
+		float p0x = face.pointsMat(ind0,0);
+		float p0y = face.pointsMat(ind0,1);
+		float p1x = face.pointsMat(ind1,0);
+		float p1y = face.pointsMat(ind1,1);
+		float p2x = face.pointsMat(ind2,0);
+		float p2y = face.pointsMat(ind2,1);
 
         std::vector<cv::Point2f> contour(3);
 		contour[0] = cv::Point2f(p0x,p0y);
@@ -208,11 +208,11 @@ void DepthMap::createDepthMap(Mesh &face) {
 	   // cv::Rect rectangle;
 	   // rectangle = cv::boundingRect(contour);
 
-		double tlx = min(p0x, p1x, p2x);
-		double tly = max(p0y, p1y, p2y);
+		float tlx = min(p0x, p1x, p2x);
+		float tly = max(p0y, p1y, p2y);
 
-		double brx = max(p0x, p1x, p2x);
-		double bry = min(p0y, p1y, p2y);
+		float brx = max(p0x, p1x, p2x);
+		float bry = min(p0y, p1y, p2y);
 
 
 
@@ -228,13 +228,13 @@ void DepthMap::createDepthMap(Mesh &face) {
 
 
 				//vazeny priemer vs linearna interpolacia: vysledky sa lisia v stotinach
-				double z = linearInterpolation(vector.at(j).x, vector.at(j).y,
+				float z = linearInterpolation(vector.at(j).x, vector.at(j).y,
 										   p0x, p0y, face.pointsMat(ind0,2),
 										   p1x, p1y, face.pointsMat(ind1,2),
 										   p2x, p2y, face.pointsMat(ind2,2));
                  //vazeny priemer, ale cim mensia vzdialenost, tym vacsia vaha !!
 				/*
-				double z = weightedArtMean(vector.at(j).x, vector.at(j).y,
+				float z = weightedArtMean(vector.at(j).x, vector.at(j).y,
 											p0x, p0y, face.pointsMat(ind0,2),
 											p1x, p1y, face.pointsMat(ind1,2),
 											p2x, p2y, face.pointsMat(ind2,2));
@@ -242,9 +242,9 @@ void DepthMap::createDepthMap(Mesh &face) {
                  int col, row;
 				 if(mapPointToIndecies(vector.at(j),row,col)) {
                      //qDebug() << row << col;
-                     //qDebug() << depthMap.at<double>(row, col);
-					 if (z > depthMap.at<double>(row, col)) {
-						 depthMap.at<double>(row, col) = z;
+					 //qDebug() << depthMap.at<float>(row, col);
+					 if (z > depthMap.at<float>(row, col)) {
+						 depthMap.at<float>(row, col) = z;
 
                      }
                  }
@@ -256,23 +256,30 @@ void DepthMap::createDepthMap(Mesh &face) {
 }
 
 
-void DepthMap::policing(double min, double max) {
+void DepthMap::policing(float min, float max, bool shiftToZero) {
 
 	for (int r = 0; r < depthMap.rows; r++) {
 		for (int c = 0; c < depthMap.cols; c++) {
-			double z = depthMap.at<double>(r, c);
+			float z = depthMap.at<float>(r, c);
 
 			if(z <= min) {
-				depthMap.at<double>(r, c) = min;
+				z = min;
 			} else if(z >= max) {
-				depthMap.at<double>(r, c) = max;
+				z = max;
 				//qDebug() << z;
 			}
+
+			if(shiftToZero) {
+				z += abs(min) + 1;
+			}
+
+			depthMap.at<float>(r, c) = z;
+
 			/*
 			else {
-				depthMap.at<double>(r, c) =  (z+abs(min))/255.0;//(abs(min)+abs(max));
+				depthMap.at<float>(r, c) =  (z+abs(min))/255.0;//(abs(min)+abs(max));
 
-				qDebug() <<r <<c << ":"<< z << "->" << depthMap.at<double>(r, c);
+				qDebug() <<r <<c << ":"<< z << "->" << depthMap.at<float>(r, c);
 			}
 			*/
 
@@ -290,7 +297,7 @@ void DepthMap::computeMinMax() {
 
 	for (int r = 0; r < depthMap.rows; r++) {
 		for (int c = 0; c < depthMap.cols; c++) {
-				double z = depthMap.at<double>(r, c);
+				float z = depthMap.at<float>(r, c);
 
 				if( z > _max) {
 					_max = z;

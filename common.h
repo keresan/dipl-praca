@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QTime>
 #include <QCoreApplication>
+#include <QDebug>
 
 #include <opencv2/opencv.hpp>
 
@@ -25,6 +26,15 @@ public:
     static void printMatrix(const Matrix &m);
     static void delay(int msec);
 
+	//setings
+
+	static const cv::Point3d averageFaceTL, averageFaceBR;
+	static const cv::Point2d depthMapTL, depthMapBR;
+	static const int depthMapPixelsX, depthMapPixelsY;
+
+
+
+
     /*
     static void printMatrix(CvMat *m);
 
@@ -38,7 +48,6 @@ public:
     static Matrix loadMatrix(const QString &path);
     */
 };
-
 
 double euclideanDistance(const cv::Point3d &p1, const cv::Point3d &p2);
 double euclideanDistance(const cv::Point &p1, const cv::Point &p2);

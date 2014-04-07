@@ -65,7 +65,7 @@ public:
 	Mesh crop(cv::Point3d center, int deltaPX, int deltaMX, int deltaPY, int deltaMY);
 	Mesh crop(cv::Point3d topLeft, cv::Point3d bottomRight);
 
-	void  cropMe(cv::Point3d topLeft, cv::Point3d bottomRight);
+	void  cropMe(cv::Point2d topLeft, cv::Point2d bottomRight);
 
     Mesh selectGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY);
     Mesh zLevelSelect(double zValue);

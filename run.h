@@ -37,6 +37,10 @@ public:
 
 	void eigenface();
 
+	void eigenface_pca();
+
+	void loadImages();
+
 
 
     GLWidget *window;

@@ -15,22 +15,22 @@ int FaceAligner::align(Mesh &face, Mesh &modelFace, int maxIterations, int tresh
 	Mesh bpModelFace(modelFace);
 
 	//pre-align
-	findBestStartingPosition(face, bpModelFace,30,30,10);
+	findBestStartingPosition(face, bpModelFace,40,40,10);
 
-	//qDebug() << "findBestStartingPosition: "<< myTimer.elapsed() << "ms";
-	//myTimer.restart();
+	qDebug() << "findBestStartingPosition: "<< myTimer.elapsed() << "ms";
+	myTimer.restart();
 
 	//compute align
 	int result = computeAlign(face,bpModelFace, maxIterations, treshold);
 	//qDebug() << "vypocet zarovnania: "<< myTimer.elapsed() << "ms";
-	myTimer.restart();
-	qDebug() << "pocet iteracii:" << result << "(max:" << maxIterations << ")";
 
+	qDebug() << "pocet iteracii:" << result << "(max:" << maxIterations << ")";
+	myTimer.restart();
 	//transform
 	alignFaceFast(face);
 
-	//qDebug() << "zarovnanie: "<< myTimer.elapsed() << "ms";
-	//myTimer.restart();
+	qDebug() << "zarovnanie: "<< myTimer.elapsed() << "ms";
+	myTimer.restart();
 
 	return result;
 }
@@ -219,6 +219,7 @@ void FaceAligner::findBestStartingPosition(Mesh &face, Mesh &modelFace, int rang
 
 	//move face to best position
 	face.translate(cv::Point3d(-bestPos.x, -bestPos.y,0));
+	qDebug() << "bestPosition:" << bestPos.x << bestPos.y;
 
 	//index->release(); //len pre skusku, asi to vobec nepomaha
 	//delete index;
