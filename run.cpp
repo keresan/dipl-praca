@@ -417,6 +417,7 @@ void Run::createDepthMaps() {
 	faceLabels.append("02463d554.abs"); listOfColors.append(QColor(Qt::blue));
 	faceLabels.append("02463d556.abs"); listOfColors.append(QColor(Qt::cyan));
 
+
 	for(int i =0; i < faceLabels.count(); i++) {
 
 		Mesh *face = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/"+faceLabels.at(i), true);
@@ -427,8 +428,8 @@ void Run::createDepthMaps() {
 		aligner.align(*face, *modelFace,100,30);
 
 		//useknutie nepotrebnych casti - len kvoli zrychleniu vytvorenia depthmapy
-		cv::Point2d tl(Common::depthMapTL.x-1, Common::depthMapTL.y+1);
-		cv::Point2d br(Common::depthMapBR.x+1, Common::depthMapBR.y-1);
+		cv::Point2d tl(Common::depthMapTL.x-2, Common::depthMapTL.y+2);
+		cv::Point2d br(Common::depthMapBR.x+2, Common::depthMapBR.y-2);
 		face->cropMe(tl, br);
 
 		qDebug() << "zarovnanie a orezanie tvare: "<< i << ":" << myTimer.elapsed() << "ms";
@@ -442,17 +443,20 @@ void Run::createDepthMaps() {
 		cv::normalize(map.depthMap,dst,0,255,cv::NORM_MINMAX, CV_8UC1);
 		cv::imwrite( "/Users/martin/Documents/[]sklad/frgc_data/depthmap/"+face->name.toStdString()+"_3.jpg", dst );
 
+		cv::imshow(face->name.toStdString(),dst);
+
 		qDebug() << "vytvorenie depthmapy"<< i << ":" << myTimer.elapsed() << "ms";
 
 		images.append(map.depthMap.clone());
 
 		//save as Mat object
+
 		QString name = faceLabels.at(i);
 		name.chop(4);
 		cv::FileStorage storage("/Users/martin/Documents/[]sklad/frgc_data/depthmap/"+name.toStdString()+"_dm.xml", cv::FileStorage::WRITE);
 		storage << "depthmap" << map.depthMap;
-
 		storage.release();
+
 
 		double min, max;
 		cv::minMaxLoc(map.depthMap, &min, &max);
@@ -622,8 +626,8 @@ void Run::loadImages() {
 	faceLabels.append("02463d546");
 	faceLabels.append("02463d550");
 	faceLabels.append("02463d552");
-	//faces.append("02463d554.abs");
-	//faces.append("02463d556.abs");
+	faceLabels.append("02463d554");
+	faceLabels.append("02463d556");
 
 	for(int i =0; i < faceLabels.count(); i++) {
 
@@ -633,6 +637,12 @@ void Run::loadImages() {
 		storage["depthmap"] >> depthMap;
 
 		cv::imshow(faceLabels.at(i).toStdString(), EigenFace::norm_0_255(depthMap));
+
+		cv::Mat crop = depthMap(cv::Rect(20,50,240,200));
+		cv::imshow(faceLabels.at(i).toStdString()+"_crop", EigenFace::norm_0_255(crop));
+
+		cv::Mat eye = depthMap(cv::Rect(20,50,100,60));
+		cv::imshow(faceLabels.at(i).toStdString()+"eye", EigenFace::norm_0_255(eye));
 
 		double min, max;
 		cv::minMaxLoc(depthMap, &min, &max);

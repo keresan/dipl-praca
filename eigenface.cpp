@@ -6,18 +6,36 @@ EigenFace::EigenFace() {
 
 void EigenFace::pcaTransformation(QVector<cv::Mat> &images, QStringList &labels) {
 
+	QVector<cv::Mat> testVector;
+	testVector.append(images[images.size() - 1]);
+	cv::Mat testImage = toRowMatrix(testVector, CV_32FC1);
+	images.pop_back();
+
+
+
+
 	cv::Mat data = toRowMatrix(images, CV_32FC1);
 	cv::PCA pca(data, cv::noArray(), CV_PCA_DATA_AS_ROW);
 
-	cv::Mat meanFromPca = pca.mean.clone();
-	cv::Mat eigenvectors = pca.eigenvectors.clone();
+	//cv::Mat meanFromPca = pca.mean.clone();
+	//cv::Mat eigenvectors = pca.eigenvectors.clone();
 
+	cv::imshow("original", norm_0_255(testImage.reshape(1, images[0].rows)));
+	cv::Mat components,backProjection;
+	components = pca.project(testImage);
+
+	backProjection = pca.backProject(components);
+
+	cv::imshow("back projection", norm_0_255(backProjection.reshape(1, images[0].rows)));
+
+	/*
 	cv::imshow("meanFromPca", EigenFace::norm_0_255(meanFromPca.reshape(1, images[0].rows)));
 
 	for(int i = 0; i < images.count(); i++) {
 		cv::Mat grayscale = EigenFace::norm_0_255(eigenvectors.row(i).reshape(1, images[0].rows));
 		imshow(labels.at(i).toStdString(), grayscale);
 	}
+	*/
 
 	//compute distance
 	/*
