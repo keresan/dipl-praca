@@ -32,14 +32,14 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
 	//testToRun.showLandmarks();
 
-	testToRun.divideFace();
+	//testToRun.divideFace();
 
 
 
 	//testToRun.init();
 
 	//testToRun.processFace();
-	//testToRun.compareFaces();
+	testToRun.compareFaces();
 
 	//testToRun.eigenface();
 	//testToRun.eigenface_pca();
