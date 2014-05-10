@@ -6,6 +6,7 @@
 #include <QTime>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
 
 #include <opencv2/opencv.hpp>
 
@@ -31,6 +32,40 @@ public:
 	static const cv::Point3d averageFaceTL, averageFaceBR;
 	static const cv::Point2d depthMapTL, depthMapBR;
 	static const int depthMapPixelsX, depthMapPixelsY;
+	static const QString pathToWarehouse;
+	static const QString pathToDepthmapF2003,pathToFall2003,pathToSpring2003, pathToDepthmapS2003, pathToDepthmapS2004,pathToSpring2004;
+
+	static const QString pathToSubspacesDir;
+
+
+
+	static const int alignerFindBestStartPosRangeX,alignerFindBestStartPosRangeY, alignerFindBestStartPosStep;
+	static const int alignerConvergentTreshold, alignerMaxIterations;
+	static const int alignerDistanceTresholdToContinue;
+
+	static const cv::Rect faceCropArea;
+	static const int detectEyeAreaWidth, detectEyeAreaHalfHeight;
+	static const int detectNoseCornersAreaHalfWidth, detectNoseCornersAreaHalfHeight;
+	static const int detectNoseBottomAreaHalfWidth, detectNoseBottomAreaHeight;
+	static const int detectNoseRootAreaHalfWidth;
+	static const int detectNoseRootMinDistanceFromTip;
+
+
+
+	static const QString lmPathToLmDir, lmAvgLmLabel, lmSavePosLabel, lmSaveIsLabel;
+
+	static const QString eigenMethot1Label,eigenMethot2Label,eigenMethot3Label;
+	static const QString eigenEigenvectorLabel, eigenEigenvaluesLabel, eigenMeanLabel, eigenArraySizeLabel;
+
+	static const double detectHightPassFilterValue;
+
+	static const QString depthmapIterationsCountLabel, depthmapDistanceFromModelLabel, depthmapDepthmapLabel;
+
+	static cv::Mat norm_0_255(cv::InputArray _src);
+
+	static void loadFilesPathFromDir(QString pathToDir, QStringList &list, const QStringList &filters = QStringList("*xml"));
+	static void loadDepthMap(QString path, cv::Mat &depthMap,  double &distance, int &iterations);
+	static void processLoadedMap(cv::Mat &depthMap);
 
 
 

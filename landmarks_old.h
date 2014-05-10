@@ -8,14 +8,14 @@
 
 #include "common.h"
 
-class Landmarks
-{
+class LandmarksOld {
 public:
 
-    QVector<cv::Point3d> _points;
-    Landmarks() : _points(QVector<cv::Point3d>(8, cv::Point3d(-9999,-9999,-9999))), _color(Qt::yellow) { }
 
-    enum LandmarkNames {
+	QVector<cv::Point3d> points;
+	LandmarksOld() : points(QVector<cv::Point3d>(8, cv::Point3d(-9999,-9999,-9999))), _color(Qt::yellow) { }
+
+	enum LandmarkNamesOld {
         RightOuterEye = 0,
         RightInnerEye = 1,
         LeftInnerEye = 2,
@@ -27,15 +27,15 @@ public:
     };
 
     QColor color();
-    cv::Point3d pos(LandmarkNames name);
+	cv::Point3d pos(LandmarkNamesOld name);
     cv::Point3d pos(unsigned int name);
 
-    bool is(LandmarkNames name);
+	bool is(LandmarkNamesOld name);
     bool is(unsigned int name);
 
     void setColor(QColor color);
 
-    void set(LandmarkNames name, cv::Point3d pos);
+	void set(LandmarkNamesOld name, cv::Point3d pos);
     void set(unsigned int name, cv::Point3d pos);
 
     QVector<cv::Point3d>* getLandmarks();

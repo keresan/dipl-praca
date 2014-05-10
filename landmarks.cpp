@@ -1,35 +1,66 @@
 #include "landmarks.h"
 
-#include <QDebug>
-#include <QFile>
-#include <QTextStream>
-
-
-
-
-void Landmarks::setColor(QColor color) {_color = color;}
-void Landmarks::set(LandmarkNames name, cv::Point3d pos) { _points[name] = pos;}
-
-
-QColor Landmarks::color() { return _color;}
-bool Landmarks::is(LandmarkNames name) {return _points[name] != cv::Point3d(-9999,-9999,-9999); }
-QVector<cv::Point3d>* Landmarks::getLandmarks() { return &_points;}
-cv::Point3d Landmarks::pos(LandmarkNames name) {return _points[name];}
-
-
-bool Landmarks::is(unsigned int name) {
-    assert(name < _points.count());
-
-    return _points[name] != cv::Point3d(-9999,-9999,-9999);
-
+Landmarks::Landmarks(VectorOfLandmarks landmarks) {
+	this->_landmarks = landmarks;
 }
 
-void Landmarks::set(unsigned int name, cv::Point3d pos) {
-    assert(name < _points.count());
-    _points[name] = pos;
+Landmarks::Landmarks(QString fileName, QString loadPath) {
+	load(fileName,loadPath);
 }
 
-cv::Point3d Landmarks::pos(unsigned int name) {
-    assert(name < _points.count());
-    return _points[name];
+cv::Point Landmarks::pos(Landmarks::LandmarkNames name) {
+	return _landmarks[name].first;
+}
+
+bool Landmarks::is(Landmarks::LandmarkNames name) {
+	return _landmarks[name].second;
+}
+
+void Landmarks::set(Landmarks::LandmarkNames name, cv::Point pos) {
+	_landmarks[name].first = pos;
+	_landmarks[name].second = true;
+}
+
+void Landmarks::discard(Landmarks::LandmarkNames name) {
+	_landmarks[name].second = false;
+}
+
+
+VectorOfLandmarks Landmarks::getLandmarks() {
+	return _landmarks;
+}
+
+void Landmarks::save(QString fileName, QString savePath) {
+	QDir dir(savePath);
+	QString path = dir.absoluteFilePath(fileName);
+
+	cv::FileStorage storage(path.toStdString(), cv::FileStorage::WRITE);
+
+	storage << Common::eigenArraySizeLabel.toStdString() << _landmarks.size();
+
+	for(int i =0; i < _landmarks.size(); i++) {
+		storage << Common::lmSavePosLabel.toStdString()+std::to_string(i) << _landmarks.at(i).first;
+		storage << Common::lmSaveIsLabel.toStdString()+std::to_string(i) << _landmarks.at(i).second;
+	}
+	storage.release();
+}
+
+void Landmarks::load(QString fileName, QString loadPath) {
+	QDir dir(loadPath);
+	QString path = dir.absoluteFilePath(fileName);
+
+	cv::FileStorage storage(path.toStdString(), cv::FileStorage::READ);
+
+	int size;
+	storage[Common::eigenArraySizeLabel.toStdString()] >> size;
+
+	for(int i = 0; i < size; i++) {
+		cv::Point point;
+		bool isEntered;
+		storage[Common::lmSavePosLabel.toStdString()+std::to_string(i)] >> point;
+		storage[Common::lmSaveIsLabel.toStdString()+std::to_string(i)] >> isEntered;
+		_landmarks.append(qMakePair(point,isEntered));
+	}
+
+	storage.release();
 }

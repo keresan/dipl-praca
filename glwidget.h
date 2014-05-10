@@ -34,7 +34,7 @@ public:
     QSize minimumSizeHint() const;
 
     void addFace(const Mesh *f) { faces << f; updateGL(); }
-    void addLandmarks(Landmarks *landmarks) { this->landmarks << landmarks; }
+	void addLandmarks(Landmarks *landmarks) { this->landmarks << landmarks; }
     void addCurve(QVector<cv::Point3d> &curve) { curves << curve; }
     void deleteAll();
     void clearAll();
@@ -55,7 +55,7 @@ protected:
 
 private:
     QVector<const Mesh*> faces;
-    QVector<Landmarks*> landmarks;
+	QVector<Landmarks*> landmarks;
     QVector<QVector<cv::Point3d> > curves;
 
     void  line(int i, int j);

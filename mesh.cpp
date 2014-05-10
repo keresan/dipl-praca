@@ -748,7 +748,6 @@ void Mesh::averageMesh(Mesh &src, Mesh &dst, int dstWeight) {
 
 Mesh Mesh::crop(cv::Point3d topLeft, cv::Point3d bottomRight) {
 	VectorOfPoints newPoints;
-	VectorOfColors newColors;
 
 	for (int r = 0; r < pointsMat.rows; r++) {
 		 cv::Point3d p(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2));
@@ -759,7 +758,6 @@ Mesh Mesh::crop(cv::Point3d topLeft, cv::Point3d bottomRight) {
 		 if(p.x > bottomRight.x || p.y < bottomRight.y) {
 			 continue;
 		 }
-
 		 newPoints.append(p);
 	 }
 	 Mesh result = Mesh::fromPointcloud(newPoints, false, true);
@@ -768,7 +766,6 @@ Mesh Mesh::crop(cv::Point3d topLeft, cv::Point3d bottomRight) {
 
 void Mesh::cropMe(cv::Point2d topLeft, cv::Point2d bottomRight) {
 	VectorOfPoints newPoints;
-	VectorOfColors newColors;
 	for (int r = 0; r < pointsMat.rows; r++) {
 		 cv::Point3d p(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2));
 
@@ -778,14 +775,11 @@ void Mesh::cropMe(cv::Point2d topLeft, cv::Point2d bottomRight) {
 		 if(p.x > bottomRight.x || p.y < bottomRight.y) {
 			 continue;
 		 }
-
+		//point is not OUT, so add it to new mesh
 		newPoints.append(p);
-
 	 }
 	loadFromPointcloud(newPoints,false, true);
-
 }
-
 
 Mesh Mesh::crop(cv::Point3d center, int deltaPX, int deltaMX, int deltaPY, int deltaMY) {
     VectorOfPoints newPoints;

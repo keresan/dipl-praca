@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
+#include <QDir>
 
 #include <iostream>
 #include <assert.h>
@@ -12,16 +13,66 @@
 const cv::Point3d Common::averageFaceTL = cv::Point3d(-50,70,0);
 const cv::Point3d Common::averageFaceBR = cv::Point3d(50,-10,0);
 
+/*
 const cv::Point2d Common::depthMapTL = cv::Point2d(-60,90);
 const cv::Point2d Common::depthMapBR = cv::Point2d(60,-40);
 const int Common::depthMapPixelsX = 120*2;
 const int Common::depthMapPixelsY = 140*2;
-/*
-const cv::Point2d Common::depthMapTL = cv::Point2d(-70,90);
-const cv::Point2d Common::depthMapBR = cv::Point2d(70,-70);
-const int Common::depthMapPixelsX = 140*2;
-const int Common::depthMapPixelsY = 160*2;
 */
+
+const cv::Point2d Common::depthMapTL = cv::Point2d(-80,100);
+const cv::Point2d Common::depthMapBR = cv::Point2d(80,-70);
+const int Common::depthMapPixelsX = 160*2;
+const int Common::depthMapPixelsY = 170*2;
+const cv::Rect Common::faceCropArea = cv::Rect(50,30,220,240);
+
+const QString Common::pathToWarehouse = "/Users/martin/Documents/[]sklad/frgc_data/";
+const QString Common::pathToSubspacesDir = Common::pathToWarehouse + "subspaces/";
+const QString Common::pathToDepthmapF2003 = Common::pathToWarehouse + "depthmap_f2003/";
+const QString Common::pathToFall2003 = Common::pathToWarehouse + "Fall2003range/";
+const QString Common::pathToDepthmapS2003 = Common::pathToWarehouse + "depthmap_s2003/";
+const QString Common::pathToSpring2003 = "/Volumes/data/sklad/FRGC_databaza/Spring2003range/";
+const QString Common::pathToDepthmapS2004 = Common::pathToWarehouse + "depthmap_s2004/";
+const QString Common::pathToSpring2004 = "/Volumes/data/sklad/FRGC_databaza/Spring2004range/";
+
+const int Common::alignerFindBestStartPosRangeX = 50;
+const int Common::alignerFindBestStartPosRangeY = 80;
+const int Common::alignerFindBestStartPosStep = 10;
+const int Common::alignerConvergentTreshold = 10;
+const int Common::alignerMaxIterations = 150;
+const int Common::alignerDistanceTresholdToContinue = 8000;
+
+const QString Common::depthmapIterationsCountLabel = "iterations_to_align";
+const QString Common::depthmapDistanceFromModelLabel = "distance_from_model";
+const QString Common::depthmapDepthmapLabel = "depthamp";
+
+const QString Common::lmPathToLmDir = Common::pathToWarehouse + "landmarks/";
+const QString Common::lmAvgLmLabel = "average-landmarks.xml";
+const QString Common::lmSavePosLabel = "landmark";
+const QString Common::lmSaveIsLabel = "isEntered";
+
+
+const QString Common::eigenMethot1Label = "method-1";
+const QString Common::eigenMethot2Label = "method-2";
+const QString Common::eigenMethot3Label = "method-3";
+const QString Common::eigenEigenvectorLabel = "eigenvectors";
+const QString Common::eigenEigenvaluesLabel = "eigenvalues";
+const QString Common::eigenMeanLabel = "mean";
+const QString Common::eigenArraySizeLabel = "array-size";
+
+const int Common::detectEyeAreaHalfHeight = 40;
+const int Common::detectEyeAreaWidth = 60;
+const int Common::detectNoseCornersAreaHalfWidth = 70;
+const int Common::detectNoseCornersAreaHalfHeight = 20; //pri vacsej oblasti uz zacinaju zasahovat fuzy
+const int Common::detectNoseBottomAreaHalfWidth = 20;
+const int Common::detectNoseBottomAreaHeight = 40;
+const int Common::detectNoseRootAreaHalfWidth = 30;
+const int Common::detectNoseRootMinDistanceFromTip = 50;
+const double Common::detectHightPassFilterValue = 4.0;
+
+
+
+
 /*
 void Common::printMatrix(CvMat *m)
 {
@@ -56,6 +107,52 @@ void Common::delay(int msec) {
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
+void Common::loadDepthMap(QString path, cv::Mat &depthMap, double &distance, int &iterations) {
+	cv::FileStorage storage(path.toStdString(), cv::FileStorage::READ);
+	storage[Common::depthmapDepthmapLabel.toStdString()] >> depthMap;
+
+	storage[Common::depthmapDistanceFromModelLabel.toStdString()] >> distance;
+	storage[Common::depthmapIterationsCountLabel.toStdString()] >> iterations;
+
+
+
+
+	processLoadedMap(depthMap);
+}
+
+void Common::processLoadedMap(cv::Mat &depthMap) {
+	depthMap = depthMap(Common::faceCropArea);
+
+	cv::medianBlur(depthMap,depthMap,5);
+
+}
+
+void Common::loadFilesPathFromDir(QString pathToDir, QStringList &list, const QStringList &filters) {
+	qDebug() << pathToDir;
+
+	QDir dir;
+	dir.setPath(pathToDir);
+	dir.setFilter(QDir::Files | QDir::NoSymLinks);
+	dir.setNameFilters(filters);
+	list = dir.entryList();
+	//get absolute path
+	for(int i = 0; i < list.size(); i++ ) {
+		list[i] = dir.absoluteFilePath(list.at(i));
+
+		/*
+		QString absolutePath = dir.absoluteFilePath(list.at(i));
+		QString fileBaseName = QFileInfo(absolutePath).baseName();
+		QString fileExtension = QFileInfo(absolutePath).suffix();
+		QString fileName = QFileInfo(absolutePath).fileName();
+
+		qDebug() << list.at(i)
+				 << "->" << absolutePath
+				 << "->" << fileBaseName
+				 << "+" << fileExtension
+				 << "=" << fileName;
+		*/
+	}
+}
 /*
 bool Common::matrixContainsNan(const Matrix &m)
 {
@@ -298,5 +395,23 @@ QVector<cv::Vec3i> Common::delaunayTriangulation(QVector<cv::Point2d> &points) {
     }
 
     return result;
+}
+
+cv::Mat Common::norm_0_255(cv::InputArray _src) {
+	cv::Mat src = _src.getMat();
+	// Create and return normalized image:
+	cv::Mat dst;
+	switch(src.channels()) {
+	case 1:
+		cv::normalize(_src, dst, 0, 255, cv::NORM_MINMAX, CV_8UC1);
+		break;
+	case 3:
+		cv::normalize(_src, dst, 0, 255, cv::NORM_MINMAX, CV_8UC3);
+		break;
+	default:
+		src.copyTo(dst);
+		break;
+	}
+	return dst;
 }
 

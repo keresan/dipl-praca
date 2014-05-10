@@ -36,8 +36,6 @@ void AverageFace::process(QString resultFilePath) {
 
     foreach (QString actualFile, _listOfFiles) {
 
-
-
         qDebug() << _weight << ": actual file:" << actualFile;
         QVector<cv::Point3d> actualVector;
         Mesh actualModel;

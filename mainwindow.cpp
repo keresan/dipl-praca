@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
 	//testToRun.normalizeAverageFace();
 
-	//testToRun.test_alignFace();
+	//testToRun.alignFace();
 
 	//testToRun.test_alignFace2();
 
@@ -26,9 +26,20 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
 	//testToRun.test_depth_select();
 
-	testToRun.createDepthMaps();
+	//testToRun.createDepthMaps();
 
-	//testToRun.loadImages();
+	//testToRun.loadDeptmap();
+
+	//testToRun.showLandmarks();
+
+	testToRun.divideFace();
+
+
+
+	//testToRun.init();
+
+	//testToRun.processFace();
+	//testToRun.compareFaces();
 
 	//testToRun.eigenface();
 	//testToRun.eigenface_pca();

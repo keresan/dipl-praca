@@ -6,6 +6,11 @@
 #include "depthmap.h"
 #include "glwidget.h"
 #include "eigenface.h"
+#include "landmarkdetector.h"
+#include "landmarks.h"
+#include "facedivider.h"
+#include "controller.h"
+
 #include <QTime>
 
 /**
@@ -18,7 +23,7 @@ public:
     void test_selectGrid();
 
     void test_show();
-    void test_alignFace();
+	void alignFace();
 	void test_alignFace2();
 
 	void test_crop();
@@ -35,12 +40,21 @@ public:
 	void createAverageFace();
 	void normalizeAverageFace();
 
-	void eigenface();
+	//void eigenface();
+	//void eigenface_pca();
 
-	void eigenface_pca();
+	void loadDeptmap();
 
-	void loadImages();
+	void showLandmarks();
 
+	void divideFace();
+
+
+	void compareFaces();
+
+	void init();
+
+	void processFace();
 
 
     GLWidget *window;

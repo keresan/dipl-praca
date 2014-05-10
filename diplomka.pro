@@ -43,7 +43,6 @@ cache()
 SOURCES += main.cpp\
         mainwindow.cpp \
     mesh.cpp \
-    landmarks.cpp \
     landmarkdetector.cpp \
     glwidget.cpp \
     facealigner.cpp \
@@ -51,11 +50,15 @@ SOURCES += main.cpp\
     averageface.cpp \
     run.cpp \
     depthmap.cpp \
-    eigenface.cpp
+    eigenface.cpp \
+    facedivider.cpp \
+    landmarks_old.cpp \
+    landmarks.cpp \
+    controller.cpp \
+    comparator.cpp
 
 HEADERS  += mainwindow.h \
     mesh.h \
-    landmarks.h \
     landmarkdetector.h \
     glwidget.h \
     facealigner.h \
@@ -63,7 +66,12 @@ HEADERS  += mainwindow.h \
     averageface.h \
     run.h \
     depthmap.h \
-    eigenface.h
+    eigenface.h \
+    facedivider.h \
+    landmarks_old.h \
+    landmarks.h \
+    controller.h \
+    comparator.h
 
 
 #FORMS    += mainwindow.ui

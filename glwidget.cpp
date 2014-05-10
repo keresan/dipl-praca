@@ -165,6 +165,7 @@ void GLWidget::paintGL() {
     }
 
 	//paint landmarks
+	/* landmark uz je 2d
     foreach(Landmarks *l, landmarks) {
         glDisable(GL_LIGHTING);
         glDisable(GL_LIGHT0);
@@ -193,7 +194,7 @@ void GLWidget::paintGL() {
 
         glEnd();
     }
-
+	*/
 
 	//paint curves
 	if (curves.count() > 0) {

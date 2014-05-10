@@ -2,13 +2,42 @@
 #define LANDMARKDETECTOR_H
 
 #include "common.h"
+#include "landmarks.h"
+#include "eigenface.h"
 
-class LandmarkDetector
-{
+class LandmarkDetector {
 public:
-    LandmarkDetector();
+	LandmarkDetector(cv::Mat depthMap);
 
-    cv::Point3d detectNoseTip();
+	void detectNoseTip();
+	void detectNoseRoot();
+	void detectNoseCorners();
+	void detectInnerEyeCorners();
+	void detectNoseBottom();
+
+	bool detectAll(Landmarks &landmarks);
+
+
+	cv::Point noseTip;
+	cv::Point noseRoot;
+	cv::Point eyeInnerCornerLeft;
+	cv::Point eyeInnerCornerRight;
+	cv::Point noseCornerLeft;
+	cv::Point noseCornerRight;
+	cv::Point noseBottom;
+
+private:
+	cv::Mat _depthMap;
+	/**
+	* od pozicie nosa sa urcia dalsie pozicie.
+	*
+	*/
+
+
+	void derivateVector(std::vector<float> &src, std::vector<float> &dst);
+	void averageBlur(std::vector<float> &src, std::vector<float> &dst, int ksize);
+
+
 };
 
 #endif // LANDMARKDETECTOR_H
