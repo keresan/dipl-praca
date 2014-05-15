@@ -15,6 +15,8 @@ public:
 
     cv::Mat depthMap;
 
+
+
 	bool mapPointToIndecies(cv::Point2d p, int &row, int &col);
 	bool mapIndeciesToPoint(int row, int col, cv::Point2f &p);
 

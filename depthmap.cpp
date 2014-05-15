@@ -2,17 +2,16 @@
 
 DepthMap::DepthMap(Mesh &face, cv::Point2d topLeft, cv::Point2d bottomRight, int pixelsX, int piselxY) {
 
-	depthMap = cv::Mat(piselxY,pixelsX,CV_32F, cv::Scalar(-999.0));
+	depthMap = cv::Mat(piselxY,pixelsX,CV_32F, cv::Scalar(Common::depthmapInitValue));
 	this->topLeft = topLeft;
 	this->bottomRight = bottomRight;
 
 	createDepthMap(face);
 
-	computeMinMax();
+	//computeMinMax();
 	//qDebug() << _min << _max;
 
-	policing(_min,_max);
-
+	//policing(_min,_max);
 
 }
 
@@ -292,9 +291,11 @@ void DepthMap::policing(float min, float max, bool shiftToZero) {
 				//qDebug() << z;
 			}
 
+			/* nebecpecne !!!! potom tvar od tej istej osoby moze mat ine Z suradnice - zle sa porovna !!
 			if(shiftToZero) {
 				z += abs(min) + 1;
 			}
+			*/
 
 			depthMap.at<float>(r, c) = z;
 
@@ -313,9 +314,9 @@ void DepthMap::policing(float min, float max, bool shiftToZero) {
 
 void DepthMap::computeMinMax() {
 
-	//nemoze byt priamo na urcity prvok, pretoze ten moze obsahovat -999
-	_min = 100;
-	_max = -100;
+	//nemoze byt priamo na urcity prvok, pretoze ten moze obsahovat Common::depthmapInitValue
+	_min = 1000;
+	_max = -1000;
 
 
 	for (int r = 0; r < depthMap.rows; r++) {
@@ -325,7 +326,7 @@ void DepthMap::computeMinMax() {
 				if( z > _max) {
 					_max = z;
 				}
-				if(z < _min && z != -999.0) {
+				if(z < _min && z > Common::depthmapInitValue) {
 					_min = z;
 				}
 
@@ -359,4 +360,3 @@ void DepthMap::showAllLandmarks(const cv::Mat &depthMap, Landmarks &landmarks, Q
 	}
 
 }
-

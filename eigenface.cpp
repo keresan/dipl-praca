@@ -173,7 +173,7 @@ void EigenFace::saveSubspaces(QString fileName, QString savePath) {
 	cv::FileStorage storage(path.toStdString()+".xml",
 							cv::FileStorage::WRITE);
 
-	storage << Common::eigenArraySizeLabel.toStdString() << _pcaSubspaces.size();
+	storage << Common::vectorSizeLabel.toStdString() << _pcaSubspaces.size();
 	for(int i=0 ; i<_pcaSubspaces.size(); i++) {
 		storage << Common::eigenEigenvaluesLabel.toStdString()+ std::to_string(i) << _pcaSubspaces[i].eigenvalues;
 		storage << Common::eigenEigenvectorLabel.toStdString()+ std::to_string(i) << _pcaSubspaces[i].eigenvectors;
@@ -190,7 +190,7 @@ void EigenFace::loadSubspaces(QString fileName, QString loadPath) {
 							cv::FileStorage::READ);
 
 	int n;
-	storage[Common::eigenArraySizeLabel.toStdString()] >> n;
+	storage[Common::vectorSizeLabel.toStdString()] >> n;
 
 
 	for(int i= 0; i < n; i++) {

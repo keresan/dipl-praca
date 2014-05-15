@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
 	this->setCentralWidget(testToRun.window);
 
-	// !!! testToRun.createAverageFace();
+	//testToRun.createAverageFace();
 
 	//testToRun.normalizeAverageFace();
 
@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 	//testToRun.test_depth_select();
 
 	//testToRun.createDepthMaps();
+	//testToRun.detectWrongDepthmaps();
 
 	//testToRun.loadDeptmap();
 
@@ -34,15 +35,16 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
 	//testToRun.divideFace();
 
-
-
 	//testToRun.init();
 
 	//testToRun.processFace();
-	testToRun.compareFaces();
+	//testToRun.compareFaces();
+
+	testToRun.histogram();
 
 	//testToRun.eigenface();
 	//testToRun.eigenface_pca();
+
 }
 
 MainWindow::~MainWindow() {

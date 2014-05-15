@@ -15,16 +15,19 @@ int FaceAligner::align(Mesh &face, Mesh &modelFace, int maxIterations, int tresh
 	Mesh bpModelFace(modelFace);
 
 	//pre-align
+
 	findBestStartingPosition(face,
 							 bpModelFace,
-							 Common::alignerFindBestStartPosRangeX,
-							 Common::alignerFindBestStartPosRangeY,
+							 Common::alignerFindBestStartHalfRangeX,
+							 Common::alignerFindBestStartHalfRangeY,
 							 Common::alignerFindBestStartPosStep,
 							 test
 							 );
 
 	//compute align
+
 	int result = computeAlign(face,bpModelFace, maxIterations, treshold,test);
+
 	if(result > maxIterations) {
 		qDebug() << "prekroceny limit zarovnania: " << face.name;
 	}
@@ -33,7 +36,7 @@ int FaceAligner::align(Mesh &face, Mesh &modelFace, int maxIterations, int tresh
 	}
 	//qDebug() << "max iterations:" << maxIterations <<", treshold:" << treshold;
 	//qDebug() << "pocet iteracii:" << result << "(max:" << maxIterations << ")";
-	myTimer.restart();
+
 	//transform
 	alignFaceFast(face);
 
@@ -64,19 +67,20 @@ int FaceAligner::computeAlign(Mesh &still, Mesh &moving, int maxIterations, int 
 	still.pointsMat.convertTo(features, CV_32F);
     index.build(features, cv::flann::KMeansIndexParams());
 
-	for(iterations = 0; iterations < maxIterations; iterations++) {
-        float distance = 0.0f;
-        Mesh closedPoints = moving.getClosedPoints(still, index, &distance);
+	float distance = 0.0f;
+	for(iterations = 0; iterations < maxIterations; iterations++) {  
+
+		Mesh closedPoints = moving.getClosedPoints(still, index, &distance);
 
 		if(test) {
 			qDebug() << iterations <<":distance: " << distance;
 		}
 		if(abs(lastDistance - distance) <= threshold) {
 			if( distance > Common::alignerDistanceTresholdToContinue && iterations < maxIterations ) {
-				qDebug() << iterations <<":distance: " << distance;
-				qDebug() << "turn back";
+				//qDebug() << iterations <<":distance: " << distance;
+				//qDebug() << "turn back";
 			} else {
-				finalDistance = distance;
+
 				break;
 			}
         }
@@ -94,6 +98,7 @@ int FaceAligner::computeAlign(Mesh &still, Mesh &moving, int maxIterations, int 
 		//qDebug() << "last distance: " << lastDistance;
     }
 
+	finalDistance = distance;
 	finalIterations = iterations;
 	return iterations;
 }
@@ -193,10 +198,8 @@ void FaceAligner::findBestStartingPosition(Mesh &face, Mesh &modelFace, int rang
 	cv::Point2d  bestPos;
 
 	//set modelFace in front of face
-	bpModelFace.translate(cv::Point3d(0,0,100));
+	bpModelFace.translate(cv::Point3d(0,0,Common::alignedFindBestStartPosZShift));
 
-//	myTimer2.start();
-//	myTimer.restart();
 	for(int x = -rangeX; x <= rangeX; x +=step) {
 		for(int y= rangeY; y >= -rangeY; y -=step) {
 			//count delta
@@ -227,8 +230,6 @@ void FaceAligner::findBestStartingPosition(Mesh &face, Mesh &modelFace, int rang
 
 		}
 	}
-	//qDebug() << "koniec foru"<< myTimer.elapsed() << "ms";
-	//myTimer.restart();
 
 	//move model back to 0:0
 	//moving.translate(cv::Point3d(-rangeX, rangeY,-100));

@@ -17,6 +17,7 @@ public:
 
 	bool detectAll(Landmarks &landmarks);
 
+	static bool checkLandmarks(Landmarks &srcLandmarks, Landmarks &refLandmarks);
 
 	cv::Point noseTip;
 	cv::Point noseRoot;

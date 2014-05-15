@@ -47,15 +47,9 @@ Mesh::Mesh(const QString path, bool centralizeLoadedMesh) {
 		assert(false);
 	}
 
-	//parse name
-	QString editPath(path);
-	int slashPos = editPath.lastIndexOf('/');
-	if(slashPos >= 0) {
-		editPath = editPath.mid(slashPos+1);
-	}
-	editPath.chop(4);
-	name = editPath;
-
+	//get name
+	QFileInfo fileInfo(path);
+	name = fileInfo.baseName();
 }
 
 Mesh::~Mesh() {

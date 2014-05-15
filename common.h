@@ -35,11 +35,14 @@ public:
 	static const QString pathToWarehouse;
 	static const QString pathToDepthmapF2003,pathToFall2003,pathToSpring2003, pathToDepthmapS2003, pathToDepthmapS2004,pathToSpring2004;
 
-	static const QString pathToSubspacesDir;
+	static const QString pathToSubspacesDir, pathToComResultDir;
+	static const QString pathToAverageFace, pathToAverageDepthmap,pathToAverageLm;
+	static const QString wrongDpSuffixLabel, wrongLmSuffixLabel;
+	static const QString vectorSizeLabel, subVectorSizeLabel;
+	static const int lmDeltaFromAvg;
 
-
-
-	static const int alignerFindBestStartPosRangeX,alignerFindBestStartPosRangeY, alignerFindBestStartPosStep;
+	static const int alignerFindBestStartHalfRangeX,alignerFindBestStartHalfRangeY, alignerFindBestStartPosStep;
+	static const int alignedFindBestStartPosZShift;
 	static const int alignerConvergentTreshold, alignerMaxIterations;
 	static const int alignerDistanceTresholdToContinue;
 
@@ -49,23 +52,43 @@ public:
 	static const int detectNoseBottomAreaHalfWidth, detectNoseBottomAreaHeight;
 	static const int detectNoseRootAreaHalfWidth;
 	static const int detectNoseRootMinDistanceFromTip;
+	static const int detectNoseTipAreaStartY, detectNoseTipAreaHeight;
 
-
+	static const double depthmapInitValue;
 
 	static const QString lmPathToLmDir, lmAvgLmLabel, lmSavePosLabel, lmSaveIsLabel;
 
-	static const QString eigenMethot1Label,eigenMethot2Label,eigenMethot3Label;
-	static const QString eigenEigenvectorLabel, eigenEigenvaluesLabel, eigenMeanLabel, eigenArraySizeLabel;
+	static const QString eigenMethot0Label, eigenMethot1Label,eigenMethot2Label,eigenMethot3Label;
+	static const QString eigenEigenvectorLabel, eigenEigenvaluesLabel, eigenMeanLabel;
 
 	static const double detectHightPassFilterValue;
 
 	static const QString depthmapIterationsCountLabel, depthmapDistanceFromModelLabel, depthmapDepthmapLabel;
 
+	static const QString cmpResultLabel;
+	static const QString cmpResultIdenticMethod0Label, cmpResultDiffMethod0Label;
+	static const QString cmpResultIdenticMethod1Label, cmpResultDiffMethod1Label;
+	static const QString cmpResultIdenticMethod1Label_2, cmpResultDiffMethod1Label_2;
+	static const QString cmpResultIdenticMethod2Label, cmpResultDiffMethod2Label;
+	static const QString cmpResultIdenticMethod3Label, cmpResultDiffMethod3Label;
+
 	static cv::Mat norm_0_255(cv::InputArray _src);
 
 	static void loadFilesPathFromDir(QString pathToDir, QStringList &list, const QStringList &filters = QStringList("*xml"));
-	static void loadDepthMap(QString path, cv::Mat &depthMap,  double &distance, int &iterations);
-	static void processLoadedMap(cv::Mat &depthMap);
+
+	static void loadDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap,  double &distance, int &iterations);
+
+	static void loadDepthmapProcess(QString fileName, QString dirPath, cv::Mat &depthmap, cv::Mat &averageFace,  double &distance, int &iterations);
+	static void saveDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap,  double distance, int iterations);
+
+	static void saveCmpResult(QString fileName, QString dirPath, cv::Mat &resultMatrix);
+	static void loadCmpResult(QString fileName, QString dirPath, cv::Mat &resultMatrix);
+
+	static void processLoadedMap(cv::Mat &depthmap, cv::Mat &averageFace);
+
+	static void replaceInitValues(cv::Mat &depthmap, cv::Mat &src);
+
+	static bool isIdenticalPerson(QString baseName1, QString baseName2);
 
 
 

@@ -5,15 +5,15 @@ FaceDivider::FaceDivider(cv::Mat &depthMap, Landmarks &landmarks, Landmarks &ave
 	this->_depthMap = depthMap;
 	this->_landmarks = landmarks;
 	this->_averageLandmarks = averageLandmarks;
-
-
-
 }
 
 void FaceDivider::divide(DivideMethod method, tFaceAreas &areas) {
 	switch(method) {
-		case toHalfByNoseBottom:
-			divideHalfByNoseBottom(areas);
+		case method0:
+			divideByMethod0(areas);
+		break;
+		case method1:
+			divideByMethod1(areas);
 		break;
 		case method2:
 			divideByMethod2(areas);
@@ -26,7 +26,14 @@ void FaceDivider::divide(DivideMethod method, tFaceAreas &areas) {
 	}
 }
 
-void FaceDivider::divideHalfByNoseBottom(tFaceAreas &areas) {
+void FaceDivider::divideByMethod0(tFaceAreas &areas) {
+	cv::Mat face;
+	_depthMap.copyTo(face);
+
+	areas.append(face);
+}
+
+void FaceDivider::divideByMethod1(tFaceAreas &areas) {
 
 	assert(_landmarks.is(Landmarks::NoseBottom));
 	int mouthAreaHeight = _depthMap.rows - _averageLandmarks.pos(Landmarks::NoseBottom).y;

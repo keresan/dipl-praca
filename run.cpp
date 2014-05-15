@@ -65,8 +65,10 @@ void Run::test_crop() {
 
 void Run::alignFace() {
 
-	Mesh *face = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/04203d436.abs", true);
-	Mesh *averageFace = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_final_norm_4_4.obj", false);
+	//Mesh *face = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/04287d53.abs", true);
+	//Mesh *face = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/04440d101.abs", true);
+	Mesh *face = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/04287d49.abs", true);
+	Mesh *averageFace = new Mesh(Common::pathToAverageFace, false);
 
 	/*
 	Mesh *face11 = new Mesh(Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d558.abs", true));
@@ -89,6 +91,7 @@ void Run::alignFace() {
 
     QTime myTimer;
     myTimer.start();
+
 
 	faceAligner1->align(*face,
 						*averageFace,
@@ -297,12 +300,12 @@ void Run::createAverageFace() {
 
 	AverageFace avg(pathToLandmarks,pathToFaces,pathToFirstFace);
 
-	avg.process("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_05.obj");
+	avg.process("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_06.obj");
 
 }
 
 void Run::normalizeAverageFace() {
-	Mesh *averageFace = new Mesh(Mesh::fromOBJ("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_final.obj", true));
+	Mesh *averageFace = new Mesh(Mesh::fromOBJ(Common::pathToWarehouse+"/averageFace/averageFace_final.obj", true));
 
 	//averageFace->centralize();
 
@@ -328,7 +331,7 @@ void Run::normalizeAverageFace() {
 	window->addFace(gridMesh);
 	window->addFace(finalMesh);
 
-	finalMesh->writeOBJ("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_final_norm_4_4.obj",'.');
+	finalMesh->writeOBJ(Common::pathToAverageFace,'.');
 }
 
 void Run::createDepthMaps() {
@@ -336,36 +339,26 @@ void Run::createDepthMaps() {
 	QTime myTimer;
 	myTimer.start();
 
-	//load model face
+	Controller controller;
+
+	QStringList facePaths;
+
 	Mesh *modelFace = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_final_norm_4_4.obj", false);
 
-	QVector<QColor> listOfColors;
-	QStringList faceLabels;
-
-	//get list of files
-
-	QDir dir;
-	dir.setPath(Common::pathToFall2003);
-	dir.setFilter(QDir::Files | QDir::NoSymLinks);
-	dir.setNameFilters(QStringList()<<"*abs");
-	faceLabels = dir.entryList();
-
-	//faceLabels.append("04203d436.abs"); listOfColors.append(QColor(Qt::white));
-
 	/*
-	faceLabels.append("02463d550.abs"); listOfColors.append(QColor(Qt::red));
-	faceLabels.append("02463d552.abs"); listOfColors.append(QColor(Qt::green));
-	faceLabels.append("02463d554.abs"); listOfColors.append(QColor(Qt::blue));
-	faceLabels.append("02463d556.abs"); listOfColors.append(QColor(Qt::cyan));
+	facePaths.append(Common::pathToFall2003+"04287d49.abs");
+	facePaths.append(Common::pathToFall2003+"04287d51.abs");
+	facePaths.append(Common::pathToFall2003+"04287d53.abs");
+	facePaths.append(Common::pathToFall2003+"04395d200.abs");
+	//facePaths.append(Common::pathToAverageFace);
+	facePaths.append("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_final.obj");
 	*/
+	Common::loadFilesPathFromDir(Common::pathToFall2003,facePaths,QStringList("*abs"));
 
-	//za s2003 este 0 !!
-	//s2004 od 1700
-	//int indexStart = 1200, indexStop = 1700;
+	int indexStart = 500;
+	int indexStop = 1000;
 
-	int indexStart = 50, indexStop = 400;
-	for(int i =0; i < faceLabels.count(); i++) {
-
+	for(int i=0; i< facePaths.size();i++) {
 		if(i < indexStart) {
 			continue;
 		} else if(i == indexStop) {
@@ -373,68 +366,48 @@ void Run::createDepthMaps() {
 		}
 
 		myTimer.restart();
-		Mesh *face = new Mesh(Common::pathToFall2003+faceLabels.at(i), true);
 
-		//normalize
-		FaceAligner aligner;
-		aligner.align(*face,
-					  *modelFace,
-					  Common::alignerMaxIterations,
-					  Common::alignerConvergentTreshold );
+		Mesh *face = new Mesh(facePaths.at(i), true);
+		cv::Mat depthmap;
+		int iterations;
+		double distance;
+		controller.createDepthmap(*face, *modelFace, depthmap, distance, iterations);
 
-		//crop unneccessary points - only for speed up
+		//compute max
+		//double max;
+		//cv::minMaxLoc(depthmap, NULL, &max);
 
-		cv::Point2d tl(Common::depthMapTL.x-5, Common::depthMapTL.y+5);
-		cv::Point2d br(Common::depthMapBR.x+5, Common::depthMapBR.y-5);
-		face->cropMe(tl, br);
-
-
-
-		//depth map with default arguments
-		DepthMap map(*face);
-
+		//qDebug() << max;
 
 		//save as image
 		/*
 		cv::Mat dst;
-		cv::normalize(map.depthMap,dst,0,255,cv::NORM_MINMAX, CV_8UC1);
+		cv::normalize(depthMap,dst,0,255,cv::NORM_MINMAX, CV_8UC1);
 		cv::imwrite(Common::pathToDepthmap.toStdString()+face->name.toStdString()+"_18.jpg", dst );
 		cv::imshow(face->name.toStdString(),dst);
 		*/
 
 		//show depthmap
+
 		/*
 		cv::Mat dst;
-		cv::normalize(map.depthMap,dst,0,255,cv::NORM_MINMAX, CV_8UC1);
+		cv::normalize(depthmap,dst,0,255,cv::NORM_MINMAX, CV_8UC1);
 		cv::imshow(face->name.toStdString(),dst);
 		*/
 
 		//save as Mat object
-		cv::FileStorage storage(Common::pathToDepthmapF2003.toStdString() +face->name.toStdString()+".xml", cv::FileStorage::WRITE);
-		storage << Common::depthmapIterationsCountLabel.toStdString() << aligner.finalIterations;
-		storage << Common::depthmapDistanceFromModelLabel.toStdString() << aligner.finalDistance;
-		storage << Common::depthmapDepthmapLabel.toStdString() << map.depthMap;
-		storage.release();
 
-		/*
-		double min, max;
-		cv::minMaxLoc(map.depthMap, &min, &max);
-		qDebug("%d: min= %.2f, max= %.2f",i,min,max);
-		*/
-		qDebug() << i << ":" << face->name
-				 << ", iter:" << aligner.finalIterations
-				 << ", dist:" << aligner.finalDistance
-				 << ", time:" << myTimer.elapsed() << "ms" ;
+
+		Common::saveDepthmap(face->name+".xml", Common::pathToDepthmapF2003,depthmap, distance, iterations);
+		//Common::saveDepthMap(face->name+".xml", Common::pathToWarehouse+"depthmap_tmp2/",depthmap, distance, iterations);
+
+
+		qDebug("%4d: %10s %3d %6.1f %5d ms",i, face->name.toStdString().c_str(),iterations, distance,myTimer.elapsed());
 
 		delete face;
-
 	}
 
-
-	//EigenFace eigenface;
-	//eigenface.pcaTransformation(images,faceLabels);
-	//eigenface.pcaTransformation_eigen(images,faceLabels);
-
+	delete modelFace;
 
 	qDebug() << "done";
 
@@ -586,38 +559,140 @@ void Run::eigenface_pca() {
 }
 */
 
+void Run::detectWrongDepthmaps() {
+	/*
+	 * z prvych 500 vylucenych 32+8 => 8%
+	 *
+	 * z prvych 100 vylucenych 87 => 8,7%
+	 */
+
+	//average landmarks
+	Landmarks averageLandmarks(Common::lmPathToLmDir+Common::lmAvgLmLabel);
+
+	cv::Mat averageFace;
+	double distance;
+	int iterations;
+	QString path = Common::pathToAverageDepthmap;
+	QFileInfo fileInfo(path);
+	Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),averageFace,averageFace,distance,iterations);
+
+
+
+	QStringList facePaths;
+	Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
+
+	//facePaths.append(Common::pathToDepthmapF2003+"04265d265.xml");
+
+	for(int i =0; i < facePaths.size(); i++) {
+		QFileInfo fileInfo(facePaths.at(i));
+
+		//QFile::rename(fileInfo.absoluteFilePath(), fileInfo.absolutePath()+"/"+fileInfo.baseName()+".xml");
+		//continue;
+
+		cv::Mat depthmap;
+		Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),depthmap,averageFace,distance,iterations);
+
+		if(distance > Common::alignerDistanceTresholdToContinue) {
+			qDebug() << "wrong depthmap: " << fileInfo.fileName();
+
+			QFile::rename(fileInfo.absoluteFilePath(), fileInfo.absoluteFilePath()+Common::wrongDpSuffixLabel);
+			continue;
+		}
+
+		//check landmarks
+
+		Landmarks landmarks;
+		LandmarkDetector detector(depthmap);
+		bool result = detector.detectAll(landmarks);
+		if(result) {
+			result = LandmarkDetector::checkLandmarks(landmarks, averageLandmarks);
+			if(!result) {
+				qDebug() << "wrong lm check:" << fileInfo.fileName();
+				QFile::rename(fileInfo.absoluteFilePath(), fileInfo.absoluteFilePath()+Common::wrongLmSuffixLabel);
+				continue;
+			}
+		} else {
+			qDebug() << "wrong lm all:" << fileInfo.fileName();
+			QFile::rename(fileInfo.absoluteFilePath(), fileInfo.absoluteFilePath()+Common::wrongLmSuffixLabel);
+			continue;
+		}
+
+		//DepthMap::showAllLandmarks(depthmap, landmarks,fileInfo.baseName());
+
+
+		//cv::Mat crop = depthmap(Common::faceCropArea);
+		//cv::imshow(fileInfo.baseName().toStdString(), Common::norm_0_255(crop));
+
+		//Common::delay(300);
+
+		/*
+		double min,max;
+		cv::minMaxLoc(depthmap, &min, &max);
+		//qDebug() << fileInfo.fileName() << min << max;
+		if(min < Common::depthmapInitValue+10) {
+			Common::delay(2000);
+		}
+		*/
+
+	}
+
+}
+
+
 void Run::loadDeptmap() {
-	QStringList faceLabels;
+	QStringList facePaths;
 
 	//get list of files
 
+	Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
+
+	//NaN
+	//facePaths.append(Common::pathToDepthmapF2003+"04440d101.xml");
+
+
 	/*
-	QDir dir;
-	dir.setPath(Common::pathToDepthmapS2003);
-	dir.setFilter(QDir::Files | QDir::NoSymLinks);
-	dir.setNameFilters(QStringList()<<"*xml");
-	faceLabels = dir.entryList();
+	facePaths.append(Common::pathToWarehouse+"depthmap_tmp2/"+"04287d49.xml");
+	facePaths.append(Common::pathToWarehouse+"depthmap_tmp2/"+"04287d53.xml");
+	facePaths.append(Common::pathToWarehouse+"depthmap_tmp2/"+"04287d51.xml");
+	facePaths.append(Common::pathToWarehouse+"depthmap_tmp2/"+"04395d200.xml");
 	*/
+	//facePaths.append(Common::pathToWarehouse+"depthmap_tmp2/"+"averageFace_final.xml");
 
-	faceLabels.append("04691d130.xml");
-	//faceLabels.append("04225d303.xml");
-	//faceLabels.append("04225d299.xml");
-	//faceLabels.append("02463d554");
-	//faceLabels.append("02463d556");
+	//facePaths.append("04691d130.xml");
+	//facePaths.append("04225d303.xml");
+	//facePaths.append("04225d299.xml");
+	//facePaths.append("02463d554");
+	//facePaths.append("02463d556");
 
-	for(int i =0; i < faceLabels.count(); i++) {
+	double distance;
+	int iterations;
 
-		cv::Mat depthMap;
+	for(int i =0; i < facePaths.count(); i++) {
+		QFileInfo fileInfo(facePaths.at(i));
 
-		cv::FileStorage storage(Common::pathToDepthmapS2004.toStdString()+faceLabels.at(i).toStdString(), cv::FileStorage::READ);
-		storage[Common::depthmapDepthmapLabel.toStdString()] >> depthMap;
+		cv::Mat depthmap;
+		Common::loadDepthmap(fileInfo.fileName(),fileInfo.path(),depthmap,distance,iterations);
 
-		cv::imshow(faceLabels.at(i).toStdString(), Common::norm_0_255(depthMap));
 
 		/*
-		qDebug() << faceLabels.at(i) << depthMap.cols << "x" << depthMap.rows;
+		double min,max;
+		cv::minMaxLoc(depthmap, &min, &max);
+		qDebug() << fileInfo.fileName() << min << max;
+		*/
+		if(distance > Common::alignerDistanceTresholdToContinue) {
+			qDebug() << "wrong: " << fileInfo.fileName();
+
+			QFile::rename(fileInfo.absoluteFilePath(), fileInfo.absoluteFilePath()+Common::wrongDpSuffixLabel);
+			continue;
+		}
+		cv::Mat crop = depthmap(Common::faceCropArea);
+
+		cv::imshow(fileInfo.baseName().toStdString(), Common::norm_0_255(crop));
+
+		//Common::delay(500);
 
 
+		/*
 		cv::Mat crop = depthMap(cv::Rect(40,50,240,200));
 
 		cv::imshow(faceLabels.at(i).toStdString()+"_crop", Common::norm_0_255(crop));
@@ -647,7 +722,10 @@ void Run::loadDeptmap() {
 }
 
 void Run::showLandmarks() {
-	QStringList faceLabels;
+	QStringList facePaths;
+
+	//average landmarks
+	Landmarks averageLandmarks(Common::lmPathToLmDir+Common::lmAvgLmLabel);
 
 	/*
 	QDir dir;
@@ -657,35 +735,48 @@ void Run::showLandmarks() {
 	faceLabels = dir.entryList();
 	*/
 
+	/*
+	faceLabels.append("04202d454.xml");
 
-	//faceLabels.append("04202d454.xml");
-
-	faceLabels.append("04217d401.xml");// - chyba
-	faceLabels.append("04203d436.xml");
-	faceLabels.append("04233d390.xml");
-	faceLabels.append("04397d348.xml");
-	faceLabels.append("04400d294.xml");
+	//faceLabels.append("04217d401.xml");// - chyba
+	//faceLabels.append("04203d436.xml");
+	faceLabels.append("02463d552.xml"); // predloha pre grafy
+	//faceLabels.append("04397d348.xml"); - chyba, ale preskoci
+	//faceLabels.append("04300d266.xml"); - chyba a spadne
+	faceLabels.append("04222d397.xml");
+	faceLabels.append("04287d49.xml");
+	faceLabels.append("04287d51.xml");
+	faceLabels.append("04287d53.xml");
+	//faceLabels.append("04400d294.xml");
 
 	//faceLabels.append("04202d438.xml");
 
 	//faceLabels.append("04581d202.xml");
 	//faceLabels.append("04225d303.xml");
 	//faceLabels.append("02463d556.xml");
+	*/
+	//facePaths.append(Common::pathToDepthmapF2003+"04265d267.xml");
+	facePaths.append(Common::pathToDepthmapF2003+"04299d193.xml");
+	//facePaths.append(Common::pathToDepthmapF2003+"04265d267.xml_wrong_lm");
 
 
+	//Common::loadFilesPathFromDir(Common::pathToWarehouse+"depthmap_tmp2/",facePaths);
 
-	int step = 1;
-	int max =  faceLabels.size();
+	//load average face
+	cv::Mat averageFace;
+	double distance;
+	int iterations;
+	QString path = Common::pathToAverageDepthmap;
+	QFileInfo fileInfo(path);
+	Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),averageFace,averageFace,distance,iterations);
 
-
-	for(int i =0; i < max; i += step) {
-		cv::Mat depthMap;
+	for(int i =0; i < facePaths.size(); i += 1) {
+		cv::Mat depthmap;
 		double distance;
-		qDebug() << "actual file:" << faceLabels.at(i);
+		qDebug() << "actual file:" << facePaths.at(i);
 
-		cv::FileStorage storage(Common::pathToDepthmapF2003.toStdString()+faceLabels.at(i).toStdString(), cv::FileStorage::READ);
-		storage[Common::depthmapDepthmapLabel.toStdString()] >> depthMap;
-		storage[Common::depthmapDistanceFromModelLabel.toStdString()] >> distance;
+		QFileInfo fileInfo(facePaths.at(i));
+		Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),depthmap,averageFace,distance,iterations);
 
 		/*
 		if(distance > Common::alignerDistanceTresholdToContinue) {
@@ -698,24 +789,23 @@ void Run::showLandmarks() {
 
 		*/
 
-
-		//LandmarkDetector detector(depthMap);
-		cv::Mat crop = depthMap(Common::faceCropArea);
-		//cv::Mat crop = depthMap;
-
-		//cv::imshow(faceLabels.at(i).toStdString() + QTime::currentTime().toString("hh:mm:ss.zzz").toStdString(), Common::norm_0_255(depthMap));
-
-
-		LandmarkDetector detector(crop);
-
+		LandmarkDetector detector(depthmap);
 		Landmarks landmarks;
-
 		bool result = detector.detectAll(landmarks);
-
 
 		//draw landmarks
 		if(result) {
-			cv::Mat normalizeMap = Common::norm_0_255(crop);
+
+			//result = LandmarkDetector::checkLandmarks(landmarks, averageLandmarks);
+			if(!result) {
+				qDebug() << facePaths.at(i) << "skipped for landmarks";
+				continue;
+			}
+
+			//DepthMap::showAllLandmarks(crop,landmarks,"1 ");
+
+
+			cv::Mat normalizeMap = Common::norm_0_255(depthmap);
 			cv::Mat colorMap;
 			cvtColor(normalizeMap, colorMap, CV_GRAY2RGB);
 
@@ -728,16 +818,17 @@ void Run::showLandmarks() {
 			cv::circle(colorMap,landmarks.pos(Landmarks::NoseBottom), diameter, cv::Scalar( 0, 0, 255 ), thickness, lineType );
 			cv::circle(colorMap,landmarks.pos(Landmarks::NoseCornerLeft), diameter, cv::Scalar( 0, 255, 0 ), thickness, lineType );
 			cv::circle(colorMap,landmarks.pos(Landmarks::NoseCornerRight), diameter, cv::Scalar(255, 0, 0 ), thickness, lineType );
-			cv::circle(colorMap,landmarks.pos(Landmarks::EyeInnerCornerLeft), diameter, cv::Scalar( 0, 255, 0 ), thickness, lineType );
-			cv::circle(colorMap,landmarks.pos(Landmarks::EyeInnerCornerRight), diameter, cv::Scalar( 255, 0, 0 ), thickness, lineType );
+			//cv::circle(colorMap,landmarks.pos(Landmarks::EyeInnerCornerLeft), diameter, cv::Scalar( 0, 255, 0 ), thickness, lineType );
+			//cv::circle(colorMap,landmarks.pos(Landmarks::EyeInnerCornerRight), diameter, cv::Scalar( 255, 0, 0 ), thickness, lineType );
 
-			cv::imshow(faceLabels.at(i).toStdString() + QTime::currentTime().toString("hh:mm:ss.zzz").toStdString(), colorMap);
+			cv::imshow(fileInfo.fileName().toStdString() + QTime::currentTime().toString("hh:mm:ss.zzz").toStdString(), colorMap);
 
 		} else {
-			qDebug() << faceLabels.at(i) << "skipped";
+			qDebug() << facePaths.at(i) << "skipped";
 		}
 
-		Common::delay(1000);
+		Common::delay(500);
+
 	}
 }
 void Run::init() {
@@ -752,39 +843,53 @@ void Run::init() {
 	Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
 
 	//prepare file list
-	while(facePaths.size() > 100) {
+	while(facePaths.size() > 200) {
 		facePaths.removeLast();
 	}
 
+	//load average face
+	cv::Mat averageFace;
+	double distance;
+	int iterations;
+	QString path = Common::pathToAverageDepthmap;
+	QFileInfo fileInfo(path);
+	Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),averageFace,averageFace,distance,iterations);
+
+	qDebug() << averageFace.rows << "x" << averageFace.cols;
+
+	qDebug() << "facePaths.size():" << facePaths.size();
 	for(int i=0; i< facePaths.size();i++) {
-		//qDebug() << i << ": actaul face: " << files.at(i);
+		//qDebug() << i << ": actaul face: " << facePaths.at(i);
 
 		cv::Mat depthmap;
 		double distance;
 		int iterations;
-		Common::loadDepthMap(facePaths.at(i), depthmap, distance, iterations);
-		//cv::imshow(std::to_string(i),Common::norm_0_255(depthMap));
 
-		if(distance > Common::alignerDistanceTresholdToContinue) {
-			qDebug() << facePaths.at(i) << "skipped for distance";
-			continue;
-		}
 		QFileInfo fileInfo(facePaths.at(i));
+
+		Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(), depthmap,averageFace, distance, iterations);
+
 		labels.append(fileInfo.baseName());
 		faces.append(depthmap);
+		//cv::imshow(std::to_string(i),Common::norm_0_255(depthmap));
+
 	}
 
+	qDebug() << "letc make avg landmarks";
+	//load landmakrs
+	Landmarks avgLandmarks(Common::lmPathToLmDir+Common::lmAvgLmLabel);
 
-	Landmarks avgLandmarks(Common::lmAvgLmLabel);
-	/*
-	controller.averageLandmarks(faces, labels, avgLandmarks);
-	avgLandmarks.save(Common::lmAvgLmLabel);
-	*/
+	//compute and save average landmarks
+	//Landmarks avgLandmarks;
+	//controller.averageLandmarks(faces, labels, avgLandmarks);
+	//avgLandmarks.save(Common::lmAvgLmLabel);
 
+	qDebug() << "letc make subspaces";
+
+	//compute and save pca subspaces
 	EigenFace eigenface;
-	controller.createPcaSubspaces(faces,avgLandmarks,eigenface,FaceDivider::method2);
-	eigenface.saveSubspaces(Common::eigenMethot2Label);
-
+	controller.createPcaSubspaces(faces,avgLandmarks,eigenface,FaceDivider::method1);
+	eigenface.saveSubspaces(Common::eigenMethot1Label);
 
 }
 
@@ -866,13 +971,22 @@ void Run::processFace() {
 	double distance;
 	int iterations;
 
+	//load average face
+	cv::Mat averageFace;
+	QString pathToAverage = Common::pathToWarehouse+"depthmap_tmp2/"+"averageFace_final.xml";
+	QFileInfo fileInfo1(pathToAverage);
+	Common::loadDepthmapProcess(fileInfo1.fileName(),fileInfo1.path(),averageFace,averageFace,distance,iterations);
+
+
 	//load face
 	QString path = Common::pathToDepthmapF2003+"04395d202.xml";
-	Common::loadDepthMap(path,depthmap,distance,iterations);
+
+	QFileInfo fileInfo(path);
+	Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.filePath(),depthmap,averageFace,distance,iterations);
 
 	Controller controller;
 	tFeatures featuresVector;
-	controller.processFace(depthmap, "04397d348",avgLandmarks,result,FaceDivider::toHalfByNoseBottom, eigenface, featuresVector);
+	controller.processFace(depthmap, "04397d348",avgLandmarks,result,FaceDivider::method1, eigenface, featuresVector);
 
 
 }
@@ -882,60 +996,193 @@ void Run::compareFaces() {
 	bool result;
 
 	//load average landmarks
-	Landmarks avgLandmarks(Common::lmAvgLmLabel);
+	Landmarks avgLandmarks(Common::pathToAverageLm);
 
 	//load pca subspace
 	EigenFace eigenface;
-	eigenface.loadSubspaces(Common::eigenMethot2Label);
+	eigenface.loadSubspaces(Common::eigenMethot1Label);
 
-	cv::Mat depthmap;
+	//load average depthmap
+	cv::Mat averageFace;
 	double distance;
 	int iterations;
+	QString path = Common::pathToAverageDepthmap;
+	QFileInfo fileInfo(path);
+	Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),averageFace,averageFace,distance,iterations);
 
+	cv::Mat depthmap;
 
 	QStringList facePaths;
+	QStringList labels;
+
+
+	/*
+	facePaths.append(Common::pathToDepthmapF2003+"04287d49.xml");
+	facePaths.append(Common::pathToDepthmapF2003+"04287d53.xml");
+	facePaths.append(Common::pathToDepthmapF2003+"04287d51.xml");
+	facePaths.append(Common::pathToDepthmapF2003+"04395d200.xml");
+	*/
+	//facePaths.append("averageFace_final_norm_4_4");
+	//facePaths.append("averageFace_final");
+
+	/*
 	facePaths.append("04395d200");
 	facePaths.append("04395d202");
 	facePaths.append("04388d293");
 	facePaths.append("04388d297");
 	facePaths.append("04379d286");
+	*/
 
+	Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
 
 	Controller controller;
 	QVector<tFeatures> featuresVector;
 
+	int indexStart = 200;
+	int indexStop = 600;
+
 	for(int i =0; i < facePaths.size(); i++) {
 		tFeatures features;
 
-		QString path = Common::pathToDepthmapF2003+facePaths.at(i)+".xml";
-		Common::loadDepthMap(path,depthmap,distance,iterations);
+		if(i < indexStart) {
+			continue;
+		} else if(i > indexStop) {
+			break;
+		}
+
+		//QString path = Common::pathToDepthmapF2003+facePaths.at(i)+".xml";
+		//QString path =Common::pathToWarehouse+"depthmap_tmp2/"+facePaths.at(i)+".xml";
+
+
+		QFileInfo fileInfo(facePaths.at(i));
+
+		//qDebug() << fileInfo.absoluteFilePath();
+
+		Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(), depthmap,averageFace,distance,iterations);
+
+		//qDebug() << facePaths.at(i) << depthmap.rows << "x" << depthmap.cols;
+
 		controller.processFace(depthmap,
-							   facePaths.at(i),
+							   fileInfo.baseName(),
 							   avgLandmarks,
 							   result,
-							   FaceDivider::method2,
+							   FaceDivider::method1,
 							   eigenface,
 							   features);
 		if(result) {
 			qDebug() << "ERROR:" << facePaths.at(i);
 		}
 
+		//qDebug() << "features.rows: " << features.rows;
+
 		featuresVector.append(features);
+		labels.append(fileInfo.baseName());
 	}
-	qDebug() << "featuresVector.size()" << featuresVector.size();
+	qDebug() << "featuresVector.size() a.k.a pocet vstupnych tvari:" << featuresVector.size();
+	//qDebug() << "labels.size():" << labels.size();
 
 
-	//compare each wit each
+	QVector<QVector<float> > diffResult, identicResult;
+	//cv::Mat	identicResult  = cv::Mat::ones(0, 6, CV_64F);
+
+	int counter = 0;
+	//compare each with each
 	for(int i = 0; i < featuresVector.size() ; i++) {
 		for(int j = i+1; j < featuresVector.size(); j++) {
 			//compare features
-			qDebug() << "===" << facePaths.at(i) << "vs" << facePaths.at(j) << ":";
-			QVector<double> distances;
+			bool isIdentical = Common::isIdenticalPerson(labels.at(i), labels.at(j));
+			qDebug() << "===" << labels.at(i) << "vs" << labels.at(j) << ":" << isIdentical;
+			QVector<float> distances;
+
 			Comparator::compare(featuresVector[i],featuresVector[j],distances, Comparator::EuclidianDistance);
+
+
 			for(int k = 0; k < distances.size(); k++ ) {
 				qDebug() << k << ":" << distances.at(k);
 			}
+
+			//add result
+			if(isIdentical) {
+				identicResult.append(distances);
+			} else {
+				diffResult.append(distances);
+			}
+
+			counter++;
 		}
+	}
+	qDebug() << "pocet porovnani: " << counter;
+
+
+
+	//convert to matrix
+	cv::Mat matToSaveIdentic(identicResult.size(), identicResult.first().size(), CV_32F);
+	for(int i=0; i<matToSaveIdentic.rows; i++)
+		 for(int j=0; j<matToSaveIdentic.cols; j++)
+			  matToSaveIdentic.at<float>(i, j) = identicResult.at(i).at(j);
+
+	cv::Mat matToSaveDiff(diffResult.size(), diffResult.first().size(), CV_32F );
+	for(int i=0; i<matToSaveDiff.rows; i++)
+		 for(int j=0; j<matToSaveDiff.cols; j++)
+			  matToSaveDiff.at<float>(i, j) = diffResult.at(i).at(j);
+
+	qDebug() << "matToSaveIdentic" << matToSaveIdentic.rows << "x" << matToSaveIdentic.cols;
+	qDebug() << "matToSaveDiff" << matToSaveDiff.rows << "x" << matToSaveDiff.cols;
+
+	//save it
+	Common::saveCmpResult(Common::cmpResultDiffMethod1Label,Common::pathToComResultDir,matToSaveDiff);
+	Common::saveCmpResult(Common::cmpResultIdenticMethod1Label,Common::pathToComResultDir,matToSaveIdentic);
+
+
+}
+
+
+void Run::histogram() {
+
+	cv::Mat identicResult, diffResult;
+
+	Common::loadCmpResult(Common::cmpResultDiffMethod1Label,Common::pathToComResultDir,diffResult);
+	Common::loadCmpResult(Common::cmpResultIdenticMethod1Label,Common::pathToComResultDir,identicResult);
+
+	cv::Mat meanMinMax;
+
+	qDebug() << "diffResult: " << diffResult.rows << "x" << diffResult.cols;
+
+	Stats::computeMinMaxAvg(diffResult, meanMinMax);
+
+
+	qDebug() << "meanMinMax: " << meanMinMax.rows << "x" << meanMinMax.cols;
+
+	for(int c = 0; c < meanMinMax.cols; c++) {
+		float mean = meanMinMax.at<float>(0,c);
+		float min = meanMinMax.at<float>(1,c);
+		float max = meanMinMax.at<float>(2,c);
+
+		qDebug("%d: %6.2f %6.2f %6.2f",c,mean,min,max);
+	}
+
+	cv::Mat inputImposer = diffResult.col(0);
+	cv::Mat inputGenuine = identicResult.col(0);
+	cv::MatND histImposer, histGenuine;
+	int channels[] = {0};
+	int hbins = 100;
+	int sbins = 50;
+	//int histSize[] = {hbins, sbins};
+	int histSize = 100;
+
+
+	float hranges[] = {200,4500};
+	float sranges[] = {0,0};
+	const float* ranges[] = {hranges, sranges};
+
+
+	cv::calcHist(&inputImposer,1,channels,cv::Mat(),histImposer,1,&histSize,ranges,true,false);
+	cv::calcHist(&inputGenuine,1,channels,cv::Mat(),histGenuine,1,&histSize,ranges,true,false);
+
+
+	for(int i = 0; i < histGenuine.rows; i++) {
+		qDebug("%.0f\t%.0f", histGenuine.at<float>(i,0), histImposer.at<float>(i,0));
+		;
 	}
 
 

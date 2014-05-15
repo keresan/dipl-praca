@@ -10,6 +10,7 @@
 #include "landmarks.h"
 #include "facedivider.h"
 #include "controller.h"
+#include "stats.h"
 
 #include <QTime>
 
@@ -40,6 +41,10 @@ public:
 	void createAverageFace();
 	void normalizeAverageFace();
 
+	void detectWrongDepthmaps();
+
+	void detectWrongLandmarks();
+
 	//void eigenface();
 	//void eigenface_pca();
 
@@ -55,6 +60,8 @@ public:
 	void init();
 
 	void processFace();
+
+	void histogram();
 
 
     GLWidget *window;

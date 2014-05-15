@@ -3,7 +3,8 @@
 
 AverageFace::AverageFace(QString pathToLandmarks, QString pathToFaces, QString startFileLandmark) {
 
-	_gridMesh = Mesh::create2dGrid(cv::Point3d(-100,120,0), cv::Point3d(100,-100,0),2,2);
+	_gridMesh = Mesh::create2dGrid(cv::Point3d(-130,130,0), cv::Point3d(130,-120,0),2,2);
+	//_gridMesh = Mesh::create2dGrid(cv::Point3d(-100,120,0), cv::Point3d(100,-100,0),2,2);
 
     _pathToLandmarks = pathToLandmarks;
 	_pathToFaces = pathToFaces;

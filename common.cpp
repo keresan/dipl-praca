@@ -24,10 +24,13 @@ const cv::Point2d Common::depthMapTL = cv::Point2d(-80,100);
 const cv::Point2d Common::depthMapBR = cv::Point2d(80,-70);
 const int Common::depthMapPixelsX = 160*2;
 const int Common::depthMapPixelsY = 170*2;
-const cv::Rect Common::faceCropArea = cv::Rect(50,30,220,240);
+//const cv::Rect Common::faceCropArea = cv::Rect(50,30,220,220);
+const cv::Rect Common::faceCropArea = cv::Rect(50,30,220,240); //orig
 
 const QString Common::pathToWarehouse = "/Users/martin/Documents/[]sklad/frgc_data/";
 const QString Common::pathToSubspacesDir = Common::pathToWarehouse + "subspaces/";
+const QString Common::pathToComResultDir = Common::pathToWarehouse + "compare_result/";
+
 const QString Common::pathToDepthmapF2003 = Common::pathToWarehouse + "depthmap_f2003/";
 const QString Common::pathToFall2003 = Common::pathToWarehouse + "Fall2003range/";
 const QString Common::pathToDepthmapS2003 = Common::pathToWarehouse + "depthmap_s2003/";
@@ -35,9 +38,16 @@ const QString Common::pathToSpring2003 = "/Volumes/data/sklad/FRGC_databaza/Spri
 const QString Common::pathToDepthmapS2004 = Common::pathToWarehouse + "depthmap_s2004/";
 const QString Common::pathToSpring2004 = "/Volumes/data/sklad/FRGC_databaza/Spring2004range/";
 
-const int Common::alignerFindBestStartPosRangeX = 50;
-const int Common::alignerFindBestStartPosRangeY = 80;
+const QString Common::pathToAverageFace = Common::pathToWarehouse + "averageFace/averageFace_final_norm_4_4.obj";
+const QString Common::pathToAverageDepthmap = Common::pathToWarehouse + "averageFace/averageFace_final.xml";
+const QString Common::wrongDpSuffixLabel = "_wrong_dp";
+const QString Common::wrongLmSuffixLabel = "_wrong_lm";
+
+
+const int Common::alignerFindBestStartHalfRangeX = 20;//50;
+const int Common::alignerFindBestStartHalfRangeY = 20;//80;
 const int Common::alignerFindBestStartPosStep = 10;
+const int Common::alignedFindBestStartPosZShift = 0;
 const int Common::alignerConvergentTreshold = 10;
 const int Common::alignerMaxIterations = 150;
 const int Common::alignerDistanceTresholdToContinue = 8000;
@@ -45,21 +55,29 @@ const int Common::alignerDistanceTresholdToContinue = 8000;
 const QString Common::depthmapIterationsCountLabel = "iterations_to_align";
 const QString Common::depthmapDistanceFromModelLabel = "distance_from_model";
 const QString Common::depthmapDepthmapLabel = "depthamp";
+const double Common::depthmapInitValue = -999.0;
 
 const QString Common::lmPathToLmDir = Common::pathToWarehouse + "landmarks/";
 const QString Common::lmAvgLmLabel = "average-landmarks.xml";
 const QString Common::lmSavePosLabel = "landmark";
 const QString Common::lmSaveIsLabel = "isEntered";
+const int Common::lmDeltaFromAvg = 25;
 
+const QString Common::pathToAverageLm = Common::lmPathToLmDir + Common::lmAvgLmLabel;
 
+const QString Common::eigenMethot0Label = "method-0";
 const QString Common::eigenMethot1Label = "method-1";
 const QString Common::eigenMethot2Label = "method-2";
 const QString Common::eigenMethot3Label = "method-3";
+
 const QString Common::eigenEigenvectorLabel = "eigenvectors";
 const QString Common::eigenEigenvaluesLabel = "eigenvalues";
 const QString Common::eigenMeanLabel = "mean";
-const QString Common::eigenArraySizeLabel = "array-size";
+const QString Common::vectorSizeLabel = "array-size";
+const QString Common::subVectorSizeLabel = "sub-vector-size";
 
+const int Common::detectNoseTipAreaStartY = 90;
+const int Common::detectNoseTipAreaHeight = 80;
 const int Common::detectEyeAreaHalfHeight = 40;
 const int Common::detectEyeAreaWidth = 60;
 const int Common::detectNoseCornersAreaHalfWidth = 70;
@@ -71,7 +89,19 @@ const int Common::detectNoseRootMinDistanceFromTip = 50;
 const double Common::detectHightPassFilterValue = 4.0;
 
 
+const QString Common::cmpResultLabel = "result";
+const QString Common::cmpResultIdenticMethod0Label = "method0-identic-1.xml";
+const QString Common::cmpResultDiffMethod0Label = "method0-diff-1.xml";
+const QString Common::cmpResultIdenticMethod1Label = "method1-identic-1.xml";
+const QString Common::cmpResultDiffMethod1Label = "method1-diff-1.xml";
+const QString Common::cmpResultIdenticMethod2Label = "method2-identic-1.xml";
+const QString Common::cmpResultDiffMethod2Label = "method2-diff-1.xml";
+const QString Common::cmpResultIdenticMethod3Label = "method3-identic-1.xml";
+const QString Common::cmpResultDiffMethod3Label = "method3-diff-1.xml";
 
+
+const QString Common::cmpResultIdenticMethod1Label_2 = "method1-identic-2.xml";
+const QString Common::cmpResultDiffMethod1Label_2 = "method1-diff-2.xml";
 
 /*
 void Common::printMatrix(CvMat *m)
@@ -107,28 +137,9 @@ void Common::delay(int msec) {
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
-void Common::loadDepthMap(QString path, cv::Mat &depthMap, double &distance, int &iterations) {
-	cv::FileStorage storage(path.toStdString(), cv::FileStorage::READ);
-	storage[Common::depthmapDepthmapLabel.toStdString()] >> depthMap;
-
-	storage[Common::depthmapDistanceFromModelLabel.toStdString()] >> distance;
-	storage[Common::depthmapIterationsCountLabel.toStdString()] >> iterations;
-
-
-
-
-	processLoadedMap(depthMap);
-}
-
-void Common::processLoadedMap(cv::Mat &depthMap) {
-	depthMap = depthMap(Common::faceCropArea);
-
-	cv::medianBlur(depthMap,depthMap,5);
-
-}
-
 void Common::loadFilesPathFromDir(QString pathToDir, QStringList &list, const QStringList &filters) {
-	qDebug() << pathToDir;
+
+
 
 	QDir dir;
 	dir.setPath(pathToDir);
@@ -153,6 +164,89 @@ void Common::loadFilesPathFromDir(QString pathToDir, QStringList &list, const QS
 		*/
 	}
 }
+
+void Common::loadDepthmapProcess(QString fileName, QString dirPath, cv::Mat &depthmap, cv::Mat &averageFace, double &distance, int &iterations) {
+	QDir dir(dirPath);
+	QString path = dir.absoluteFilePath(fileName);
+
+	cv::FileStorage storage(path.toStdString(), cv::FileStorage::READ);
+
+	storage[Common::depthmapDepthmapLabel.toStdString()] >> depthmap;
+	storage[Common::depthmapDistanceFromModelLabel.toStdString()] >> distance;
+	storage[Common::depthmapIterationsCountLabel.toStdString()] >> iterations;
+
+	storage.release();
+
+	assert(depthmap.rows > 0);
+	assert(depthmap.cols > 0);
+
+	processLoadedMap(depthmap, averageFace);
+
+}
+
+void Common::loadDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap, double &distance, int &iterations) {
+	QDir dir(dirPath);
+	QString path = dir.absoluteFilePath(fileName);
+
+	cv::FileStorage storage(path.toStdString(), cv::FileStorage::READ);
+
+	storage[Common::depthmapDepthmapLabel.toStdString()] >> depthmap;
+	storage[Common::depthmapDistanceFromModelLabel.toStdString()] >> distance;
+	storage[Common::depthmapIterationsCountLabel.toStdString()] >> iterations;
+
+	storage.release();
+}
+
+void Common::processLoadedMap(cv::Mat &depthmap, cv::Mat &averageFace) {
+
+	//crop
+	depthmap = depthmap(Common::faceCropArea);
+
+	//replace unknown value with values from averageFace
+	Common::replaceInitValues(depthmap,averageFace);
+
+	//blur
+	cv::medianBlur(depthmap,depthmap,5);
+
+}
+
+void Common::saveDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap, double distance, int iterations) {
+
+	QDir dir(dirPath);
+	QString path = dir.absoluteFilePath(fileName);
+
+	cv::FileStorage storage(path.toStdString(), cv::FileStorage::WRITE);
+
+	storage << Common::depthmapIterationsCountLabel.toStdString() << iterations;
+	storage << Common::depthmapDistanceFromModelLabel.toStdString() << distance;
+	storage << Common::depthmapDepthmapLabel.toStdString() << depthmap;
+	storage.release();
+}
+
+
+void Common::saveCmpResult(QString fileName, QString dirPath, cv::Mat &resultMatrix) {
+	QDir dir(dirPath);
+	QString path = dir.absoluteFilePath(fileName);
+
+	//qDebug() << path;
+
+	cv::FileStorage storage(path.toStdString(), cv::FileStorage::WRITE);
+	storage << Common::cmpResultLabel.toStdString() << resultMatrix;
+
+	storage.release();
+}
+
+void Common::loadCmpResult(QString fileName, QString dirPath, cv::Mat &resultMatrix) {
+	QDir dir(dirPath);
+	QString path = dir.absoluteFilePath(fileName);
+
+	cv::FileStorage storage(path.toStdString(), cv::FileStorage::READ);
+	storage[Common::cmpResultLabel.toStdString()] >> resultMatrix;
+
+	storage.release();
+
+}
+
 /*
 bool Common::matrixContainsNan(const Matrix &m)
 {
@@ -415,3 +509,43 @@ cv::Mat Common::norm_0_255(cv::InputArray _src) {
 	return dst;
 }
 
+void Common::replaceInitValues(cv::Mat &depthmap, cv::Mat &src) {
+
+	assert(depthmap.rows == src.rows);
+	assert(depthmap.cols == src.cols);
+
+	for(int r = 0; r < depthmap.rows; r++) {
+		for(int c = 0; c < depthmap.rows; c++) {
+			if(depthmap.at<float>(r,c) < Common::depthmapInitValue+2) {
+				float replaceValue = src.at<float>(r,c);
+				if(replaceValue < Common::depthmapInitValue+2) {
+					qDebug() << "replaceInitValues():" << r << "x" << c << "=" << replaceValue;
+
+				} else {
+					depthmap.at<float>(r,c) = replaceValue;
+				}
+
+			}
+		}
+	}
+}
+
+
+bool Common::isIdenticalPerson(QString baseName1, QString baseName2) {
+
+
+
+	QStringList person1 = baseName1.split('d');
+	QStringList person2 = baseName2.split('d');
+
+
+	assert(person1.size() == person2.size());
+	assert(person1.size() == 2);
+
+	if(person1.at(0) == person2.at(0)) {
+		return true;
+	} else {
+		return false;
+	}
+
+}

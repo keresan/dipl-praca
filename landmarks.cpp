@@ -36,7 +36,7 @@ void Landmarks::save(QString fileName, QString savePath) {
 
 	cv::FileStorage storage(path.toStdString(), cv::FileStorage::WRITE);
 
-	storage << Common::eigenArraySizeLabel.toStdString() << _landmarks.size();
+	storage << Common::vectorSizeLabel.toStdString() << _landmarks.size();
 
 	for(int i =0; i < _landmarks.size(); i++) {
 		storage << Common::lmSavePosLabel.toStdString()+std::to_string(i) << _landmarks.at(i).first;
@@ -52,7 +52,7 @@ void Landmarks::load(QString fileName, QString loadPath) {
 	cv::FileStorage storage(path.toStdString(), cv::FileStorage::READ);
 
 	int size;
-	storage[Common::eigenArraySizeLabel.toStdString()] >> size;
+	storage[Common::vectorSizeLabel.toStdString()] >> size;
 
 	for(int i = 0; i < size; i++) {
 		cv::Point point;

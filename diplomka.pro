@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     landmarks_old.cpp \
     landmarks.cpp \
     controller.cpp \
-    comparator.cpp
+    comparator.cpp \
+    stats.cpp
 
 HEADERS  += mainwindow.h \
     mesh.h \
@@ -71,7 +72,8 @@ HEADERS  += mainwindow.h \
     landmarks_old.h \
     landmarks.h \
     controller.h \
-    comparator.h
+    comparator.h \
+    stats.h
 
 
 #FORMS    += mainwindow.ui
