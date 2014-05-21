@@ -35,15 +35,23 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
 	//testToRun.divideFace();
 
+	//testToRun.processFace();
+
+
+
 	//testToRun.init();
 
-	//testToRun.processFace();
-	//testToRun.compareFaces();
+
+	testToRun.compareFacesInit();
+
+
+	testToRun.compareFaces();
 
 	testToRun.histogram();
 
 	//testToRun.eigenface();
 	//testToRun.eigenface_pca();
+	//testToRun.test_eigen();
 
 }
 

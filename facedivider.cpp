@@ -2,7 +2,7 @@
 
 FaceDivider::FaceDivider(cv::Mat &depthMap, Landmarks &landmarks, Landmarks &averageLandmarks) {
 
-	this->_depthMap = depthMap;
+	this->_depthmap = depthMap;
 	this->_landmarks = landmarks;
 	this->_averageLandmarks = averageLandmarks;
 }
@@ -26,9 +26,25 @@ void FaceDivider::divide(DivideMethod method, tFaceAreas &areas) {
 	}
 }
 
+void FaceDivider::setResizeParam(int finalWidth) {
+	//compute scale factor by width
+	float scaleFactor = (float)finalWidth / _depthmap.cols;
+
+	//qDebug() << _depthmap.cols << "->"<< finalWidth << ", scaleFactorX:" << scaleFactor;
+
+	_averageLandmarks.scale(scaleFactor);
+	_landmarks.scale(scaleFactor);
+
+
+	cv::Size size;
+	cv::resize(_depthmap,_depthmap,size,scaleFactor,scaleFactor,cv::INTER_LINEAR);
+}
+
+
+
 void FaceDivider::divideByMethod0(tFaceAreas &areas) {
 	cv::Mat face;
-	_depthMap.copyTo(face);
+	_depthmap.copyTo(face);
 
 	areas.append(face);
 }
@@ -36,40 +52,28 @@ void FaceDivider::divideByMethod0(tFaceAreas &areas) {
 void FaceDivider::divideByMethod1(tFaceAreas &areas) {
 
 	assert(_landmarks.is(Landmarks::NoseBottom));
-	int mouthAreaHeight = _depthMap.rows - _averageLandmarks.pos(Landmarks::NoseBottom).y;
+	int mouthAreaHeight = _depthmap.rows - _averageLandmarks.pos(Landmarks::NoseBottom).y;
 	int noseAreaHeight  = _averageLandmarks.pos(Landmarks::NoseBottom).y;
 
 	cv::Point noseBottom = _landmarks.pos(Landmarks::NoseBottom);
 
-	//qDebug() << "depthMap:" << _depthMap.rows << _depthMap.cols;
 
+	cv::Mat upperArea = _depthmap(cv::Range(0,noseBottom.y), cv::Range::all()) ;
 
-	cv::Mat upperArea = _depthMap(cv::Range(0,noseBottom.y), cv::Range::all()) ;
-
-	//upperArea.copyTo(upperAreaCopied);
-
-	cv::Mat mouthArea = _depthMap(cv::Range(noseBottom.y,_depthMap.rows), cv::Range::all());
+	cv::Mat mouthArea = _depthmap(cv::Range(noseBottom.y,_depthmap.rows), cv::Range::all());
 
 	cv::Mat noseAreaScaled, mouthAreaScaled;
 
-	resizeArea(upperArea, noseAreaScaled, _depthMap.cols, noseAreaHeight);
-	resizeArea(mouthArea, mouthAreaScaled, _depthMap.cols,mouthAreaHeight);
-
-
-	//qDebug() << 111;
+	resizeArea(upperArea, noseAreaScaled, _depthmap.cols, noseAreaHeight);
+	resizeArea(mouthArea, mouthAreaScaled, _depthmap.cols,mouthAreaHeight);
 
 	/*
-	cv::imshow("upper area",Common::norm_0_255(upperArea));
-	cv::imshow("mouth area",Common::norm_0_255(mouthArea));
-
-	cv::imshow("upper area scaled",Common::norm_0_255(upperAreaScaled));
+	cv::imshow("upper area scaled",Common::norm_0_255(noseAreaScaled));
 	cv::imshow("mouth area scaled",Common::norm_0_255(mouthAreaScaled));
 	*/
 
 	areas.append(noseAreaScaled);
 	areas.append(mouthAreaScaled);
-
-	//qDebug() << 222;
 
 }
 
@@ -87,24 +91,24 @@ void FaceDivider::divideByMethod2(tFaceAreas &areas) {
 	noseMiddlePointAvg.x = qRound((_averageLandmarks.pos(Landmarks::NoseTip).x + _averageLandmarks.pos(Landmarks::NoseRoot).x) / 2.0);
 	noseMiddlePointAvg.y = qRound((_averageLandmarks.pos(Landmarks::NoseTip).y + _averageLandmarks.pos(Landmarks::NoseRoot).y) / 2.0);
 
-	cv::Mat eyesArea  = _depthMap(cv::Range(0, noseMiddlePoint.y),
+	cv::Mat eyesArea  = _depthmap(cv::Range(0, noseMiddlePoint.y),
 									 cv::Range::all());
 
-	cv::Mat noseArea = _depthMap(cv::Range(noseMiddlePoint.y, _landmarks.pos(Landmarks::NoseBottom).y),
+	cv::Mat noseArea = _depthmap(cv::Range(noseMiddlePoint.y, _landmarks.pos(Landmarks::NoseBottom).y),
 									  cv::Range::all());
 
-	cv::Mat mouthArea = _depthMap(cv::Range(_landmarks.pos(Landmarks::NoseBottom).y,_depthMap.rows),
+	cv::Mat mouthArea = _depthmap(cv::Range(_landmarks.pos(Landmarks::NoseBottom).y,_depthmap.rows),
 								  cv::Range::all());
 
 	int eyesAreaHeight = noseMiddlePointAvg.y;
 	int noseAreaHeight =  _averageLandmarks.pos(Landmarks::NoseBottom).y - noseMiddlePointAvg.y;
-	int mouthAreaHeight = _depthMap.rows - _averageLandmarks.pos(Landmarks::NoseBottom).y;
+	int mouthAreaHeight = _depthmap.rows - _averageLandmarks.pos(Landmarks::NoseBottom).y;
 
 	cv::Mat eyesAreaScaled, noseAreaScaled, mouthAreaScaled;
 
-	resizeArea(eyesArea, eyesAreaScaled, _depthMap.cols, eyesAreaHeight);
-	resizeArea(noseArea, noseAreaScaled, _depthMap.cols, noseAreaHeight);
-	resizeArea(mouthArea, mouthAreaScaled, _depthMap.cols, mouthAreaHeight);
+	resizeArea(eyesArea, eyesAreaScaled, _depthmap.cols, eyesAreaHeight);
+	resizeArea(noseArea, noseAreaScaled, _depthmap.cols, noseAreaHeight);
+	resizeArea(mouthArea, mouthAreaScaled, _depthmap.cols, mouthAreaHeight);
 
 
 	/*
@@ -139,36 +143,36 @@ void FaceDivider::divideByMethod3(tFaceAreas &areas) {
 
 	//crop from depthmap
 
-	cv::Mat leftEyeArea  = _depthMap(cv::Range(0, noseMiddlePoint.y),
+	cv::Mat leftEyeArea  = _depthmap(cv::Range(0, noseMiddlePoint.y),
 									 cv::Range(0, noseMiddlePoint.x));
 
-	cv::Mat rightEyeArea  = _depthMap(cv::Range(0, noseMiddlePoint.y),
-									  cv::Range(noseMiddlePoint.x, _depthMap.cols));
+	cv::Mat rightEyeArea  = _depthmap(cv::Range(0, noseMiddlePoint.y),
+									  cv::Range(noseMiddlePoint.x, _depthmap.cols));
 
 
-	cv::Mat leftCheekArea = _depthMap(cv::Range(noseMiddlePoint.y, _landmarks.pos(Landmarks::NoseBottom).y),
+	cv::Mat leftCheekArea = _depthmap(cv::Range(noseMiddlePoint.y, _landmarks.pos(Landmarks::NoseBottom).y),
 									  cv::Range(0,_landmarks.pos(Landmarks::NoseCornerLeft).x));
 
-	cv::Mat noseArea = _depthMap(cv::Range(noseMiddlePoint.y, _landmarks.pos(Landmarks::NoseBottom).y),
+	cv::Mat noseArea = _depthmap(cv::Range(noseMiddlePoint.y, _landmarks.pos(Landmarks::NoseBottom).y),
 									  cv::Range(_landmarks.pos(Landmarks::NoseCornerLeft).x, _landmarks.pos(Landmarks::NoseCornerRight).x));
 
-	cv::Mat rightCheekArea = _depthMap(cv::Range(noseMiddlePoint.y, _landmarks.pos(Landmarks::NoseBottom).y),
-									  cv::Range(_landmarks.pos(Landmarks::NoseCornerRight).x, _depthMap.cols));
+	cv::Mat rightCheekArea = _depthmap(cv::Range(noseMiddlePoint.y, _landmarks.pos(Landmarks::NoseBottom).y),
+									  cv::Range(_landmarks.pos(Landmarks::NoseCornerRight).x, _depthmap.cols));
 
 
 
-	cv::Mat mouthArea = _depthMap(cv::Range(_landmarks.pos(Landmarks::NoseBottom).y,_depthMap.rows),
+	cv::Mat mouthArea = _depthmap(cv::Range(_landmarks.pos(Landmarks::NoseBottom).y,_depthmap.rows),
 								  cv::Range::all());
 
 	int eyesAreaHeight = noseMiddlePointAvg.y;
 	int leftEyeAreaWidth = noseMiddlePointAvg.x;
-	int rightEyeAreaWidth = _depthMap.cols - noseMiddlePointAvg.x;
+	int rightEyeAreaWidth = _depthmap.cols - noseMiddlePointAvg.x;
 
 	int middleAreaHeight =  _averageLandmarks.pos(Landmarks::NoseBottom).y - noseMiddlePointAvg.y;
 	int leftCheekAreaWidth = _averageLandmarks.pos(Landmarks::NoseCornerLeft).x;
-	int rightCheekAreaWidth = _depthMap.cols - _averageLandmarks.pos(Landmarks::NoseCornerRight).x;
+	int rightCheekAreaWidth = _depthmap.cols - _averageLandmarks.pos(Landmarks::NoseCornerRight).x;
 	int noseAreaWidth = _averageLandmarks.pos(Landmarks::NoseCornerRight).x - _averageLandmarks.pos(Landmarks::NoseCornerLeft).x;
-	int mouthAreaHeight = _depthMap.rows - _averageLandmarks.pos(Landmarks::NoseBottom).y;
+	int mouthAreaHeight = _depthmap.rows - _averageLandmarks.pos(Landmarks::NoseBottom).y;
 
 	cv::Mat leftEyeAreaScaled, rightEyeAreaScaled,  leftCheekAreaScaled, noseAreaScaled, rightCheekAreaScaled, mouthAreaScaled;
 
@@ -178,7 +182,8 @@ void FaceDivider::divideByMethod3(tFaceAreas &areas) {
 	resizeArea(leftCheekArea, leftCheekAreaScaled, leftCheekAreaWidth, middleAreaHeight);
 	resizeArea(noseArea, noseAreaScaled, noseAreaWidth, middleAreaHeight);
 	resizeArea(rightCheekArea, rightCheekAreaScaled, rightCheekAreaWidth, middleAreaHeight);
-	resizeArea(mouthArea, mouthAreaScaled, _depthMap.cols, mouthAreaHeight);
+	resizeArea(mouthArea, mouthAreaScaled, _depthmap.cols, mouthAreaHeight);
+
 
 	/*
 	cv::imshow("leftEyeArea",Common::norm_0_255(leftEyeAreaScaled));
@@ -188,7 +193,6 @@ void FaceDivider::divideByMethod3(tFaceAreas &areas) {
 	cv::imshow("rightCheekArea",Common::norm_0_255(rightCheekAreaScaled));
 	cv::imshow("mouthArea",Common::norm_0_255(mouthAreaScaled));
 	*/
-
 
 	areas.append(leftEyeAreaScaled);
 	areas.append(rightEyeAreaScaled);

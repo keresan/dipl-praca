@@ -56,7 +56,9 @@ SOURCES += main.cpp\
     landmarks.cpp \
     controller.cpp \
     comparator.cpp \
-    stats.cpp
+    stats.cpp \
+    scorenormalizer.cpp \
+    scorefusioner.cpp
 
 HEADERS  += mainwindow.h \
     mesh.h \
@@ -73,7 +75,9 @@ HEADERS  += mainwindow.h \
     landmarks.h \
     controller.h \
     comparator.h \
-    stats.h
+    stats.h \
+    scorenormalizer.h \
+    scorefusioner.h
 
 
 #FORMS    += mainwindow.ui

@@ -75,7 +75,7 @@ int FaceAligner::computeAlign(Mesh &still, Mesh &moving, int maxIterations, int 
 		if(test) {
 			qDebug() << iterations <<":distance: " << distance;
 		}
-		if(abs(lastDistance - distance) <= threshold) {
+		if(qAbs(lastDistance - distance) <= threshold) {
 			if( distance > Common::alignerDistanceTresholdToContinue && iterations < maxIterations ) {
 				//qDebug() << iterations <<":distance: " << distance;
 				//qDebug() << "turn back";

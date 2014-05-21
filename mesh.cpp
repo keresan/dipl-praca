@@ -628,8 +628,8 @@ Mesh Mesh::getExtract2dGrid(Mesh &grid) {
 void Mesh::getExtract2dGrid_2(Mesh &grid, Mesh &dst) {
 
     //count distance between 2 poinst of grid
-    float x = abs(grid.pointsMat(0,0) - grid.pointsMat(1,0)); //x
-    float y = abs(grid.pointsMat(0,1) - grid.pointsMat(1,1)); //x
+	float x = qAbs(grid.pointsMat(0,0) - grid.pointsMat(1,0)); //x
+	float y = qAbs(grid.pointsMat(0,1) - grid.pointsMat(1,1)); //x
     float maxDistance = sqrt(x*x + y*y)/2;
     //qDebug() << "max distance: " << maxDistance;
 
@@ -820,15 +820,15 @@ int Mesh::getClosed2dPoint(cv::Point2d point) {
     //cv::Point3f closedPoint(pointsMat(0, 0), pointsMat(0, 1), pointsMat(0, 2));
     double closedDelta;
 
-    double deltaX = abs(pointsMat(index,0) - point.x);
-    double deltaY = abs(pointsMat(index,1) - point.y);
+	double deltaX = qAbs(pointsMat(index,0) - point.x);
+	double deltaY = qAbs(pointsMat(index,1) - point.y);
     double delta = deltaX*deltaX + deltaY*deltaY;
     closedDelta = delta;
 
     for (int r = 1; r < pointsMat.rows; r++) {
 
-        deltaX = abs(pointsMat(index,0) - pointsMat(r,0));
-        deltaY = abs(pointsMat(index,1) - pointsMat(r,1));
+		deltaX = qAbs(pointsMat(index,0) - pointsMat(r,0));
+		deltaY = qAbs(pointsMat(index,1) - pointsMat(r,1));
         delta = deltaX*deltaX + deltaY*deltaY;
 
         if(delta < closedDelta) {
@@ -852,8 +852,8 @@ int Mesh::getClosed2dPoint(cv::Point2d point) {
 Mesh Mesh::create2dGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY) {
 
     VectorOfPoints newPoints;
-	int gridSizeX = abs(bottomRight.x - topLeft.x)  / stepX +1;
-	int gridSizeY = abs(bottomRight.y - topLeft.y)  / stepY +1;
+	int gridSizeX = qRound(qAbs(bottomRight.x - topLeft.x)  / stepX +1);
+	int gridSizeY = qRound(qAbs(bottomRight.y - topLeft.y)  / stepY +1);
 
 
 
@@ -881,8 +881,8 @@ Mesh Mesh::selectGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, i
     VectorOfColors newColors;
 
     cv::Point2d actualPoint(topLeft.x, topLeft.y);
-    int gridSizeX = (abs(topLeft.x) + abs(bottomRight.x)) / 2 / stepX;
-    int gridSizeY = (abs(topLeft.y) + abs(bottomRight.y)) / 2 / stepY;
+	int gridSizeX = qRound((qAbs(topLeft.x) + qAbs(bottomRight.x)) / 2.0 / stepX);
+	int gridSizeY = qRound((qAbs(topLeft.y) + qAbs(bottomRight.y)) / 2.0 / stepY);
     int r;
 
     qDebug() << "gridSizeX: " << gridSizeX;

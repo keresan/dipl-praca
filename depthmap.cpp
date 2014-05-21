@@ -118,10 +118,10 @@ bool DepthMap::mapPointToIndecies(cv::Point2d p, int &row, int &col) {
 
 	/*
 	qDebug("====[%8.2f;%8.2f]",p.x,p.y);
-	qDebug() << "size: " << abs(topLeft.x - bottomRight.x) <<  " x " <<abs(topLeft.y - bottomRight.y);
+	qDebug() << "size: " << qAbs(topLeft.x - bottomRight.x) <<  " x " <<qAbs(topLeft.y - bottomRight.y);
 	qDebug() << "dephMap RxC: " << depthMap.rows << depthMap.cols;
-	float stepX = abs(topLeft.x - bottomRight.x) / (float)(depthMap.cols-1);
-	float stepY = abs(topLeft.y - bottomRight.y) / (float)(depthMap.rows-1);
+	float stepX = qAbs(topLeft.x - bottomRight.x) / (float)(depthMap.cols-1);
+	float stepY = qAbs(topLeft.y - bottomRight.y) / (float)(depthMap.rows-1);
 	qDebug("step: %5.2f;%5.2f",stepX,stepY);
 
 	qDebug() << "rozdiel od tl.x:" << p.x - topLeft.x;
@@ -129,8 +129,8 @@ bool DepthMap::mapPointToIndecies(cv::Point2d p, int &row, int &col) {
 	*/
 
 
-	col = abs(qRound((p.x - topLeft.x) /( abs(topLeft.x - bottomRight.x)/(float)(depthMap.cols-1))));
-	row = abs(qRound((p.y - topLeft.y) /( abs(topLeft.y - bottomRight.y)/(float)(depthMap.rows-1))));
+	col = abs(qRound((p.x - topLeft.x) /( qAbs(topLeft.x - bottomRight.x)/(float)(depthMap.cols-1))));
+	row = abs(qRound((p.y - topLeft.y) /( qAbs(topLeft.y - bottomRight.y)/(float)(depthMap.rows-1))));
 
 
 	//qDebug() << "RxS:" << row << col;
@@ -293,7 +293,7 @@ void DepthMap::policing(float min, float max, bool shiftToZero) {
 
 			/* nebecpecne !!!! potom tvar od tej istej osoby moze mat ine Z suradnice - zle sa porovna !!
 			if(shiftToZero) {
-				z += abs(min) + 1;
+				z += qAbs(min) + 1;
 			}
 			*/
 
@@ -301,7 +301,7 @@ void DepthMap::policing(float min, float max, bool shiftToZero) {
 
 			/*
 			else {
-				depthMap.at<float>(r, c) =  (z+abs(min))/255.0;//(abs(min)+abs(max));
+				depthMap.at<float>(r, c) =  (z+qAbs(min))/255.0;//(qAbs(min)+qAbs(max));
 
 				qDebug() <<r <<c << ":"<< z << "->" << depthMap.at<float>(r, c);
 			}

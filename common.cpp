@@ -19,19 +19,20 @@ const cv::Point2d Common::depthMapBR = cv::Point2d(60,-40);
 const int Common::depthMapPixelsX = 120*2;
 const int Common::depthMapPixelsY = 140*2;
 */
-
 const cv::Point2d Common::depthMapTL = cv::Point2d(-80,100);
 const cv::Point2d Common::depthMapBR = cv::Point2d(80,-70);
 const int Common::depthMapPixelsX = 160*2;
 const int Common::depthMapPixelsY = 170*2;
-//const cv::Rect Common::faceCropArea = cv::Rect(50,30,220,220);
-const cv::Rect Common::faceCropArea = cv::Rect(50,30,220,240); //orig
+const int Common::faceWidth = 100;
+const cv::Rect Common::faceCropArea = cv::Rect(60,50,200,190); //treba zmenit aj detectNoseTipAreaStartY
+//const cv::Rect Common::faceCropArea = cv::Rect(50,30,220,240); //orig
 
 const QString Common::pathToWarehouse = "/Users/martin/Documents/[]sklad/frgc_data/";
 const QString Common::pathToSubspacesDir = Common::pathToWarehouse + "subspaces/";
 const QString Common::pathToComResultDir = Common::pathToWarehouse + "compare_result/";
+const QString Common::pathToScnData = Common::pathToWarehouse + "score_data_init/";
 
-const QString Common::pathToDepthmapF2003 = Common::pathToWarehouse + "depthmap_f2003/";
+const QString Common::pathToDepthmapF2003 = Common::pathToWarehouse + "depthmap_f2003_2/";
 const QString Common::pathToFall2003 = Common::pathToWarehouse + "Fall2003range/";
 const QString Common::pathToDepthmapS2003 = Common::pathToWarehouse + "depthmap_s2003/";
 const QString Common::pathToSpring2003 = "/Volumes/data/sklad/FRGC_databaza/Spring2003range/";
@@ -40,9 +41,9 @@ const QString Common::pathToSpring2004 = "/Volumes/data/sklad/FRGC_databaza/Spri
 
 const QString Common::pathToAverageFace = Common::pathToWarehouse + "averageFace/averageFace_final_norm_4_4.obj";
 const QString Common::pathToAverageDepthmap = Common::pathToWarehouse + "averageFace/averageFace_final.xml";
+
 const QString Common::wrongDpSuffixLabel = "_wrong_dp";
 const QString Common::wrongLmSuffixLabel = "_wrong_lm";
-
 
 const int Common::alignerFindBestStartHalfRangeX = 20;//50;
 const int Common::alignerFindBestStartHalfRangeY = 20;//80;
@@ -54,7 +55,7 @@ const int Common::alignerDistanceTresholdToContinue = 8000;
 
 const QString Common::depthmapIterationsCountLabel = "iterations_to_align";
 const QString Common::depthmapDistanceFromModelLabel = "distance_from_model";
-const QString Common::depthmapDepthmapLabel = "depthamp";
+const QString Common::depthmapDepthmapLabel = "depthmap"; //povodne bolo deptamp !!!!!!!!!!
 const double Common::depthmapInitValue = -999.0;
 
 const QString Common::lmPathToLmDir = Common::pathToWarehouse + "landmarks/";
@@ -65,10 +66,10 @@ const int Common::lmDeltaFromAvg = 25;
 
 const QString Common::pathToAverageLm = Common::lmPathToLmDir + Common::lmAvgLmLabel;
 
-const QString Common::eigenMethot0Label = "method-0";
-const QString Common::eigenMethot1Label = "method-1";
-const QString Common::eigenMethot2Label = "method-2";
-const QString Common::eigenMethot3Label = "method-3";
+const QString Common::eigenMethod0Label = "method-0";
+const QString Common::eigenMethod1Label = "method-1";
+const QString Common::eigenMethod2Label = "method-2";
+const QString Common::eigenMethod3Label = "method-3";
 
 const QString Common::eigenEigenvectorLabel = "eigenvectors";
 const QString Common::eigenEigenvaluesLabel = "eigenvalues";
@@ -76,7 +77,8 @@ const QString Common::eigenMeanLabel = "mean";
 const QString Common::vectorSizeLabel = "array-size";
 const QString Common::subVectorSizeLabel = "sub-vector-size";
 
-const int Common::detectNoseTipAreaStartY = 90;
+// const int Common::detectNoseTipAreaStartY = 90; //orig
+const int Common::detectNoseTipAreaStartY = 70;
 const int Common::detectNoseTipAreaHeight = 80;
 const int Common::detectEyeAreaHalfHeight = 40;
 const int Common::detectEyeAreaWidth = 60;
@@ -90,18 +92,67 @@ const double Common::detectHightPassFilterValue = 4.0;
 
 
 const QString Common::cmpResultLabel = "result";
-const QString Common::cmpResultIdenticMethod0Label = "method0-identic-1.xml";
-const QString Common::cmpResultDiffMethod0Label = "method0-diff-1.xml";
-const QString Common::cmpResultIdenticMethod1Label = "method1-identic-1.xml";
-const QString Common::cmpResultDiffMethod1Label = "method1-diff-1.xml";
-const QString Common::cmpResultIdenticMethod2Label = "method2-identic-1.xml";
-const QString Common::cmpResultDiffMethod2Label = "method2-diff-1.xml";
-const QString Common::cmpResultIdenticMethod3Label = "method3-identic-1.xml";
-const QString Common::cmpResultDiffMethod3Label = "method3-diff-1.xml";
+const QString Common::cmpResultGenuineMethod0Label = "method0-genuine-1.xml";
+const QString Common::cmpResultImposterMethod0Label = "method0-imposter-1.xml";
+const QString Common::cmpResultGenuineMethod1Label = "method1-genuine-1.xml";
+const QString Common::cmpResultImposterMethod1Label = "method1-imposter-1.xml";
+const QString Common::cmpResultGenuineMethod2Label = "method2-genuine-1.xml";
+const QString Common::cmpResultImposterMethod2Label = "method2-imposter-1.xml";
+const QString Common::cmpResultGenuineMethod3Label = "method3-genuine-1.xml";
+const QString Common::cmpResultImposterMethod3Label = "method3-imposter-1.xml";
 
+const QString Common::cmpResultArenaGenuineMethod0Label = "method0-arena-genuine-1.xml";
+const QString Common::cmpResultArenaImposterMethod0Label = "method0-arena-imposter-1.xml";
+const QString Common::cmpResultArenaGenuineMethod1Label = "method1-arena-genuine-1.xml";
+const QString Common::cmpResultArenaImposterMethod1Label = "method1-arena-imposter-1.xml";
+const QString Common::cmpResultArenaGenuineMethod2Label = "method2-arena-genuine-1.xml";
+const QString Common::cmpResultArenaImposterMethod2Label = "method2-arena-imposter-1.xml";
+const QString Common::cmpResultArenaGenuineMethod3Label = "method3-arena-genuine-1.xml";
+const QString Common::cmpResultArenaImposterMethod3Label = "method3-arena-imposter-1.xml";
 
-const QString Common::cmpResultIdenticMethod1Label_2 = "method1-identic-2.xml";
-const QString Common::cmpResultDiffMethod1Label_2 = "method1-diff-2.xml";
+const QString Common::cmpResultBothGenuineMethod0Label = "method0-both-genuine-1.xml";
+const QString Common::cmpResultBothImposterMethod0Label = "method0-both-imposter-1.xml";
+const QString Common::cmpResultBothGenuineMethod1Label = "method1-both-genuine-1.xml";
+const QString Common::cmpResultBothImposterMethod1Label = "method1-both-imposter-1.xml";
+const QString Common::cmpResultBothGenuineMethod2Label = "method2-both-genuine-1.xml";
+const QString Common::cmpResultBothImposterMethod2Label = "method2-both-imposter-1.xml";
+const QString Common::cmpResultBothGenuineMethod3Label = "method3-both-genuine-1.xml";
+const QString Common::cmpResultBothImposterMethod3Label = "method3-both-imposter-1.xml";
+
+const QString Common::cmpResultGenuineMethod1Label_2 = "method1-genuine-2.xml";
+const QString Common::cmpResultImposterMethod1Label_2 = "method1-imposter-2.xml";
+
+const QString Common::scnArrayLabel = "array";
+
+const QString Common::scnStdDevLabel = "standard-deviation";
+const QString Common::scnColumnLabel = "column";
+const QString Common::scnMeanLabel = "arithmetic-mean";
+const QString Common::scnMinLabel = "min-value";
+const QString Common::scnMaxLabel = "max-value";
+
+const QString Common::statErrLabel = "equal-error-rate";
+const QString Common::statHistGenuineLabel = "hist-genuine";
+const QString Common::statHistImposterLabel = "hist-imposter";
+
+const QString Common::statEerMethod0Label = "method0-eer.xml";
+const QString Common::statEerMethod1Label = "method1-eer.xml";
+const QString Common::statEerMethod2Label = "method2-eer.xml";
+const QString Common::statEerMethod3Label = "method3-eer.xml";
+
+const QString Common::statEerArenaMethod0Label = "method0-eer-arena.xml";
+const QString Common::statEerArenaMethod1Label = "method1-eer-arena.xml";
+const QString Common::statEerArenaMethod2Label = "method2-eer-arena.xml";
+const QString Common::statEerArenaMethod3Label = "method3-eer-arena.xml";
+
+const QString Common::scnStatMethod0Label = "method0-scn.xml";
+const QString Common::scnStatMethod1Label = "method1-scn.xml";
+const QString Common::scnStatMethod2Label = "method2-scn.xml";
+const QString Common::scnStatMethod3Label = "method3-scn.xml";
+
+const QString Common::scnStatArenaMethod0Label = "method0-scn-arena.xml";
+const QString Common::scnStatArenaMethod1Label = "method1-scn-arena.xml";
+const QString Common::scnStatArenaMethod2Label = "method2-scn-arena.xml";
+const QString Common::scnStatArenaMethod3Label = "method3-scn-arena.xml";
 
 /*
 void Common::printMatrix(CvMat *m)
@@ -139,8 +190,6 @@ void Common::delay(int msec) {
 
 void Common::loadFilesPathFromDir(QString pathToDir, QStringList &list, const QStringList &filters) {
 
-
-
 	QDir dir;
 	dir.setPath(pathToDir);
 	dir.setFilter(QDir::Files | QDir::NoSymLinks);
@@ -177,8 +226,11 @@ void Common::loadDepthmapProcess(QString fileName, QString dirPath, cv::Mat &dep
 
 	storage.release();
 
-	assert(depthmap.rows > 0);
-	assert(depthmap.cols > 0);
+	if(depthmap.rows == 0 || depthmap.cols == 0) {
+		qDebug() << path;
+		throw std::runtime_error("empty depthmap");
+	}
+
 
 	processLoadedMap(depthmap, averageFace);
 
@@ -208,6 +260,13 @@ void Common::processLoadedMap(cv::Mat &depthmap, cv::Mat &averageFace) {
 	//blur
 	cv::medianBlur(depthmap,depthmap,5);
 
+	//blur gaussian
+
+	for(int i = 0; i < 2; i++) {
+		cv::Size size(3,3);
+		cv::GaussianBlur(depthmap, depthmap,size,0,0);
+	}
+
 }
 
 void Common::saveDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap, double distance, int iterations) {
@@ -224,7 +283,7 @@ void Common::saveDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap, 
 }
 
 
-void Common::saveCmpResult(QString fileName, QString dirPath, cv::Mat &resultMatrix) {
+void Common::saveCmpResult(cv::Mat &resultMatrix, QString fileName, QString dirPath) {
 	QDir dir(dirPath);
 	QString path = dir.absoluteFilePath(fileName);
 
@@ -236,7 +295,7 @@ void Common::saveCmpResult(QString fileName, QString dirPath, cv::Mat &resultMat
 	storage.release();
 }
 
-void Common::loadCmpResult(QString fileName, QString dirPath, cv::Mat &resultMatrix) {
+void Common::loadCmpResult(cv::Mat &resultMatrix, QString fileName, QString dirPath) {
 	QDir dir(dirPath);
 	QString path = dir.absoluteFilePath(fileName);
 
@@ -247,133 +306,6 @@ void Common::loadCmpResult(QString fileName, QString dirPath, cv::Mat &resultMat
 
 }
 
-/*
-bool Common::matrixContainsNan(const Matrix &m)
-{
-	int rows = m.rows;
-	int cols = m.cols;
-	for (int r = 0; r < rows; r++)
-	{
-		for (int c = 0; c < cols; c++)
-		{
-            double val = m(r,c);
-			if (val != val)
-			{
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-void Common::savePlot(const QVector<double> &x, const QVector<double> &y, const QVector<double> &z, const QString &path)
-{
-    int n = x.count();
-    assert(n == y.count());
-    assert(n == z.count());
-
-    QFile file(path);
-    file.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream out(&file);
-
-    for (int i = 0; i < n; i++)
-    {
-        out << x[i] << " " << y[i] << " " << z[i] << "\n";
-    }
-}
-
-void Common::savePlot(const QVector<cv::Point3d> &values, const QString &path, bool append)
-{
-    int n = values.count();
-
-    QFile file(path);
-
-    if (append)
-    {
-        file.open(QIODevice::Append);
-    }
-    else
-    {
-        file.open(QIODevice::WriteOnly);
-    }
-
-    QTextStream out(&file);
-
-    if (append)
-    {
-        out << "\n";
-    }
-
-    for (int i = 0; i < n; i++)
-    {
-        out << values[i].x << " " << values[i].y << " " << values[i].z << "\n";
-    }
-}
-
-void Common::savePlot(const QVector<double> &x, const QVector<double> &y, const QString &path)
-{
-    int n = x.count();
-    assert(n == y.count());
-
-    QFile file(path);
-    file.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream out(&file);
-
-    for (int i = 0; i < n; i++)
-    {
-        out << x[i] << " " << y[i] << "\n";
-    }
-}
-
-void Common::savePlot(const QVector<double> values[], int axisCount, const QString &path)
-{
-    int n = values[0].count();
-
-    QFile file(path);
-    file.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream out(&file);
-
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < axisCount; j++)
-        {
-            out << values[j][i] << " ";
-        }
-
-        out <<  "\n";
-    }
-}
-
-void Common::saveMatrix(const Matrix &m, const QString &path)
-{
-    cv::FileStorage storage(path.toStdString(), cv::FileStorage::WRITE);
-    storage << "m" << m;
-}
-
-Matrix Common::loadMatrix(const QString &path)
-{
-    cv::FileStorage storage(path.toStdString(), cv::FileStorage::READ);
-    Matrix m;
-    storage["m"] >> m;
-    return m;
-}
-
-void Common::saveMap(QMap<double, double> &map, const QString &path)
-{
-    QFile file(path);
-    file.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream out(&file);
-
-    QList<double> keys = map.keys();
-    for (int i = 0; i < keys.count(); i++)
-    {
-        double key = keys[i];
-        double value = map[key];
-
-        out << key << " " << value << "\n";
-    }
-}
-*/
 double euclideanDistance(const cv::Point3d &p1, const cv::Point3d &p2)
 {
     double dx = p1.x-p2.x;
@@ -388,21 +320,6 @@ double euclideanDistance(const cv::Point &p1, const cv::Point &p2)
     double dy = p1.y-p2.y;
     return sqrt(dx*dx + dy*dy);
 }
-/*
-double Common::absSum(Matrix &m)
-{
-    double sum = 0;
-    for (int r = 0; r < m.rows; r++)
-    {
-        for (int c = 0; c < m.cols; c++)
-        {
-            double val = m(r,c);
-            sum += fabs(val);
-        }
-    }
-    return sum;
-}
-*/
 
 /**
  * @brief Common::delaunayTriangulation - Delaunay triangulation
@@ -511,15 +428,18 @@ cv::Mat Common::norm_0_255(cv::InputArray _src) {
 
 void Common::replaceInitValues(cv::Mat &depthmap, cv::Mat &src) {
 
-	assert(depthmap.rows == src.rows);
-	assert(depthmap.cols == src.cols);
+	if(depthmap.rows != src.rows && depthmap.cols != src.cols) {
+		throw std::runtime_error("depthmap sizes not equal");
+	}
 
 	for(int r = 0; r < depthmap.rows; r++) {
-		for(int c = 0; c < depthmap.rows; c++) {
+		for(int c = 0; c < depthmap.cols; c++) {
 			if(depthmap.at<float>(r,c) < Common::depthmapInitValue+2) {
+
 				float replaceValue = src.at<float>(r,c);
 				if(replaceValue < Common::depthmapInitValue+2) {
-					qDebug() << "replaceInitValues():" << r << "x" << c << "=" << replaceValue;
+					throw std::runtime_error("replaceInitValues(): unknown pixel value in source depthmap");
+					//qDebug() << "replaceInitValues():" << r << "x" << c << "=" << replaceValue;
 
 				} else {
 					depthmap.at<float>(r,c) = replaceValue;
@@ -531,7 +451,7 @@ void Common::replaceInitValues(cv::Mat &depthmap, cv::Mat &src) {
 }
 
 
-bool Common::isIdenticalPerson(QString baseName1, QString baseName2) {
+bool Common::isGenuinePerson(QString baseName1, QString baseName2) {
 
 
 
@@ -547,5 +467,21 @@ bool Common::isIdenticalPerson(QString baseName1, QString baseName2) {
 	} else {
 		return false;
 	}
+
+}
+
+/**
+ * @brief Common::convertToMatrix - convert cector of vector to matrix
+ * @param src
+ * @param dst
+ */
+void Common::convertToMatrix(QVector<QVector<float> > &src, cv::Mat &dst) {
+
+	dst = cv::Mat(src.size(), src.first().size(), CV_32F);
+
+	for(int i=0; i<dst.rows; i++)
+		 for(int j=0; j<dst.cols; j++)
+			  dst.at<float>(i, j) = src.at(i).at(j);
+
 
 }

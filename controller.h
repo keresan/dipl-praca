@@ -27,12 +27,22 @@ public:
 
 	bool detectLandmarks(const cv::Mat &depthmap, Landmarks &landmarks);
 
-	void processFace(cv::Mat &depthmap, QString label,
+	void processFace(cv::Mat &depthmap,
+					 QString label,
 					 Landmarks &averageLandmarks,
 					 bool &result,
 					 FaceDivider::DivideMethod method,
 					 EigenFace &subspaces,
-					 tFeatures &featuresVector);
+					 tFeatures &featuresVector,
+					 bool showBackProjections = false);
+
+
+	void procesFaceArena(cv::Mat &depthmap,
+						 QString label,
+						 Landmarks &averageLandmarks,
+						 bool &result,
+						 FaceDivider::DivideMethod method,
+						 QVector<cv::Mat> &featuresVector);
 
 
 };

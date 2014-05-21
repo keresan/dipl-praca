@@ -64,3 +64,15 @@ void Landmarks::load(QString fileName, QString loadPath) {
 
 	storage.release();
 }
+
+void Landmarks::scale(float scaleFactor) {
+	if(scaleFactor <= 0) {
+		throw std::runtime_error("scale(): scaleFactor must by positive");
+	}
+
+	for(int i = 0; i < _landmarks.size(); i++) {
+		_landmarks[i].first.x = qRound( _landmarks.at(i).first.x * scaleFactor);
+		_landmarks[i].first.y = qRound( _landmarks.at(i).first.y * scaleFactor);
+
+	}
+}

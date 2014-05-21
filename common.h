@@ -36,7 +36,7 @@ public:
 	static const QString pathToDepthmapF2003,pathToFall2003,pathToSpring2003, pathToDepthmapS2003, pathToDepthmapS2004,pathToSpring2004;
 
 	static const QString pathToSubspacesDir, pathToComResultDir;
-	static const QString pathToAverageFace, pathToAverageDepthmap,pathToAverageLm;
+	static const QString pathToAverageFace, pathToAverageDepthmap,pathToAverageLm, pathToScnData;
 	static const QString wrongDpSuffixLabel, wrongLmSuffixLabel;
 	static const QString vectorSizeLabel, subVectorSizeLabel;
 	static const int lmDeltaFromAvg;
@@ -47,6 +47,7 @@ public:
 	static const int alignerDistanceTresholdToContinue;
 
 	static const cv::Rect faceCropArea;
+	static const int faceWidth;
 	static const int detectEyeAreaWidth, detectEyeAreaHalfHeight;
 	static const int detectNoseCornersAreaHalfWidth, detectNoseCornersAreaHalfHeight;
 	static const int detectNoseBottomAreaHalfWidth, detectNoseBottomAreaHeight;
@@ -58,7 +59,7 @@ public:
 
 	static const QString lmPathToLmDir, lmAvgLmLabel, lmSavePosLabel, lmSaveIsLabel;
 
-	static const QString eigenMethot0Label, eigenMethot1Label,eigenMethot2Label,eigenMethot3Label;
+	static const QString eigenMethod0Label, eigenMethod1Label,eigenMethod2Label,eigenMethod3Label;
 	static const QString eigenEigenvectorLabel, eigenEigenvaluesLabel, eigenMeanLabel;
 
 	static const double detectHightPassFilterValue;
@@ -66,11 +67,54 @@ public:
 	static const QString depthmapIterationsCountLabel, depthmapDistanceFromModelLabel, depthmapDepthmapLabel;
 
 	static const QString cmpResultLabel;
-	static const QString cmpResultIdenticMethod0Label, cmpResultDiffMethod0Label;
-	static const QString cmpResultIdenticMethod1Label, cmpResultDiffMethod1Label;
-	static const QString cmpResultIdenticMethod1Label_2, cmpResultDiffMethod1Label_2;
-	static const QString cmpResultIdenticMethod2Label, cmpResultDiffMethod2Label;
-	static const QString cmpResultIdenticMethod3Label, cmpResultDiffMethod3Label;
+	static const QString cmpResultGenuineMethod0Label, cmpResultImposterMethod0Label;
+	static const QString cmpResultGenuineMethod1Label, cmpResultImposterMethod1Label;
+	static const QString cmpResultGenuineMethod1Label_2, cmpResultImposterMethod1Label_2;
+	static const QString cmpResultGenuineMethod2Label, cmpResultImposterMethod2Label;
+	static const QString cmpResultGenuineMethod3Label, cmpResultImposterMethod3Label;
+
+	static const QString cmpResultArenaGenuineMethod0Label, cmpResultArenaImposterMethod0Label;
+	static const QString cmpResultArenaGenuineMethod1Label, cmpResultArenaImposterMethod1Label;
+	static const QString cmpResultArenaGenuineMethod2Label, cmpResultArenaImposterMethod2Label;
+	static const QString cmpResultArenaGenuineMethod3Label, cmpResultArenaImposterMethod3Label;
+
+	static const QString cmpResultBothGenuineMethod0Label, cmpResultBothImposterMethod0Label;
+	static const QString cmpResultBothGenuineMethod1Label, cmpResultBothImposterMethod1Label;
+	static const QString cmpResultBothGenuineMethod2Label, cmpResultBothImposterMethod2Label;
+	static const QString cmpResultBothGenuineMethod3Label, cmpResultBothImposterMethod3Label;
+
+
+	static const QString scnArrayLabel;
+	static const QString scnColumnLabel;
+	static const QString scnMeanLabel;
+	static const QString scnStdDevLabel;
+	static const QString scnMinLabel;
+	static const QString scnMaxLabel;
+
+	static const QString scnStatMethod0Label;
+	static const QString scnStatMethod1Label;
+	static const QString scnStatMethod2Label;
+	static const QString scnStatMethod3Label;
+
+	static const QString scnStatArenaMethod0Label;
+	static const QString scnStatArenaMethod1Label;
+	static const QString scnStatArenaMethod2Label;
+	static const QString scnStatArenaMethod3Label;
+
+	static const QString statErrLabel;
+	static const QString statHistGenuineLabel;
+	static const QString statHistImposterLabel;
+	static const QString statEerMethod0Label;
+	static const QString statEerMethod1Label;
+	static const QString statEerMethod2Label;
+	static const QString statEerMethod3Label;
+
+	static const QString statEerArenaMethod0Label;
+	static const QString statEerArenaMethod1Label;
+	static const QString statEerArenaMethod2Label;
+	static const QString statEerArenaMethod3Label;
+
+
 
 	static cv::Mat norm_0_255(cv::InputArray _src);
 
@@ -81,30 +125,17 @@ public:
 	static void loadDepthmapProcess(QString fileName, QString dirPath, cv::Mat &depthmap, cv::Mat &averageFace,  double &distance, int &iterations);
 	static void saveDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap,  double distance, int iterations);
 
-	static void saveCmpResult(QString fileName, QString dirPath, cv::Mat &resultMatrix);
-	static void loadCmpResult(QString fileName, QString dirPath, cv::Mat &resultMatrix);
+	static void saveCmpResult(cv::Mat &resultMatrix, QString fileName, QString dirPath = Common::pathToComResultDir);
+	static void loadCmpResult(cv::Mat &resultMatrix, QString fileName, QString dirPath = Common::pathToComResultDir);
 
 	static void processLoadedMap(cv::Mat &depthmap, cv::Mat &averageFace);
 
 	static void replaceInitValues(cv::Mat &depthmap, cv::Mat &src);
 
-	static bool isIdenticalPerson(QString baseName1, QString baseName2);
+	static bool isGenuinePerson(QString baseName1, QString baseName2);
 
+	static void convertToMatrix(QVector<QVector<float> > &src, cv::Mat &dst);
 
-
-
-    /*
-    static void printMatrix(CvMat *m);
-
-    static bool matrixContainsNan(const Matrix &m);
-    static void savePlot(const QVector<double> &x, const QVector<double> &y, const QVector<double> &z, const QString &path);
-    static void savePlot(const QVector<cv::Point3d> &values, const QString &path, bool append);
-    static void savePlot(const QVector<double> &x, const QVector<double> &y, const QString &path);
-    static void savePlot(const QVector<double> values[], int axisCount, const QString &path);
-    static void saveMatrix(const Matrix &m, const QString &path);
-    static void saveMap(QMap<double, double> &map, const QString &path);
-    static Matrix loadMatrix(const QString &path);
-    */
 };
 
 double euclideanDistance(const cv::Point3d &p1, const cv::Point3d &p2);

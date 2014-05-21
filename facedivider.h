@@ -28,9 +28,11 @@ public:
 
 	void resizeArea(cv::Mat &src, cv::Mat &dst, int height, int width);
 
+	void setResizeParam(int finalWidth);
+
 
 private:
-	cv::Mat _depthMap;
+	cv::Mat _depthmap;
 	Landmarks _landmarks;
 	Landmarks _averageLandmarks;
 

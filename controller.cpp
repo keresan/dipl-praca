@@ -28,9 +28,7 @@ void Controller::averageLandmarks(QVector<cv::Mat> &faces, QStringList &labels, 
 					landmarkVector[i].first += actualLandmarkVector.at(i).first;
 					landmarkVector[i].second = true;
 				}
-
 			}
-
 		} else {
 			qDebug() << labels.at(i) << "skipped";
 		}
@@ -61,6 +59,8 @@ void Controller::createPcaSubspaces(QVector<cv::Mat> &faces, Landmarks &avgLandm
 			//divide face to areas
 			tFaceAreas areas;
 			FaceDivider faceDivider(faces[i],landmarks,avgLandmarks);
+			faceDivider.setResizeParam(Common::faceWidth);
+
 			faceDivider.divide(method, areas);
 
 			areasVector.append(areas);
@@ -93,7 +93,22 @@ void Controller::processFace(cv::Mat &depthmap,
 							 bool &result,
 							 FaceDivider::DivideMethod method,
 							 EigenFace &subspaces,
-							 tFeatures &featuresVector) {
+							 tFeatures &featuresVector,
+							 bool showBackProjections) {
+
+
+	if (depthmap.rows == 0 || depthmap.cols == 0) {
+		throw std::runtime_error("processFace(): empty depthmap");
+	}
+
+	double min,max;
+	cv::minMaxLoc(depthmap, &min, &max);
+
+	if(min < Common::depthmapInitValue+2) {
+		throw std::runtime_error("unknown values in depthmap");
+	}
+
+	//qDebug() << label << "min max:" << min << max;
 
 	//detect landmarks
 	LandmarkDetector detector(depthmap);
@@ -105,19 +120,16 @@ void Controller::processFace(cv::Mat &depthmap,
 		return;
 	}
 
-
-	//DepthMap::showAllLandmarks(depthmap,landmarks,label);
-
 	//qDebug() << "noseTip value: " << depthmap.at<float>(landmarks.pos(Landmarks::NoseTip).y, landmarks.pos(Landmarks::NoseTip).x);
 
-	//double min,max;
-	//cv::minMaxLoc(depthmap, &min, &max);
 
-	//qDebug() <<"min max:" << min << max;
+
 
 	//divide
 	tFaceAreas areas;
 	FaceDivider faceDivider(depthmap, landmarks, averageLandmarks);
+
+	faceDivider.setResizeParam(Common::faceWidth);
 	faceDivider.divide(method,areas);
 
 	/*
@@ -126,23 +138,83 @@ void Controller::processFace(cv::Mat &depthmap,
 	}
 
 	*/
-	//project to subspace
 
+	//project to pca subspace
 	subspaces.project(areas,featuresVector);
 
-	//show back projection of face areas
-	/*
-	QVector<cv::Mat> back;
-	subspaces.backProject(featuresVector, back);
 
-	for(int i = 0; i < back.size(); i++) {
-		//recontruct
-		cv::Mat grayscale = Common::norm_0_255(back.at(i).reshape(1, areas.at(i).rows));
-		cv::imshow("projection "+std::to_string(i), grayscale);
+	//print feaures vector
+	//qDebug() << label;
+	for(int c = 0; c < featuresVector.cols; c++) {
+		//qDebug("%3d: %10.2f",c, featuresVector.at<float>(0,c));
 	}
-	*/
 
+	//show back projection of face areas
+
+	if(showBackProjections) {
+		DepthMap::showAllLandmarks(depthmap,landmarks,label);
+
+
+		QVector<cv::Mat> back;
+		subspaces.backProject(featuresVector, back);
+
+		for(int i = 0; i < back.size(); i++) {
+			//recontruct
+			cv::Mat grayscale = Common::norm_0_255(back.at(i).reshape(1, areas.at(i).rows));
+			cv::imshow(label.toStdString()+" "+std::to_string(i), grayscale);
+		}
+	}
+	result = true;
 }
+
+void Controller::procesFaceArena(cv::Mat &depthmap,
+								 QString label,
+								 Landmarks &averageLandmarks,
+								 bool &result,
+								 FaceDivider::DivideMethod method,
+								 QVector<cv::Mat>  &featuresVector) {
+
+	if (depthmap.rows == 0 || depthmap.cols == 0) {
+		throw std::runtime_error("processFace(): empty depthmap");
+	}
+	//detect landmarks
+	LandmarkDetector detector(depthmap);
+	Landmarks landmarks;
+
+	bool res = detector.detectAll(landmarks);
+	if(!res) {
+		result = false;
+		return;
+	}
+
+	//divide
+	tFaceAreas areas;
+	FaceDivider faceDivider(depthmap, landmarks, averageLandmarks);
+
+	faceDivider.setResizeParam(Common::faceWidth);
+	faceDivider.divide(method,areas);
+
+	//create feature vector
+	for(int i=0; i < areas.size(); i++) {
+		cv::Mat projection;
+		cv::Mat src = areas.at(i);
+		//qDebug() << "area " << i << ":" << areas.at(i).rows << "x" <<  areas.at(i).cols;
+
+		EigenFace::toRowMatrix(src,projection,depthmap.type());
+
+		//qDebug() << "projection " << i << ":" << projection.rows << "x" <<  projection.cols;
+
+		featuresVector.append(projection);
+
+		//reshape
+		//int rows = areas.at(i).rows;
+		//cv::Mat back = projection.reshape(1,rows);
+		//cv::imshow("reshape"+label.toStdString()+std::to_string(i), Common::norm_0_255(back));
+	}
+
+	result = true;
+}
+
 
 void Controller::createDepthmap(Mesh &face, Mesh &modelFace, cv::Mat &depthmap, double &distance, int &iterations) {
 

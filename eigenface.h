@@ -6,7 +6,7 @@
 
 /**
  * syntakticky je to to iste, ale samantika je ina !
- * VectorOfFaces - vektor tvari, kde kazda tvar sa sklada z jedotlivych oblasti
+ * VectorOfFaces - vektor tvari, kde kazda tvar sa sklada z jednotlivych oblasti
  * VectorOfAreas - vektor vektorov oblasti, kde v danom vektore je rovnaka oblast tvare)
  */
 typedef QVector<tFaceAreas> VectorOfDivideFaces;
@@ -42,9 +42,13 @@ public:
 
 	void backProject(tFeatures &features, QVector<cv::Mat> &result);
 
+	void test();
+
 private:
 	void convertToVectorOfAreas(VectorOfDivideFaces &src, VectorOfDivideAreas &dst);
 	void convertToVectorOfFaces(VectorOfDivideAreas &src, VectorOfDivideFaces &dst);
+
+
 
 
 	QVector<cv::PCA> _pcaSubspaces;

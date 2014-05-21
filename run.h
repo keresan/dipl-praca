@@ -11,8 +11,11 @@
 #include "facedivider.h"
 #include "controller.h"
 #include "stats.h"
+#include "scorenormalizer.h"
+#include "scorefusioner.h"
 
 #include <QTime>
+
 
 /**
  * @brief The Run class - run batch of process
@@ -21,6 +24,7 @@ class Run {
 public:
     Run(QMainWindow *parent = 0);
 
+	void test_eigen();
     void test_selectGrid();
 
     void test_show();
@@ -56,6 +60,7 @@ public:
 
 
 	void compareFaces();
+	void compareFacesInit();
 
 	void init();
 
@@ -66,6 +71,16 @@ public:
 
     GLWidget *window;
     QMainWindow *parent;
+
+private:
+	EigenFace _eigenfaceMethod0;
+	FaceDivider::DivideMethod _divideMethod;
+
+	Comparator::CompareMethod _compareMethod;
+
+	bool _isArena;
+	bool _isEigenface;
+	bool _isNormalize;
 };
 
 

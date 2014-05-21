@@ -34,6 +34,8 @@ public:
 
 	VectorOfLandmarks getLandmarks();
 
+	void scale(float scaleFactor);
+
 private:
 	VectorOfLandmarks _landmarks;
 

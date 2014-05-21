@@ -614,14 +614,14 @@ bool LandmarkDetector::checkLandmarks(Landmarks &srcLandmarks, Landmarks &refLan
 	for(int i =0; i < src.size(); i++) {
 
 		if(src[i].second ) {
-			//qDebug() << i << "distance x:" << abs(src[i].first.x - ref[i].first.x);
-			//qDebug() << i << "distance y:" << abs(src[i].first.y - ref[i].first.y);
+			//qDebug() << i << "distance x:" << qAbs(src[i].first.x - ref[i].first.x);
+			//qDebug() << i << "distance y:" << qAbs(src[i].first.y - ref[i].first.y);
 
-			if(abs(src[i].first.x - ref[i].first.x) > Common::lmDeltaFromAvg) {
+			if(qAbs(src[i].first.x - ref[i].first.x) > Common::lmDeltaFromAvg) {
 				return false;
 			}
 
-			if(abs(src[i].first.y - ref[i].first.y) > Common::lmDeltaFromAvg) {
+			if(qAbs(src[i].first.y - ref[i].first.y) > Common::lmDeltaFromAvg) {
 				return false;
 			}
 		}

@@ -11,7 +11,6 @@ void EigenFace::pcaTransformation(QVector<cv::Mat> &images, QStringList &labels)
 	cv::Mat testImage = toRowMatrix(testVector, CV_32FC1);
 	images.pop_back();
 
-
 	cv::Mat data = toRowMatrix(images, CV_32FC1);
 	cv::PCA pca(data, cv::noArray(), CV_PCA_DATA_AS_ROW);
 
@@ -117,7 +116,14 @@ cv::Mat EigenFace::toRowMatrix(QVector<cv::Mat> &src, int rtype, double alpha, d
 }
 
 void EigenFace::toRowMatrix(cv::Mat &src, cv::Mat &dst, int rtype, double alpha, double beta) {
-	src.reshape(1,1).convertTo(dst,rtype,alpha,beta);
+
+	if(src.isContinuous()) {
+		src.reshape(1,1).convertTo(dst,rtype,alpha,beta);
+	} else {
+		src.clone().reshape(1,1).convertTo(dst,rtype,alpha,beta);
+	}
+
+	//src.reshape(1,1).convertTo(dst,rtype,alpha,beta);
 }
 
 void EigenFace::train(VectorOfDivideAreas &vector, int numberOfComponents) {
@@ -128,11 +134,15 @@ void EigenFace::train(VectorOfDivideAreas &vector, int numberOfComponents) {
 
 	for(int i = 0; i < vectorOfAreas.size(); i++) {
 			cv::Mat matrix = toRowMatrix(vectorOfAreas[i],CV_32F);
+
 			cv::PCA pca(matrix, cv::noArray(),CV_PCA_DATA_AS_ROW, numberOfComponents);
 			_pcaSubspaces.append(pca);
 
 			//show mean face
 			//cv::Mat meanFromPca = _pcaSubspaces.at(i).mean.clone();
+			//cv::Mat meanFromPca = _pcaSubspaces.at(i).eigenvectors.row(0);
+			//cv::Mat meanFromPca = matrix.row(9);
+
 			//qDebug() << meanFromPca.rows << "x" << meanFromPca.cols;
 			//imshow(QString::number(i).toStdString(), Common::norm_0_255(meanFromPca.reshape(1, vectorOfAreas[i][0].rows)));
 	}
@@ -231,21 +241,32 @@ void EigenFace::project(VectorOfDivideFaces &faces, QVector<cv::Mat> &results) {
 	//convertToVectorOfFaces(resultVector,results);
 }
 
+/**
+ * @brief EigenFace::project project one face to pca subspace - each face are is projected to particular pca subspace
+ * @param areas
+ * @param features
+ */
 void EigenFace::project(tFaceAreas &areas, tFeatures &features) {
 
-	assert(_pcaSubspaces.size() == areas.size());
+	if(_pcaSubspaces.size() != areas.size())  {
+		throw std::runtime_error("EigenFace::project(): wrong pca subspace");
+	}
+
 
 	for(int i = 0; i < areas.size(); i++) {
 		//array of face areas convert to row matrix
 		cv::Mat src;
 
 		toRowMatrix(areas[i],src,CV_32F);
-		//qDebug() << areas[i].rows << "x" << areas[i].cols << "->" << src.rows << "x" << src.cols;
 
+		//project vector of face are to vector of subspaces
+		// 1x3600 -> 1x300 (300 is number of faces in pca subspaces)
 		cv::Mat projection;
 		_pcaSubspaces.at(i).project(src, projection);
 
+		//qDebug() << "src:" << src.rows << "x" << src.cols;
 		//qDebug() << "projection:" << projection.rows << "x" << projection.cols;
+
 		features.push_back(projection);
 	}
 }
@@ -260,5 +281,58 @@ void EigenFace::backProject(tFeatures &features, QVector<cv::Mat> &result) {
 
 		//qDebug() << 1 << "x" << features.cols << "->" << dst.rows << "x" << dst.cols;
 		result.append(dst);
+	}
+}
+
+
+void EigenFace::test() {
+	QVector<QVector<double> > src;
+	QVector<QVector<double> > dst;
+
+	QVector<double> tmp1;
+	tmp1.append(1.1);
+	tmp1.append(1.2);
+	tmp1.append(1.3);
+	tmp1.append(1.4);
+
+	QVector<double> tmp2;
+	tmp2.append(2.1);
+	tmp2.append(2.2);
+	tmp2.append(2.3);
+	tmp2.append(2.4);
+
+	QVector<double> tmp3;
+	tmp3.append(3.1);
+	tmp3.append(3.2);
+	tmp3.append(3.3);
+	tmp3.append(3.4);
+
+	src.append(tmp1);
+	src.append(tmp2);
+	src.append(tmp3);
+
+	for(int i = 0; i < src.size(); i++) {
+		for(int j = 0; j < src.first().size(); j++) {
+			qDebug() << src[i][j];
+		}
+	}
+
+	qDebug() << "++";
+	dst.fill(QVector<double>(),src.first().size());
+
+
+	for(int i = 0; i < src.size(); i++) {
+
+		for(int j = 0; j < src.first().size(); j++) {
+			dst[j].append(src.at(i)[j]);
+		}
+	}
+
+	qDebug() << "dst size: " << dst.size() << "x" << dst.first().size();
+
+	for(int i = 0; i < dst.size(); i++) {
+		for(int j = 0; j < dst.first().size(); j++) {
+			qDebug() << dst[i][j];
+		}
 	}
 }
