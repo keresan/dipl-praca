@@ -18,7 +18,11 @@ void ScoreFusioner::setWeightsAsComplement(QVector<float> weights, float complem
 		if(weights.at(i) > complement) {
 			throw std::runtime_error("setWeightsAsComplement(): value > complement");
 		}
-		_weights.append(complement - weights.at(i));
+		if(weights.at(i) >= complement) {
+			_weights.append(0);
+		} else {
+			_weights.append(complement - weights.at(i));
+		}
 		//qDebug() << weights.at(i) << "->" << _weights.at(i);
 	}
 }

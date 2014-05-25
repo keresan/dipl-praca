@@ -14,7 +14,7 @@ public:
 		WeightedSum,
 	};
 
-	void setWeightsAsComplement(QVector<float> weights,float complement = 0.5);
+	void setWeightsAsComplement(QVector<float> weights,float complement = 0.4);
 
 	float fusion(QVector<float> &src, ScoreFusioner::FusionMethod fusionMethod);
 

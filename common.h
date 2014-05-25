@@ -1,3 +1,4 @@
+
 #ifndef COMMON_H
 #define COMMON_H
 
@@ -60,6 +61,7 @@ public:
 	static const QString lmPathToLmDir, lmAvgLmLabel, lmSavePosLabel, lmSaveIsLabel;
 
 	static const QString eigenMethod0Label, eigenMethod1Label,eigenMethod2Label,eigenMethod3Label;
+	static const QString eigenMethod1rLabel,eigenMethod2rLabel,eigenMethod3rLabel;
 	static const QString eigenEigenvectorLabel, eigenEigenvaluesLabel, eigenMeanLabel;
 
 	static const double detectHightPassFilterValue;
@@ -69,20 +71,27 @@ public:
 	static const QString cmpResultLabel;
 	static const QString cmpResultGenuineMethod0Label, cmpResultImposterMethod0Label;
 	static const QString cmpResultGenuineMethod1Label, cmpResultImposterMethod1Label;
-	static const QString cmpResultGenuineMethod1Label_2, cmpResultImposterMethod1Label_2;
 	static const QString cmpResultGenuineMethod2Label, cmpResultImposterMethod2Label;
 	static const QString cmpResultGenuineMethod3Label, cmpResultImposterMethod3Label;
+	static const QString cmpResultGenuineMethod1rLabel, cmpResultImposterMethod1rLabel;
+	static const QString cmpResultGenuineMethod2rLabel, cmpResultImposterMethod2rLabel;
+	static const QString cmpResultGenuineMethod3rLabel, cmpResultImposterMethod3rLabel;
 
 	static const QString cmpResultArenaGenuineMethod0Label, cmpResultArenaImposterMethod0Label;
 	static const QString cmpResultArenaGenuineMethod1Label, cmpResultArenaImposterMethod1Label;
 	static const QString cmpResultArenaGenuineMethod2Label, cmpResultArenaImposterMethod2Label;
 	static const QString cmpResultArenaGenuineMethod3Label, cmpResultArenaImposterMethod3Label;
+	static const QString cmpResultArenaGenuineMethod1rLabel, cmpResultArenaImposterMethod1rLabel;
+	static const QString cmpResultArenaGenuineMethod2rLabel, cmpResultArenaImposterMethod2rLabel;
+	static const QString cmpResultArenaGenuineMethod3rLabel, cmpResultArenaImposterMethod3rLabel;
 
 	static const QString cmpResultBothGenuineMethod0Label, cmpResultBothImposterMethod0Label;
 	static const QString cmpResultBothGenuineMethod1Label, cmpResultBothImposterMethod1Label;
 	static const QString cmpResultBothGenuineMethod2Label, cmpResultBothImposterMethod2Label;
 	static const QString cmpResultBothGenuineMethod3Label, cmpResultBothImposterMethod3Label;
-
+	static const QString cmpResultBothGenuineMethod1rLabel, cmpResultBothImposterMethod1rLabel;
+	static const QString cmpResultBothGenuineMethod2rLabel, cmpResultBothImposterMethod2rLabel;
+	static const QString cmpResultBothGenuineMethod3rLabel, cmpResultBothImposterMethod3rLabel;
 
 	static const QString scnArrayLabel;
 	static const QString scnColumnLabel;
@@ -95,11 +104,17 @@ public:
 	static const QString scnStatMethod1Label;
 	static const QString scnStatMethod2Label;
 	static const QString scnStatMethod3Label;
+	static const QString scnStatMethod1rLabel;
+	static const QString scnStatMethod2rLabel;
+	static const QString scnStatMethod3rLabel;
 
 	static const QString scnStatArenaMethod0Label;
 	static const QString scnStatArenaMethod1Label;
 	static const QString scnStatArenaMethod2Label;
 	static const QString scnStatArenaMethod3Label;
+	static const QString scnStatArenaMethod1rLabel;
+	static const QString scnStatArenaMethod2rLabel;
+	static const QString scnStatArenaMethod3rLabel;
 
 	static const QString statErrLabel;
 	static const QString statHistGenuineLabel;
@@ -108,11 +123,17 @@ public:
 	static const QString statEerMethod1Label;
 	static const QString statEerMethod2Label;
 	static const QString statEerMethod3Label;
+	static const QString statEerMethod1rLabel;
+	static const QString statEerMethod2rLabel;
+	static const QString statEerMethod3rLabel;
 
 	static const QString statEerArenaMethod0Label;
 	static const QString statEerArenaMethod1Label;
 	static const QString statEerArenaMethod2Label;
 	static const QString statEerArenaMethod3Label;
+	static const QString statEerArenaMethod1rLabel;
+	static const QString statEerArenaMethod2rLabel;
+	static const QString statEerArenaMethod3rLabel;
 
 
 

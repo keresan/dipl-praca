@@ -134,7 +134,7 @@ void Stats::computeEer() {
 				minDistance = actualDistance;
 				statValuesVector[i].eer = (fmr+fnmr)/2;
 
-				qDebug() << threshold << fmr << fnmr << actualDistance;
+				//qDebug() << threshold << fmr << fnmr << actualDistance;
 			}
 		}
 	}
@@ -167,24 +167,21 @@ void Stats::computeFmrFnrm(int col, float &fmr, float &fnmr, float threshold) {
 	fnmr = fnmrCount / (float)_genResult.rows;
 }
 
-void Stats::computeGraphFmrFnmr(int col, float thresholdStart, float thresholdStop, float step) {
+void Stats::printGraphFmrFnmr(int col, float thresholdStart, float thresholdStop, float step) {
 
 	for(float t = thresholdStart; t <= thresholdStop; t += step) {
 		float fmr, fnmr;
 		computeFmrFnrm(col,fmr,fnmr,t);
 
-		//qDebug() << statValuesVector[i].eer << fmr << fnmr << actualDistance;
-
-		/*
+		
 		QString fmrStr, fnmrStr,tStr;
 		convertDotInNumber(fmr,fmrStr);
 		convertDotInNumber(fnmr,fnmrStr);
 		convertDotInNumber(t,tStr);
 
 		qDebug("%s\t%s\t%s",tStr.toStdString().c_str() ,fmrStr.toStdString().c_str(), fnmrStr.toStdString().c_str());
-		*/
+		
 	}
-
 }
 
 void Stats::saveEer(QString fileName, QString dirPath) {

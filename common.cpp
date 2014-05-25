@@ -27,6 +27,8 @@ const int Common::faceWidth = 100;
 const cv::Rect Common::faceCropArea = cv::Rect(60,50,200,190); //treba zmenit aj detectNoseTipAreaStartY
 //const cv::Rect Common::faceCropArea = cv::Rect(50,30,220,240); //orig
 
+//const cv::Rect Common::faceCropArea = cv::Rect(30,20,260,230); //pokus1
+
 const QString Common::pathToWarehouse = "/Users/martin/Documents/[]sklad/frgc_data/";
 const QString Common::pathToSubspacesDir = Common::pathToWarehouse + "subspaces/";
 const QString Common::pathToComResultDir = Common::pathToWarehouse + "compare_result/";
@@ -70,6 +72,9 @@ const QString Common::eigenMethod0Label = "method-0";
 const QString Common::eigenMethod1Label = "method-1";
 const QString Common::eigenMethod2Label = "method-2";
 const QString Common::eigenMethod3Label = "method-3";
+const QString Common::eigenMethod1rLabel = "method-1r";
+const QString Common::eigenMethod2rLabel = "method-2r";
+const QString Common::eigenMethod3rLabel = "method-3r";
 
 const QString Common::eigenEigenvectorLabel = "eigenvectors";
 const QString Common::eigenEigenvaluesLabel = "eigenvalues";
@@ -100,6 +105,12 @@ const QString Common::cmpResultGenuineMethod2Label = "method2-genuine-1.xml";
 const QString Common::cmpResultImposterMethod2Label = "method2-imposter-1.xml";
 const QString Common::cmpResultGenuineMethod3Label = "method3-genuine-1.xml";
 const QString Common::cmpResultImposterMethod3Label = "method3-imposter-1.xml";
+const QString Common::cmpResultGenuineMethod1rLabel = "method1r-genuine-1.xml";
+const QString Common::cmpResultImposterMethod1rLabel = "method1r-imposter-1.xml";
+const QString Common::cmpResultGenuineMethod2rLabel = "method2r-genuine-1.xml";
+const QString Common::cmpResultImposterMethod2rLabel = "method2r-imposter-1.xml";
+const QString Common::cmpResultGenuineMethod3rLabel = "method3r-genuine-1.xml";
+const QString Common::cmpResultImposterMethod3rLabel = "method3r-imposter-1.xml";
 
 const QString Common::cmpResultArenaGenuineMethod0Label = "method0-arena-genuine-1.xml";
 const QString Common::cmpResultArenaImposterMethod0Label = "method0-arena-imposter-1.xml";
@@ -109,6 +120,12 @@ const QString Common::cmpResultArenaGenuineMethod2Label = "method2-arena-genuine
 const QString Common::cmpResultArenaImposterMethod2Label = "method2-arena-imposter-1.xml";
 const QString Common::cmpResultArenaGenuineMethod3Label = "method3-arena-genuine-1.xml";
 const QString Common::cmpResultArenaImposterMethod3Label = "method3-arena-imposter-1.xml";
+const QString Common::cmpResultArenaGenuineMethod1rLabel = "method1r-arena-genuine-1.xml";
+const QString Common::cmpResultArenaImposterMethod1rLabel = "method1r-arena-imposter-1.xml";
+const QString Common::cmpResultArenaGenuineMethod2rLabel = "method2r-arena-genuine-1.xml";
+const QString Common::cmpResultArenaImposterMethod2rLabel = "method2r-arena-imposter-1.xml";
+const QString Common::cmpResultArenaGenuineMethod3rLabel = "method3r-arena-genuine-1.xml";
+const QString Common::cmpResultArenaImposterMethod3rLabel = "method3r-arena-imposter-1.xml";
 
 const QString Common::cmpResultBothGenuineMethod0Label = "method0-both-genuine-1.xml";
 const QString Common::cmpResultBothImposterMethod0Label = "method0-both-imposter-1.xml";
@@ -118,9 +135,12 @@ const QString Common::cmpResultBothGenuineMethod2Label = "method2-both-genuine-1
 const QString Common::cmpResultBothImposterMethod2Label = "method2-both-imposter-1.xml";
 const QString Common::cmpResultBothGenuineMethod3Label = "method3-both-genuine-1.xml";
 const QString Common::cmpResultBothImposterMethod3Label = "method3-both-imposter-1.xml";
-
-const QString Common::cmpResultGenuineMethod1Label_2 = "method1-genuine-2.xml";
-const QString Common::cmpResultImposterMethod1Label_2 = "method1-imposter-2.xml";
+const QString Common::cmpResultBothGenuineMethod1rLabel = "method1r-both-genuine-1.xml";
+const QString Common::cmpResultBothImposterMethod1rLabel = "method1r-both-imposter-1.xml";
+const QString Common::cmpResultBothGenuineMethod2rLabel = "method2r-both-genuine-1.xml";
+const QString Common::cmpResultBothImposterMethod2rLabel = "method2r-both-imposter-1.xml";
+const QString Common::cmpResultBothGenuineMethod3rLabel = "method3r-both-genuine-1.xml";
+const QString Common::cmpResultBothImposterMethod3rLabel = "method3r-both-imposter-1.xml";
 
 const QString Common::scnArrayLabel = "array";
 
@@ -138,21 +158,33 @@ const QString Common::statEerMethod0Label = "method0-eer.xml";
 const QString Common::statEerMethod1Label = "method1-eer.xml";
 const QString Common::statEerMethod2Label = "method2-eer.xml";
 const QString Common::statEerMethod3Label = "method3-eer.xml";
+const QString Common::statEerMethod1rLabel = "method1r-eer.xml";
+const QString Common::statEerMethod2rLabel = "method2r-eer.xml";
+const QString Common::statEerMethod3rLabel = "method3r-eer.xml";
 
 const QString Common::statEerArenaMethod0Label = "method0-eer-arena.xml";
 const QString Common::statEerArenaMethod1Label = "method1-eer-arena.xml";
 const QString Common::statEerArenaMethod2Label = "method2-eer-arena.xml";
 const QString Common::statEerArenaMethod3Label = "method3-eer-arena.xml";
+const QString Common::statEerArenaMethod1rLabel = "method1r-eer-arena.xml";
+const QString Common::statEerArenaMethod2rLabel = "method2r-eer-arena.xml";
+const QString Common::statEerArenaMethod3rLabel = "method3r-eer-arena.xml";
 
 const QString Common::scnStatMethod0Label = "method0-scn.xml";
 const QString Common::scnStatMethod1Label = "method1-scn.xml";
 const QString Common::scnStatMethod2Label = "method2-scn.xml";
 const QString Common::scnStatMethod3Label = "method3-scn.xml";
+const QString Common::scnStatMethod1rLabel = "method1r-scn.xml";
+const QString Common::scnStatMethod2rLabel = "method2r-scn.xml";
+const QString Common::scnStatMethod3rLabel = "method3r-scn.xml";
 
 const QString Common::scnStatArenaMethod0Label = "method0-scn-arena.xml";
 const QString Common::scnStatArenaMethod1Label = "method1-scn-arena.xml";
 const QString Common::scnStatArenaMethod2Label = "method2-scn-arena.xml";
 const QString Common::scnStatArenaMethod3Label = "method3-scn-arena.xml";
+const QString Common::scnStatArenaMethod1rLabel = "method1r-scn-arena.xml";
+const QString Common::scnStatArenaMethod2rLabel = "method2r-scn-arena.xml";
+const QString Common::scnStatArenaMethod3rLabel = "method3r-scn-arena.xml";
 
 /*
 void Common::printMatrix(CvMat *m)

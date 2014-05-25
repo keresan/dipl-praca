@@ -21,8 +21,17 @@ void FaceDivider::divide(DivideMethod method, tFaceAreas &areas) {
 		case method3:
 			divideByMethod3(areas);
 		break;
+		case method1rigid:
+			divideByMethod1rigid(areas);
+		break;
+		case method2rigid:
+			divideByMethod2rigid(areas);
+		break;
+		case method3rigid:
+			divideByMethod3rigid(areas);
+		break;
 		default:
-			assert(false);
+			throw std::runtime_error("divide(): unknown divide method");
 	}
 }
 
@@ -58,13 +67,13 @@ void FaceDivider::divideByMethod1(tFaceAreas &areas) {
 	cv::Point noseBottom = _landmarks.pos(Landmarks::NoseBottom);
 
 
-	cv::Mat upperArea = _depthmap(cv::Range(0,noseBottom.y), cv::Range::all()) ;
+	cv::Mat noseArea = _depthmap(cv::Range(0,noseBottom.y), cv::Range::all()) ;
 
 	cv::Mat mouthArea = _depthmap(cv::Range(noseBottom.y,_depthmap.rows), cv::Range::all());
 
 	cv::Mat noseAreaScaled, mouthAreaScaled;
 
-	resizeArea(upperArea, noseAreaScaled, _depthmap.cols, noseAreaHeight);
+	resizeArea(noseArea, noseAreaScaled, _depthmap.cols, noseAreaHeight);
 	resizeArea(mouthArea, mouthAreaScaled, _depthmap.cols,mouthAreaHeight);
 
 	/*
@@ -75,6 +84,16 @@ void FaceDivider::divideByMethod1(tFaceAreas &areas) {
 	areas.append(noseAreaScaled);
 	areas.append(mouthAreaScaled);
 
+}
+
+void FaceDivider::divideByMethod1rigid(tFaceAreas &areas) {
+	int divideYcoord = _depthmap.rows / 2;
+
+	cv::Mat noseArea = _depthmap(cv::Range(0,divideYcoord), cv::Range::all()) ;
+	cv::Mat mouthArea = _depthmap(cv::Range(divideYcoord,_depthmap.rows), cv::Range::all());
+
+	areas.append(noseArea);
+	areas.append(mouthArea);
 }
 
 void FaceDivider::divideByMethod2(tFaceAreas &areas) {
@@ -121,6 +140,20 @@ void FaceDivider::divideByMethod2(tFaceAreas &areas) {
 	areas.append(noseAreaScaled);
 	areas.append(mouthAreaScaled);
 
+
+}
+
+void FaceDivider::divideByMethod2rigid(tFaceAreas &areas) {
+	int divideYcoord1 = _depthmap.rows / 3;
+	int divideYcoord2 = _depthmap.rows / 3 * 2;
+
+	cv::Mat eyesArea  = _depthmap(cv::Range(0, divideYcoord1), cv::Range::all());
+	cv::Mat noseArea = _depthmap(cv::Range(divideYcoord1, divideYcoord2), cv::Range::all());
+	cv::Mat mouthArea = _depthmap(cv::Range(divideYcoord2,_depthmap.rows), cv::Range::all());
+
+	areas.append(eyesArea);
+	areas.append(noseArea);
+	areas.append(mouthArea);
 
 }
 
@@ -198,8 +231,36 @@ void FaceDivider::divideByMethod3(tFaceAreas &areas) {
 	areas.append(rightEyeAreaScaled);
 	areas.append(leftCheekAreaScaled);
 	areas.append(noseAreaScaled);
-	areas.append(rightCheekAreaScaled);
+	areas.append(leftCheekAreaScaled);
 	areas.append(mouthAreaScaled);
+
+}
+
+void FaceDivider::divideByMethod3rigid(tFaceAreas &areas) {
+	int divideYcoord1 = _depthmap.rows / 3;
+	int divideYcoord2 = _depthmap.rows / 3 * 2;
+
+	int divideXeyes = _depthmap.cols / 2;
+
+	int divideX1 = _depthmap.cols / 3;
+	int divideX2 = _depthmap.cols / 3 * 2;
+
+	cv::Mat leftEyeArea  = _depthmap(cv::Range(0, divideYcoord1), cv::Range(0,divideXeyes));
+	cv::Mat rightEyeArea  = _depthmap(cv::Range(0, divideYcoord1), cv::Range(divideXeyes, _depthmap.cols));
+
+
+	cv::Mat leftCheekArea = _depthmap(cv::Range(divideYcoord1, divideYcoord2), cv::Range(0, divideX1));
+	cv::Mat noseArea = _depthmap(cv::Range(divideYcoord1, divideYcoord2), cv::Range(divideX1, divideX2));
+	cv::Mat rightCheekArea = _depthmap(cv::Range(divideYcoord1, divideYcoord2), cv::Range(divideX2, _depthmap.cols));
+
+	cv::Mat mouthArea = _depthmap(cv::Range(divideYcoord2,_depthmap.rows), cv::Range::all());
+
+	areas.append(leftEyeArea);
+	areas.append(rightEyeArea);
+	areas.append(leftCheekArea);
+	areas.append(noseArea);
+	areas.append(rightCheekArea);
+	areas.append(mouthArea);
 
 }
 

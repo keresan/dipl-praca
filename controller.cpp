@@ -123,6 +123,7 @@ void Controller::processFace(cv::Mat &depthmap,
 	//qDebug() << "noseTip value: " << depthmap.at<float>(landmarks.pos(Landmarks::NoseTip).y, landmarks.pos(Landmarks::NoseTip).x);
 
 
+		//qDebug() << "depthmap: " << depthmap.rows << "x" << depthmap.cols;
 
 
 	//divide
@@ -132,12 +133,14 @@ void Controller::processFace(cv::Mat &depthmap,
 	faceDivider.setResizeParam(Common::faceWidth);
 	faceDivider.divide(method,areas);
 
+
 	/*
 	for(int i =0; i < areas.size(); i++) {
-		cv::imshow(std::to_string(i), Common::norm_0_255(areas.at(i)));
+		qDebug() << i << areas[i].rows << "x" << areas[i].cols;
+		//cv::imshow(std::to_string(i), Common::norm_0_255(areas.at(i)));
 	}
-
 	*/
+
 
 	//project to pca subspace
 	subspaces.project(areas,featuresVector);

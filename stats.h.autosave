@@ -30,7 +30,7 @@ public:
 
 	void computeMinMaxAvg();
 	void computeFmrFnrm(int col, float &fmr, float &fnmr, float threshold);
-	void computeGraphFmrFnmr(int col, float thresholdStart, float thresholdStop, float step);
+	void printGraphFmrFnmr(int col, float thresholdStart, float thresholdStop, float step);
 	void computeEer();
 
 	void static convertDotInNumber(float number,QString &strNumber,int precision = 6);

@@ -6,11 +6,11 @@ Run::Run(QMainWindow* parent) {
     window = new GLWidget();
     this->parent = parent;
 
-	_divideMethod = FaceDivider::method3;
+	_divideMethod = FaceDivider::method2;
 
 	_compareMethod = Comparator::CorrelationDistance;
 
-	_isArena = false;
+	_isArena = true;
 	_isEigenface = true;
 }
 
@@ -656,9 +656,19 @@ void Run::detectWrongDepthmaps() {
 void Run::loadDeptmap() {
 	QStringList facePaths;
 
+	cv::Mat averageFace;
+	double distance;
+	int iterations;
+	QString path = Common::pathToAverageDepthmap;
+	QFileInfo fileInfo(path);
+	qDebug() << path;
+	Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),averageFace,averageFace,distance,iterations);
+
+	qDebug() << averageFace.rows << averageFace.cols;
+
 	//get list of files
 
-	Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
+	//Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
 
 	//NaN
 	//facePaths.append(Common::pathToDepthmapF2003+"04440d101.xml");
@@ -678,30 +688,34 @@ void Run::loadDeptmap() {
 	//facePaths.append("02463d554");
 	//facePaths.append("02463d556");
 
-	double distance;
-	int iterations;
+	facePaths.append(Common::pathToDepthmapF2003+"04219d419.xml");
+	facePaths.append(Common::pathToDepthmapF2003+"04273d246.xml");
 
-	for(int i =0; i < facePaths.count(); i++) {
+	//04273d247
+
+	for(int i =0; i < facePaths.size(); i++) {
 		QFileInfo fileInfo(facePaths.at(i));
 
+		qDebug() << facePaths.at(i);
 		cv::Mat depthmap;
-		Common::loadDepthmap(fileInfo.fileName(),fileInfo.path(),depthmap,distance,iterations);
+		Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),depthmap,averageFace,distance,iterations);
+		//Common::loadDepthmap(fileInfo.fileName(),fileInfo.path(),depthmap,distance,iterations);
 
 
-		/*
+		qDebug() << fileInfo.absolutePath();
+		cv::imwrite(Common::pathToWarehouse.toStdString()+"/depthmap_tmp/"+fileInfo.baseName().toStdString()+".jpg", Common::norm_0_255(depthmap));
+
+
 		double min,max;
 		cv::minMaxLoc(depthmap, &min, &max);
 		qDebug() << fileInfo.fileName() << min << max;
-		*/
-		if(distance > Common::alignerDistanceTresholdToContinue) {
-			qDebug() << "wrong: " << fileInfo.fileName();
 
-			QFile::rename(fileInfo.absoluteFilePath(), fileInfo.absoluteFilePath()+Common::wrongDpSuffixLabel);
-			continue;
-		}
-		cv::Mat crop = depthmap(Common::faceCropArea);
 
-		cv::imshow(fileInfo.baseName().toStdString(), Common::norm_0_255(crop));
+		//cv::Mat crop = depthmap(Common::faceCropArea);
+
+		qDebug() << "croped";
+
+		cv::imshow(fileInfo.baseName().toStdString(), Common::norm_0_255(depthmap));
 
 		//Common::delay(500);
 
@@ -926,6 +940,7 @@ void Run::init() {
 	controller.createPcaSubspaces(faces,avgLandmarks,eigenface0,FaceDivider::method0);
 	eigenface0.saveSubspaces(Common::eigenMethod0Label);
 
+	//landmark divide
 	EigenFace eigenface1;
 	controller.createPcaSubspaces(faces,avgLandmarks,eigenface1,FaceDivider::method1);
 	eigenface1.saveSubspaces(Common::eigenMethod1Label);
@@ -934,10 +949,22 @@ void Run::init() {
 	controller.createPcaSubspaces(faces,avgLandmarks,eigenface2,FaceDivider::method2);
 	eigenface2.saveSubspaces(Common::eigenMethod2Label);
 
-
 	EigenFace eigenface3;
 	controller.createPcaSubspaces(faces,avgLandmarks,eigenface3,FaceDivider::method3);
 	eigenface3.saveSubspaces(Common::eigenMethod3Label);
+
+	//rigid divide
+	EigenFace eigenface1r;
+	controller.createPcaSubspaces(faces,avgLandmarks,eigenface1r,FaceDivider::method1rigid);
+	eigenface1r.saveSubspaces(Common::eigenMethod1rLabel);
+
+	EigenFace eigenface2r;
+	controller.createPcaSubspaces(faces,avgLandmarks,eigenface2r,FaceDivider::method2rigid);
+	eigenface2r.saveSubspaces(Common::eigenMethod2rLabel);
+
+	EigenFace eigenface3r;
+	controller.createPcaSubspaces(faces,avgLandmarks,eigenface3r,FaceDivider::method3rigid);
+	eigenface3r.saveSubspaces(Common::eigenMethod3rLabel);
 
 }
 
@@ -990,14 +1017,16 @@ void Run::divideFace() {
 		bool result = detector.detectAll(landmarks);
 
 		if(result) {
-			//cv::imshow(faceLabels.at(i).toStdString() + QTime::currentTime().toString("hh:mm:ss.zzz").toStdString(), Common::norm_0_255(crop));
-
-
+			cv::imshow(faceLabels.at(i).toStdString() + QTime::currentTime().toString("hh:mm:ss.zzz").toStdString(), Common::norm_0_255(crop));
 			//divide face
 			tFaceAreas areas;
 			FaceDivider faceDivider(crop,landmarks,averageLandmakrks);
-			faceDivider.divide(FaceDivider::method2,areas);
+			faceDivider.divide(FaceDivider::method3rigid,areas);
 
+			for(int i =0; i < areas.size(); i++) {
+				cv::Mat actualArea = areas[i];
+				cv::imshow(std::to_string(i), Common::norm_0_255(actualArea));
+			}
 		} else {
 			qDebug() << faceLabels.at(i) << "skipped";
 		}
@@ -1100,7 +1129,35 @@ void Run::compareFacesInit() {
 			scnArenaMethodLabel = Common::scnStatArenaMethod3Label;
 			scnMethodLabel = Common::scnStatMethod3Label;
 			break;
-		break;
+		case FaceDivider::method1rigid:
+			eigenMethodLabel = Common::eigenMethod1rLabel;
+			saveGenuineFile = Common::cmpResultGenuineMethod1rLabel;
+			saveImposterFile = Common::cmpResultImposterMethod1rLabel;
+			errMethodLabel = Common::statEerMethod1rLabel;
+			errArenaMethodLabel = Common::statEerArenaMethod1rLabel;
+			scnArenaMethodLabel = Common::scnStatArenaMethod1rLabel;
+			scnMethodLabel = Common::scnStatMethod1rLabel;
+			break;
+		case FaceDivider::method2rigid:
+			eigenMethodLabel = Common::eigenMethod2rLabel;
+			saveGenuineFile = Common::cmpResultGenuineMethod2rLabel;
+			saveImposterFile = Common::cmpResultImposterMethod2rLabel;
+			errMethodLabel = Common::statEerMethod2rLabel;
+			errArenaMethodLabel = Common::statEerArenaMethod2rLabel;
+			scnArenaMethodLabel = Common::scnStatArenaMethod2rLabel;
+			scnMethodLabel = Common::scnStatMethod2rLabel;
+			break;
+		case FaceDivider::method3rigid:
+			eigenMethodLabel = Common::eigenMethod3rLabel;
+			saveGenuineFile = Common::cmpResultGenuineMethod3rLabel;
+			saveImposterFile = Common::cmpResultImposterMethod3rLabel;
+			errMethodLabel = Common::statEerMethod3rLabel;
+			errArenaMethodLabel = Common::statEerArenaMethod3rLabel;
+			scnArenaMethodLabel = Common::scnStatArenaMethod3rLabel;
+			scnMethodLabel = Common::scnStatMethod3rLabel;
+			break;
+		default:
+			throw std::runtime_error("compareFacesInit(): unknown divide method");
 	}
 
 	//load average landmarks
@@ -1159,6 +1216,7 @@ void Run::compareFacesInit() {
 			if(!result) {
 				qDebug() << "ERROR:" << facePaths.at(i);
 			}
+
 			featuresVector.append(features);
 		}
 
@@ -1347,7 +1405,47 @@ void Run::compareFaces() {
 			saveGenuineBothFile = Common::cmpResultBothGenuineMethod3Label;
 			saveImposterBothFile = Common::cmpResultBothImposterMethod3Label;
 			break;
-		break;
+		case FaceDivider::method1rigid:
+			eigenMethodLabel = Common::eigenMethod1rLabel;
+			saveGenuineFile = Common::cmpResultGenuineMethod1rLabel;
+			saveImposterFile = Common::cmpResultImposterMethod1rLabel;
+			loadScnArenaFile  = Common::scnStatArenaMethod1rLabel;
+			loadScnFile = Common::scnStatMethod1rLabel;
+			errMethodLabel = Common::statEerMethod1rLabel;
+			errArenaMethodLabel = Common::statEerArenaMethod1rLabel;
+			saveGenuineArenaFile = Common::cmpResultArenaGenuineMethod1rLabel;
+			saveImposterArenaFile = Common::cmpResultArenaImposterMethod1rLabel;
+			saveGenuineBothFile = Common::cmpResultBothGenuineMethod1rLabel;
+			saveImposterBothFile = Common::cmpResultBothImposterMethod1rLabel;
+			break;
+		case FaceDivider::method2rigid:
+			eigenMethodLabel = Common::eigenMethod2rLabel;
+			saveGenuineFile = Common::cmpResultGenuineMethod2rLabel;
+			saveImposterFile = Common::cmpResultImposterMethod2rLabel;
+			loadScnArenaFile  = Common::scnStatArenaMethod2rLabel;
+			loadScnFile = Common::scnStatMethod2rLabel;
+			errMethodLabel = Common::statEerMethod2rLabel;
+			errArenaMethodLabel = Common::statEerArenaMethod2rLabel;
+			saveGenuineArenaFile = Common::cmpResultArenaGenuineMethod2rLabel;
+			saveImposterArenaFile = Common::cmpResultArenaImposterMethod2rLabel;
+			saveGenuineBothFile = Common::cmpResultBothGenuineMethod2rLabel;
+			saveImposterBothFile = Common::cmpResultBothImposterMethod2rLabel;
+			break;
+		case FaceDivider::method3rigid:
+			eigenMethodLabel = Common::eigenMethod3rLabel;
+			saveGenuineFile = Common::cmpResultGenuineMethod3rLabel;
+			saveImposterFile = Common::cmpResultImposterMethod3rLabel;
+			loadScnArenaFile  = Common::scnStatArenaMethod3rLabel;
+			loadScnFile = Common::scnStatMethod3rLabel;
+			errMethodLabel = Common::statEerMethod3rLabel;
+			errArenaMethodLabel = Common::statEerArenaMethod3rLabel;
+			saveGenuineArenaFile = Common::cmpResultArenaGenuineMethod3rLabel;
+			saveImposterArenaFile = Common::cmpResultArenaImposterMethod3rLabel;
+			saveGenuineBothFile = Common::cmpResultBothGenuineMethod3rLabel;
+			saveImposterBothFile = Common::cmpResultBothImposterMethod3rLabel;
+			break;
+		default:
+			throw std::runtime_error("compareFaces(): unknown divide method");
 	}
 
 	//load average landmarks
@@ -1510,24 +1608,23 @@ void Run::compareFaces() {
 	QVector<float>  weightsBoth,weightsArena,weightsEigenface;
 
 	if(_isEigenface) {
-
 		Stats::loadEer(weightsEigenface, errMethodLabel);
 		if(fusionMethod == ScoreFusioner::WeightedSum) {
-			fusionerEigenFace.setWeightsAsComplement(weightsEigenface,0.5);
+			fusionerEigenFace.setWeightsAsComplement(weightsEigenface);
 		}
 	}
 
 	if(_isArena) {
 		Stats::loadEer(weightsArena, errArenaMethodLabel);
 		if(fusionMethod == ScoreFusioner::WeightedSum) {
-			fusionerArena.setWeightsAsComplement(weightsArena,0.5);
+			fusionerArena.setWeightsAsComplement(weightsArena);
 		}
 
 	}
 	if(_isArena && _isEigenface) {
 		weightsBoth = weightsEigenface << weightsArena;
 		if(fusionMethod == ScoreFusioner::WeightedSum) {
-			fusionerBoth.setWeightsAsComplement(weightsBoth,0.5);
+			fusionerBoth.setWeightsAsComplement(weightsBoth);
 		}
 	}
 
@@ -1728,7 +1825,32 @@ void Run::histogram() {
 			loadGenuineFileBoth = Common::cmpResultBothGenuineMethod3Label;
 			loadImposterFileBoth = Common::cmpResultBothImposterMethod3Label;
 			break;
-		break;
+		case FaceDivider::method1rigid:
+			loadGenuineFile = Common::cmpResultGenuineMethod1rLabel;
+			loadImposterFile = Common::cmpResultImposterMethod1rLabel;
+			loadGenuineFileArena = Common::cmpResultArenaGenuineMethod1rLabel;
+			loadImposterFileArena = Common::cmpResultArenaImposterMethod1rLabel;
+			loadGenuineFileBoth = Common::cmpResultBothGenuineMethod1rLabel;
+			loadImposterFileBoth = Common::cmpResultBothImposterMethod1rLabel;
+			break;
+		case FaceDivider::method2rigid:
+			loadGenuineFile = Common::cmpResultGenuineMethod2rLabel;
+			loadImposterFile = Common::cmpResultImposterMethod2rLabel;
+			loadGenuineFileArena = Common::cmpResultArenaGenuineMethod2rLabel;
+			loadImposterFileArena = Common::cmpResultArenaImposterMethod2rLabel;
+			loadGenuineFileBoth = Common::cmpResultBothGenuineMethod2rLabel;
+			loadImposterFileBoth = Common::cmpResultBothImposterMethod2rLabel;
+			break;
+		case FaceDivider::method3rigid:
+			loadGenuineFile = Common::cmpResultGenuineMethod3rLabel;
+			loadImposterFile = Common::cmpResultImposterMethod3rLabel;
+			loadGenuineFileArena = Common::cmpResultArenaGenuineMethod3rLabel;
+			loadImposterFileArena = Common::cmpResultArenaImposterMethod3rLabel;
+			loadGenuineFileBoth = Common::cmpResultBothGenuineMethod3rLabel;
+			loadImposterFileBoth = Common::cmpResultBothImposterMethod3rLabel;
+			break;
+		default:
+			throw std::runtime_error("compareFaces(): unknown divide method");;
 	}
 
 	cv::Mat genResult, impResult;
@@ -1756,20 +1878,16 @@ void Run::histogram() {
 		//qDebug() << "==" << i << ":";
 		//qDebug() << "min:" << stats.statValuesVector.at(i).min;
 		//qDebug() << "max:" << stats.statValuesVector.at(i).max;
-		//qDebug() << "mean:" << stats.statValuesVector.at(i).mean;
 		//qDebug() << "err:" << stats.statValuesVector.at(i).eer;
 
 		QString err;
 		Stats::convertDotInNumber(stats.statValuesVector.at(i).eer,err);
-		qDebug("%s",err.toStdString().c_str());
+		//qDebug("%s",err.toStdString().c_str());
 	}
 
-	//stats.computeHistogram();
-
-
-
-
-
+	//stats.computeHist(0,0,1.4);
+	//stats.printHist(0);
+	//stats.computeGraphFmrFnmr(0,0,1.3,0.01);
 
 }
 
@@ -1778,3 +1896,4 @@ void Run::test_eigen() {
 
 	eigenface.test();
 }
+

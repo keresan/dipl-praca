@@ -12,7 +12,10 @@ public:
 		method0,
 		method1,
 		method2,
-		method3
+		method3,
+		method1rigid,
+		method2rigid,
+		method3rigid
 	};
 
 	FaceDivider(cv::Mat &depthMap, Landmarks &landmarks, Landmarks &averageLandmarks);
@@ -24,6 +27,9 @@ public:
 	void divideByMethod1(tFaceAreas &areas);
 	void divideByMethod2(tFaceAreas &areas);
 	void divideByMethod3(tFaceAreas &areas);
+	void divideByMethod1rigid(tFaceAreas &areas);
+	void divideByMethod2rigid(tFaceAreas &areas);
+	void divideByMethod3rigid(tFaceAreas &areas);
 
 
 	void resizeArea(cv::Mat &src, cv::Mat &dst, int height, int width);

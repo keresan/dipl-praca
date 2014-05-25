@@ -40,18 +40,15 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
 
 	//testToRun.init();
-
-
-	testToRun.compareFacesInit();
-
-
-	testToRun.compareFaces();
-
+	//testToRun.compareFacesInit();
+	//testToRun.compareFaces();
 	testToRun.histogram();
 
 	//testToRun.eigenface();
 	//testToRun.eigenface_pca();
 	//testToRun.test_eigen();
+
+
 
 }
 
