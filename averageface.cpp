@@ -1,10 +1,15 @@
 #include "averageface.h"
 #include "glwidget.h"
 
+/**
+ * @brief AverageFace::AverageFace
+ * @param pathToLandmarks Path to directory with anoted landmarks
+ * @param pathToFaces Path to direcotry with FRGC database models
+ * @param startFileLandmark Starting face model
+ */
 AverageFace::AverageFace(QString pathToLandmarks, QString pathToFaces, QString startFileLandmark) {
 
 	_gridMesh = Mesh::create2dGrid(cv::Point3d(-130,130,0), cv::Point3d(130,-120,0),2,2);
-	//_gridMesh = Mesh::create2dGrid(cv::Point3d(-100,120,0), cv::Point3d(100,-100,0),2,2);
 
     _pathToLandmarks = pathToLandmarks;
 	_pathToFaces = pathToFaces;
@@ -15,7 +20,7 @@ AverageFace::AverageFace(QString pathToLandmarks, QString pathToFaces, QString s
 
     cv::Point3d meanV(getMeanPoint(_startVector));
 
-    qDebug() << "meanV:" << meanV.x << meanV.y << meanV.z;
+	//qDebug() << "meanV:" << meanV.x << meanV.y << meanV.z;
 
     _gridMesh.translate(meanV);
 
@@ -23,7 +28,7 @@ AverageFace::AverageFace(QString pathToLandmarks, QString pathToFaces, QString s
     _averageModel = _startModel;
     _weight = 1;
 
-	qDebug() << pathToLandmarks+startFileLandmark.split('_').at(0);
+	//qDebug() << pathToLandmarks+startFileLandmark.split('_').at(0);
 
     //get list of files
     _dir.setPath(_pathToLandmarks);
@@ -32,12 +37,16 @@ AverageFace::AverageFace(QString pathToLandmarks, QString pathToFaces, QString s
     _listOfFiles = _dir.entryList();
 }
 
+/**
+ * @brief AverageFace::process
+ * Create average face
+ * @param resultFilePath Path to save result average face model.
+ */
 void AverageFace::process(QString resultFilePath) {
-
 
     foreach (QString actualFile, _listOfFiles) {
 
-        qDebug() << _weight << ": actual file:" << actualFile;
+		//qDebug() << _weight << ": actual file:" << actualFile;
         QVector<cv::Point3d> actualVector;
         Mesh actualModel;
         cv::Point3d shift;
@@ -63,14 +72,7 @@ void AverageFace::process(QString resultFilePath) {
         Mesh::averageMesh(actualModel,_averageModel,_weight);
 
         _weight++;
-
-        //len pre testovanie
-
-
-
-
     }
-
 
     _averageModel.centralize();
 	_averageModel.writeOBJ(resultFilePath,'.');
@@ -79,21 +81,26 @@ void AverageFace::process(QString resultFilePath) {
 }
 
 
-
+/**
+ * @brief AverageFace::averageMatrices
+ * Compute average face.
+ * @param src Source matrix
+ * @param dst Source and destination matrix
+ * @param dstWeight Weight of destination matrix
+ */
 void AverageFace::averageMatrices(Matrix &src, Matrix &dst, int dstWeight) {
 
-
-    qDebug() << "src" <<src.rows << "x" << src.cols;
-    qDebug() << "dst" <<dst.rows << "x" << dst.cols;
+	//qDebug() << "src" <<src.rows << "x" << src.cols;
+	//qDebug() << "dst" <<dst.rows << "x" << dst.cols;
 
     dst = (dst*dstWeight + src) / (dstWeight + 1);
-    qDebug() << "uz";
 }
 
 /**
- * @brief Common::centroid
- * @param points
- * @return centroid - average point of vector
+ * @brief AverageFace::getMeanPoint
+ * Compute mean point
+ * @param points Vector of 3D points
+ * @return mean 3D point
  */
 cv::Point3d AverageFace::getMeanPoint(QVector<cv::Point3d> &points) {
     cv::Point3d mean(0,0,0);
@@ -105,14 +112,14 @@ cv::Point3d AverageFace::getMeanPoint(QVector<cv::Point3d> &points) {
     mean.y /= points.count();
     mean.z /= points.count();
 
-
     return mean;
 }
 
 /**
- * @brief Read vectror of Point3d, on each line is format: x y z (divide by spaces)
- * @param path
- * @return
+ * @brief AverageFace::readVector3dPointsFromFile
+ * Read vectror of Point3d, on each line expected format: x y z (divide by spaces)
+ * @param path Path to file
+ * @param v Vector of output points
  */
 void AverageFace::readVector3dPointsFromFile(QString path, QVector<cv::Point3d> &v) {
 	QFile f(path);
@@ -136,6 +143,13 @@ void AverageFace::readVector3dPointsFromFile(QString path, QVector<cv::Point3d> 
     }
 }
 
+/**
+ * @brief AverageFace::getOptimalRotation
+ * Compute optimal rotation between two sets of points
+ * @param from Vector of points which should be rotating
+ * @param to Still vector of points
+ * @return Optimal rotation, matrix 3x3
+ */
 Matrix AverageFace::getOptimalRotation(QVector<cv::Point3d> &from, QVector<cv::Point3d> &to) {
     int n = from.count();
     assert(n == to.count());
@@ -157,6 +171,13 @@ Matrix AverageFace::getOptimalRotation(QVector<cv::Point3d> &from, QVector<cv::P
     return R;
 }
 
+/**
+ * @brief AverageFace::getOptimalRotation
+ * Compute optimal rotation between two mashes
+ * @param from Mesh which should be rotating
+ * @param to Still mesh
+ * @return Optimal rotation, matrix 3x3
+ */
 Matrix AverageFace::getOptimalRotation(Mesh &from, Mesh &to) {
 
     assert(from.pointsMat.rows == to.pointsMat.rows);
@@ -177,7 +198,13 @@ Matrix AverageFace::getOptimalRotation(Mesh &from, Mesh &to) {
     return R;
 }
 
-
+/**
+ * @brief AverageFace::getOptimalTranslation
+ * Compute optimal translation between two sets of points
+ * @param from Vector of points which should be translatin
+ * @param to Still vector of points
+ * @return Vector of translation
+ */
 cv::Point3d AverageFace::getOptimalTranslation(QVector<cv::Point3d> &from,QVector<cv::Point3d> &to) {
 
     cv::Point3d meanFrom = getMeanPoint(from);
@@ -186,6 +213,13 @@ cv::Point3d AverageFace::getOptimalTranslation(QVector<cv::Point3d> &from,QVecto
     return meanTo - meanFrom;
 }
 
+/**
+ * @brief AverageFace::getOptimalTranslation
+ * Compute optimal translation between two mashes
+ * @param from Mesh which should be translating
+ * @param to Still mesh
+ * @return Vector of translation
+ */
 cv::Point3d AverageFace::getOptimalTranslation(Mesh &from,Mesh &to) {
 
     cv::Point3d meanFrom = from.getMeanPoint();
@@ -194,6 +228,12 @@ cv::Point3d AverageFace::getOptimalTranslation(Mesh &from,Mesh &to) {
     return meanTo - meanFrom;
 }
 
+/**
+ * @brief AverageFace::translate
+ * Translate each point by adding shift
+ * @param v Vector of points to translate
+ * @param shift Values of translation
+ */
 void AverageFace::translate(QVector<cv::Point3d> &v, cv::Point3d shift) {
 
     for(int i = 0; i < v.count(); i++) {
@@ -201,6 +241,12 @@ void AverageFace::translate(QVector<cv::Point3d> &v, cv::Point3d shift) {
     }
 }
 
+/**
+ * @brief AverageFace::translate
+ * Translate matrix by adding shift
+ * @param v Matrix to translate
+ * @param shift Values of translation
+ */
 void AverageFace::translate(Matrix &m, cv::Point3d shift) {
 
     for (int r = 0; r < m.rows; r++) {
@@ -210,14 +256,26 @@ void AverageFace::translate(Matrix &m, cv::Point3d shift) {
     }
 }
 
-
+/**
+ * @brief AverageFace::transform
+ * Change point position with transform matrix
+ * @param p Point to transform
+ * @param m Transform matrix
+ */
 void AverageFace::transform(cv::Point3d &p, const Matrix &m){
     Matrix A = (Matrix(3,1) << p.x, p.y, p.z);
     A = m*A;
-    p.x = A(0); p.y = A(1); p.z = A(2);
+	p.x = A(0);
+	p.y = A(1);
+	p.z = A(2);
 }
 
-
+/**
+ * @brief AverageFace::transform
+ * Change position of each point in vector with transform matrix
+ * @param points Vector of points to transform
+ * @param m Transform matrix
+ */
 void AverageFace::transform(QVector<cv::Point3d> &points, const Matrix &m) {
 
     int n = points.count();
@@ -227,11 +285,25 @@ void AverageFace::transform(QVector<cv::Point3d> &points, const Matrix &m) {
     }
 }
 
+/**
+ * @brief AverageFace::transform
+ * Change each position of matrix with transform matrix
+ * @param points Matrix of points to transform
+ * @param m Transform matrix
+ */
 void AverageFace::transform(Matrix &points, const Matrix &m) {
 
     points = points*m.t(); //.inv();
 }
 
+/**
+ * @brief AverageFace::rotate
+ * Rotate point by parameters
+ * @param points Point to rotate
+ * @param x Rotation in axis X
+ * @param y Rotation in axis Y
+ * @param z Rotation in axis Z
+ */
 void AverageFace::rotate(Matrix &points, double x, double y, double z) {
     Matrix Rx = (Matrix(3,3) <<
                  1, 0, 0,
@@ -248,9 +320,16 @@ void AverageFace::rotate(Matrix &points, double x, double y, double z) {
     Matrix R = Rx*Ry*Rz;
 
     transform(points, R);
-
 }
 
+/**
+ * @brief AverageFace::getRotateMatrix
+ * Transform parameters of rotation to rotate matrix
+ * @param x Rotation in axis X
+ * @param y Rotation in axis Y
+ * @param z Rotation in axis Z
+ * @return Output matrix of rotaion
+ */
 Matrix AverageFace::getRotateMatrix(double x, double y, double z) {
     Matrix Rx = (Matrix(3,3) <<
                  1, 0, 0,

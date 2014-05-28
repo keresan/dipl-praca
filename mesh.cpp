@@ -7,16 +7,20 @@
 
 
 #include "mesh.h"
-//#include "surfaceprocessor.h"
-//#include "delaunay.h" -> do common.h DelaunayTriangulation
 #include "common.h"
 #include "averageface.h"
-//#include "procrustes.h"
 
+/**
+ * @brief Constructor.
+ */
 Mesh::Mesh() {
 	this->init();
 }
 
+/**
+ * @brief Constructor.
+ * @param src Source mesh
+ */
 Mesh::Mesh(const Mesh &src) {
 	minx = src.minx;
 	maxx = src.maxx;
@@ -33,7 +37,11 @@ Mesh::Mesh(const Mesh &src) {
 
 }
 
-
+/**
+ * @brief Constructor. Create mesh from 3d model stored in file.
+ * @param path 3D model.
+ * @param centralizeLoadedMesh Centroid of face to point (0,0,0)
+ */
 Mesh::Mesh(const QString path, bool centralizeLoadedMesh) {
 
 	this->init();
@@ -44,7 +52,7 @@ Mesh::Mesh(const QString path, bool centralizeLoadedMesh) {
 	} else if(path.endsWith(".obj", Qt::CaseInsensitive)) {
 		loadFromOBJ(path,centralizeLoadedMesh);
 	} else {
-		assert(false);
+		throw std::runtime_error("Mesh(): unsuported type of 3D model:"+ path.toStdString() );
 	}
 
 	//get name
@@ -53,9 +61,11 @@ Mesh::Mesh(const QString path, bool centralizeLoadedMesh) {
 }
 
 Mesh::~Mesh() {
-	//qDebug() << "deleting mesh";
 }
 
+/**
+ * @brief Set initialization values of mesh.
+ */
 void Mesh::init() {
 	minx = 1e300;
 	maxx = -1e300;
@@ -66,13 +76,18 @@ void Mesh::init() {
 	_color = QColor(Qt::red);
 }
 
-
+/**
+ * @brief Recalculate minimum and maximum for each axis.
+ */
 void Mesh::recalculateMinMax() {
     cv::minMaxIdx(pointsMat.colRange(0,1), &minx, &maxx);
     cv::minMaxIdx(pointsMat.colRange(1,2), &miny, &maxy);
     cv::minMaxIdx(pointsMat.colRange(2,3), &minz, &maxz);
 }
 
+/**
+ * @brief Translate centroid of mesh to point (0,0,0)
+ */
 void Mesh::centralize()
 {
     int count = pointsMat.rows;
@@ -95,6 +110,10 @@ void Mesh::centralize()
     maxz -= sumz/count;
 }
 
+/**
+ * @brief Translate mesh.
+ * @param translationVector Values of translation
+ */
 void Mesh::translate(cv::Point3d translationVector) {
     //qDebug() << "Mesh::translate(cv::Point3d translationVector)";
     AverageFace::translate(pointsMat, translationVector);
@@ -105,34 +124,23 @@ void Mesh::translate(cv::Point3d translationVector) {
     maxy += translationVector.y;
     maxz += translationVector.z;
 }
-/*
-void Mesh::scale(cv::Point3d scaleParam)
-{
-    qDebug() << "Mesh::scale(cv::Point3d scaleParam)";
-    Procrustes3D::scale(pointsMat, scaleParam);
-    minx *= scaleParam.x;
-    miny *= scaleParam.y;
-    minz *= scaleParam.z;
-    maxx *= scaleParam.x;
-    maxy *= scaleParam.y;
-    maxz *= scaleParam.z;
-}
 
-void Mesh::rotate(cv::Vec3d xyz)
-{
-    rotate(xyz(0), xyz(1), xyz(2));
-}
-*/
-
-void Mesh::rotate(double x, double y, double z)
-{
+/**
+ * @brief Rotate mesh
+ * @param x Parameter of rotation
+ * @param y Parameter of rotation
+ * @param z Parameter of rotation
+ */
+void Mesh::rotate(double x, double y, double z) {
     qDebug() << "Mesh::rotate(double x, double y, double z)";
     AverageFace::rotate(pointsMat, x, y, z);
     recalculateMinMax();
 }
 
-
-
+/**
+ * @brief Transform mesh.
+ * @param Transformation matrix 3x3
+ */
 void Mesh::transform(Matrix &m) {
    // qDebug() << "Mesh::transform(Matrix &m)";
     AverageFace::transform(pointsMat, m);
@@ -140,6 +148,9 @@ void Mesh::transform(Matrix &m) {
     recalculateMinMax();
 }
 
+/**
+ * @brief Connect points to triangles.
+ */
 void Mesh::calculateTriangles() {
     QVector<cv::Point2d> points2d;
     for (int r = 0; r < pointsMat.rows; r++)
@@ -154,6 +165,11 @@ void Mesh::calculateTriangles() {
     //triangles = Delaunay::process(points2d);
 }
 
+/**
+ * @brief Create mesh from ABS 3d model.
+ * @param filename File of 3d model
+ * @param centralizeLoadedMesh Centroid of face to point (0,0,0)
+ */
 void Mesh::loadFromABS(const QString &filename, bool centralizeLoadedMesh) {
 	//qDebug() << "loading" << filename;
 	assert(filename.endsWith(".abs", Qt::CaseInsensitive));
@@ -213,9 +229,14 @@ void Mesh::loadFromABS(const QString &filename, bool centralizeLoadedMesh) {
 	delete [] zPoints;
 
 	this->loadFromPointcloud(points, centralizeLoadedMesh);
-
 }
 
+/**
+ * @brief Create mesh from ABS 3d model.
+ * @param filename File of 3d model
+ * @param centralizeLoadedMesh Centroid of face to point (0,0,0)
+ * @return Created mesh
+ */
 Mesh Mesh::fromABS(const QString &filename, bool centralizeLoadedMesh) {
     //qDebug() << "loading" << filename;
     assert(filename.endsWith(".abs", Qt::CaseInsensitive));
@@ -283,7 +304,12 @@ Mesh Mesh::fromABS(const QString &filename, bool centralizeLoadedMesh) {
 }
 
 
-
+/**
+ * @brief Create mesh from point cloud.
+ * @param pointcloud Vector of points
+ * @param centralizeLoadedMesh Centroid of face to point (0,0,0)
+ * @param calculateTriangles Calculate Triangles
+ */
 void Mesh::loadFromPointcloud(VectorOfPoints &pointcloud, bool centralizeLoadedMesh, bool calculateTriangles) {
 
 	int n = pointcloud.count();
@@ -305,6 +331,13 @@ void Mesh::loadFromPointcloud(VectorOfPoints &pointcloud, bool centralizeLoadedM
 	}
 }
 
+/**
+ * @brief Create mesh from point cloud.
+ * @param pointcloud Vector of points
+ * @param centralizeLoadedMesh  Centroid of face to point (0,0,0)
+ * @param calculateTriangles Calculate Triangles
+ * @return Created mesh
+ */
 Mesh Mesh::fromPointcloud(VectorOfPoints &pointcloud, bool centralizeLoadedMesh, bool calculateTriangles) {
     Mesh m;
 
@@ -324,63 +357,12 @@ Mesh Mesh::fromPointcloud(VectorOfPoints &pointcloud, bool centralizeLoadedMesh,
 
     return m;
 }
-/*
-Mesh Mesh::fromMap(Map &depth, Map &intensities, bool centralizeLoadedMesh)
-{
-    assert(depth.w == intensities.w);
-    assert(depth.h == intensities.h);
-    QMap<QPair<int,int>, int> coordToIndex;
 
-    VectorOfPoints points;
-    VectorOfColors colors;
-    int index = 0;
-    for (int y = 0; y < depth.h; y++)
-    {
-        for (int x = 0; x < depth.w; x++)
-        {
-            if (depth.isSet(x,y))
-            {
-                assert(intensities.isSet(x,y));
-
-                points << cv::Point3d(x, depth.h-y-1, depth.get(x,y));
-
-                uchar intensity = intensities.get(x, y);
-                colors << cv::Vec3b(intensity, intensity, intensity);
-
-                coordToIndex[QPair<int,int>(x,y)] = index;
-                index++;
-            }
-        }
-    }
-
-    Mesh mesh = Mesh::fromPointcloud(points, centralizeLoadedMesh, false);
-    mesh.colors = colors;
-
-    // triangles
-    for (int y = 0; y < depth.h; y++)
-    {
-        for (int x = 0; x < depth.w; x++)
-        {
-            if (depth.isSet(x,y) &&
-                depth.isValidCoord(x, y+1) && depth.isSet(x, y+1) &&
-                depth.isValidCoord(x+1, y+1) && depth.isSet(x+1, y+1))
-            {
-                mesh.triangles << cv::Vec3i(coordToIndex[QPair<int,int>(x,y)], coordToIndex[QPair<int,int>(x,y+1)], coordToIndex[QPair<int,int>(x+1,y+1)]);
-            }
-
-            if (depth.isSet(x,y) &&
-                depth.isValidCoord(x+1, y+1) && depth.isSet(x+1, y+1) &&
-                depth.isValidCoord(x+1, y) && depth.isSet(x+1, y))
-            {
-                mesh.triangles << cv::Vec3i(coordToIndex[QPair<int,int>(x,y)], coordToIndex[QPair<int,int>(x+1,y+1)], coordToIndex[QPair<int,int>(x+1,y)]);
-            }
-        }
-    }
-
-    return mesh;
-}
-*/
-
+/**
+ * @brief Create depthmap from OBJ 3d model
+ * @param filename File of 3d model
+ * @param centralizeLoadedMesh Centroid of face to point (0,0,0)
+ */
 void Mesh::loadFromOBJ(const QString &filename, bool centralizeLoadedMesh) {
 	assert(filename.endsWith(".obj", Qt::CaseInsensitive));
 	QFile f(filename);
@@ -419,6 +401,12 @@ void Mesh::loadFromOBJ(const QString &filename, bool centralizeLoadedMesh) {
 	this->triangles = triangles;
 }
 
+/**
+ * @brief Create depthmap from OBJ 3d model
+ * @param filename File of 3d model
+ * @param centralizeLoadedMesh Centroid of face to point (0,0,0)
+ * @return Created mesh
+ */
 Mesh Mesh::fromOBJ(const QString &filename, bool centralizeLoadedMesh) {
     assert(filename.endsWith(".obj", Qt::CaseInsensitive));
     QFile f(filename);
@@ -458,12 +446,21 @@ Mesh Mesh::fromOBJ(const QString &filename, bool centralizeLoadedMesh) {
     return result;
 }
 
-
-QString formatNumber(double n, char decimalPoint)
-{
+/**
+ * @brief Convert numer to string with decimal point
+ * @param n Number
+ * @param decimalPoint Char between integer and flaot part
+ * @return Converted string.
+ */
+QString formatNumber(double n, char decimalPoint) {
     return QString::number(n).replace('.', decimalPoint);
 }
 
+/**
+ * @brief Save mesh as OBJ 3d model.
+ * @param path File to save
+ * @param decimalPoint Char between integer and flaot part of number
+ */
 void Mesh::writeOBJ(const QString &path, char decimalPoint)
 {
     QFile outFile(path);
@@ -485,8 +482,10 @@ void Mesh::writeOBJ(const QString &path, char decimalPoint)
     }
 }
 
-void Mesh::printStats()
-{
+/**
+ * @brief Print stats of mesh.
+ */
+void Mesh::printStats() {
     qDebug() << "x-range: " << minx << maxx;
     qDebug() << "y-range: "<< miny << maxy;
     qDebug() << "z-range: "<< minz << maxz;
@@ -495,6 +494,10 @@ void Mesh::printStats()
 }
 
 
+/**
+ * @brief Convert mesh to vector of point.
+ * @return Vector of point
+ */
 QVector<cv::Point3d>* Mesh::getVectorOfPoint3d() {
     QVector<cv::Point3d>* result = new QVector<cv::Point3d>;
 
@@ -510,11 +513,12 @@ QVector<cv::Point3d>* Mesh::getVectorOfPoint3d() {
 
 
 /**
- * @brief vyhlada najblyzsie body z inputMesh
- * @param inputMesh
+ * @brief Search nearest point for each point int mesh
+ * @param inputMesh Mesh of points
+ * @param index indexed to search up
+ * @param distance Distance to nearest point
  * @return
  */
-
 Mesh Mesh::getClosedPoints(Mesh &inputMesh, cv::flann::Index &index, float *distance) {
     VectorOfPoints newPoints;
     *distance = 0.0f;
@@ -611,6 +615,11 @@ void Mesh::getExtract2dGrid(Mesh &grid, Mesh &dst) {
     dst = Mesh::fromPointcloud(newPoints, false, true);
 }
 
+/**
+ * @brief Extract part of mesh.
+ * @param grid Part of mesh to be extracted
+ * @return Extracted mesh
+ */
 Mesh Mesh::getExtract2dGrid(Mesh &grid) {
 
     Mesh destination;
@@ -620,10 +629,9 @@ Mesh Mesh::getExtract2dGrid(Mesh &grid) {
 }
 
 /**
- * @brief Mesh::getExtract2dGrid - extract grid from face, use only x,y coords,
- *  if distance of closed point is higher then maxDistance, skip it
- * @param grid
- * @param dst
+ * @brief Mesh::getExtract2dGrid Extract grid from face, used only x,y coords. if distance of closed point is higher then maxDistance, skip it
+ * @param grid Extracted area
+ * @param dst Extreacted mesh
  */
 void Mesh::getExtract2dGrid_2(Mesh &grid, Mesh &dst) {
 
@@ -680,17 +688,15 @@ void Mesh::getExtract2dGrid_2(Mesh &grid, Mesh &dst) {
             newPoints.append(p);
 
         }
-
-
-
     }
-
     dst = Mesh::fromPointcloud(newPoints, false, true);
-
-
 }
 
-
+/**
+ * @brief Extract mesh by asix Z.
+ * @param zValue Value of axis Z
+ * @return Extracted mesh
+ */
 Mesh Mesh::zLevelSelect(double zValue)
 {
     VectorOfPoints newPoints;
@@ -707,8 +713,13 @@ Mesh Mesh::zLevelSelect(double zValue)
     return result;
 }
 
-Mesh Mesh::radiusSelect(double radius, cv::Point3d center)
-{
+/**
+ * @brief Extract mesh by radius
+ * @param radius Radius of selected area
+ * @param center Center of selected area
+ * @return Extracted mesh
+ */
+Mesh Mesh::radiusSelect(double radius, cv::Point3d center) {
     VectorOfPoints newPoints;
     VectorOfColors newColors;
     for (int r = 0; r < pointsMat.rows; r++) {
@@ -722,7 +733,12 @@ Mesh Mesh::radiusSelect(double radius, cv::Point3d center)
     return result;
 }
 
-
+/**
+ * @brief Compute average mesh
+ * @param src Mesh 1
+ * @param dst Mesh 2
+ * @param dstWeight Weight of Mesh 2
+ */
 void Mesh::averageMesh(Mesh &src, Mesh &dst, int dstWeight) {
     //AverageFace::averageMatrices(src.pointsMat, dst.pointsMat, dstWeight);
 
@@ -740,6 +756,12 @@ void Mesh::averageMesh(Mesh &src, Mesh &dst, int dstWeight) {
 
 }
 
+/**
+ * @brief Crop mesh by points.
+ * @param topLeft Top Left point of croped area
+ * @param bottomRight Bottom right point of croped area
+ * @return Extracted mesh
+ */
 Mesh Mesh::crop(cv::Point3d topLeft, cv::Point3d bottomRight) {
 	VectorOfPoints newPoints;
 
@@ -758,6 +780,11 @@ Mesh Mesh::crop(cv::Point3d topLeft, cv::Point3d bottomRight) {
 	 return result;
 }
 
+/**
+ * @brief Crop mesh by points.
+ * @param topLeft Top Left point of croped area
+ * @param bottomRight Bottom right point of croped area
+ */
 void Mesh::cropMe(cv::Point2d topLeft, cv::Point2d bottomRight) {
 	VectorOfPoints newPoints;
 	for (int r = 0; r < pointsMat.rows; r++) {
@@ -775,6 +802,15 @@ void Mesh::cropMe(cv::Point2d topLeft, cv::Point2d bottomRight) {
 	loadFromPointcloud(newPoints,false, true);
 }
 
+/**
+ * @brief Crop mesh by distances from center point
+ * @param center Center point of selected area
+ * @param deltaPX Half width of selected area
+ * @param deltaMX Half width of selected area
+ * @param deltaPY Half height of selected area
+ * @param deltaMY Half height of selected area
+ * @return Extracted area.
+ */
 Mesh Mesh::crop(cv::Point3d center, int deltaPX, int deltaMX, int deltaPY, int deltaMY) {
     VectorOfPoints newPoints;
     VectorOfColors newColors;
@@ -799,6 +835,10 @@ Mesh Mesh::crop(cv::Point3d center, int deltaPX, int deltaMX, int deltaPY, int d
 
 }
 
+/**
+ * @brief Compute mean point of mesh
+ * @return Mean Point
+ */
 cv::Point3d Mesh::getMeanPoint() {
     cv::Point3d mean;
     for (int r = 0; r < pointsMat.rows; r++) {
@@ -814,6 +854,11 @@ cv::Point3d Mesh::getMeanPoint() {
     return mean;
 }
 
+/**
+ * @brief Search closed point from mesh
+ * @param point Point to search
+ * @return Index of closed point
+ */
 int Mesh::getClosed2dPoint(cv::Point2d point) {
 
     int index = 0; //index of closed point
@@ -842,20 +887,18 @@ int Mesh::getClosed2dPoint(cv::Point2d point) {
 
 
 /**
- * @brief Mesh::create2dGrid - vytvori 3D grid
- * @param topLeft
- * @param bottomRight
- * @param stepX
- * @param stepY
- * @return
+ * @brief Creaete 3D grid
+ * @param topLeft Top left point of grid
+ * @param bottomRight Bottom right point of grid
+ * @param stepX Distance between points in axis X
+ * @param stepY Distance between points in axis Y
+ * @return Created grid
  */
 Mesh Mesh::create2dGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY) {
 
     VectorOfPoints newPoints;
 	int gridSizeX = qRound(qAbs(bottomRight.x - topLeft.x)  / stepX +1);
 	int gridSizeY = qRound(qAbs(bottomRight.y - topLeft.y)  / stepY +1);
-
-
 
     cv::Point3d p = topLeft;
 
@@ -875,37 +918,3 @@ Mesh Mesh::create2dGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX,
     return result;
 }
 
-
-Mesh Mesh::selectGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY) {
-    VectorOfPoints newPoints;
-    VectorOfColors newColors;
-
-    cv::Point2d actualPoint(topLeft.x, topLeft.y);
-	int gridSizeX = qRound((qAbs(topLeft.x) + qAbs(bottomRight.x)) / 2.0 / stepX);
-	int gridSizeY = qRound((qAbs(topLeft.y) + qAbs(bottomRight.y)) / 2.0 / stepY);
-    int r;
-
-    qDebug() << "gridSizeX: " << gridSizeX;
-    qDebug() << "gridSizeY: " << gridSizeY;
-
-    for(int gridX = 0; gridX < gridSizeX; gridX++) {
-        for(int gridY = 0; gridY < gridSizeY; gridY++) {
-
-            r = getClosed2dPoint(actualPoint);
-            qDebug() << "actual point: " << actualPoint.x << actualPoint.y;
-            qDebug() << "closed point: " << pointsMat(r, 0) << pointsMat(r, 1);
-            qDebug();
-
-            newPoints.append(cv::Point3d(pointsMat(r, 0), pointsMat(r, 1), pointsMat(r, 2)));
-
-            //next
-
-        }
-        actualPoint.x += stepX;
-    }
-
-    Mesh result = Mesh::fromPointcloud(newPoints, false, true);
-
-
-    return result;
-}

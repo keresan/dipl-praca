@@ -4,6 +4,9 @@
 #include "common.h"
 #include "eigenface.h"
 
+/**
+ * @brief Class for comparation features vecters. Provide euclidian, cityblock and correlation distance.
+ */
 class Comparator
 {
 public:

@@ -1,0 +1,255 @@
+\hypertarget{class_stats}{\section{Stats Class Reference}
+\label{class_stats}\index{Stats@{Stats}}
+}
+
+
+Class of statistacal data.  
+
+
+
+
+{\ttfamily \#include $<$stats.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_stats_aa82b4e692bf11102c4fb0f74b5cae157}{Stats} (cv\+::\+Mat imposter\+Result, cv\+::\+Mat genuine\+Result)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_stats_a91c0ad0cbb9624758be71c8c1e8da512}{compute\+Hist} (int col, bool norm\+As\+Percentage=true)
+\begin{DoxyCompactList}\small\item\em Compute min and max value to set range for histogram. This method is overloaded. \end{DoxyCompactList}\item 
+void \hyperlink{class_stats_a4b7b039369d8ea1c979ab1f1fdb16f19}{compute\+Hist} (int col, float min, float max, bool norm\+As\+Percentage=true)
+\begin{DoxyCompactList}\small\item\em Compute histogram. This method is overloaded. \end{DoxyCompactList}\item 
+void \hyperlink{class_stats_afa92f0a16604f8cd777dd656da1743ed}{print\+Hist} (int col)
+\begin{DoxyCompactList}\small\item\em Print histogram values for genuine and imposter users. \end{DoxyCompactList}\item 
+\hypertarget{class_stats_a0ed0cc0e711c63cf6eee1448a1ffb4d7}{void \hyperlink{class_stats_a0ed0cc0e711c63cf6eee1448a1ffb4d7}{compute\+Min\+Max\+Avg} ()}\label{class_stats_a0ed0cc0e711c63cf6eee1448a1ffb4d7}
+
+\begin{DoxyCompactList}\small\item\em Compute minimum, maximu and average value for each face area. \end{DoxyCompactList}\item 
+void \hyperlink{class_stats_a473b818344949038f30b72de2e88e323}{compute\+Fmr\+Fnrm} (int col, float \&fmr, float \&fnmr, float threshold)
+\begin{DoxyCompactList}\small\item\em Compute F\+M\+R and F\+N\+M\+R for particular treshold. \end{DoxyCompactList}\item 
+void \hyperlink{class_stats_a28e28f91a188f277f86c7de6c511b415}{print\+Graph\+Fmr\+Fnmr} (int col, float threshold\+Start, float threshold\+Stop, float step)
+\begin{DoxyCompactList}\small\item\em Print values of F\+M\+R and F\+N\+M\+R for tresholds. \end{DoxyCompactList}\item 
+\hypertarget{class_stats_a6f79c928497addbbd269f4723c5d9deb}{void \hyperlink{class_stats_a6f79c928497addbbd269f4723c5d9deb}{compute\+Eer} ()}\label{class_stats_a6f79c928497addbbd269f4723c5d9deb}
+
+\begin{DoxyCompactList}\small\item\em Compute equal error rate for each face area. \end{DoxyCompactList}\item 
+void \hyperlink{class_stats_a122a0658815a100a161757a575f5cf01}{save\+Eer} (Q\+String file\+Name, Q\+String dir\+Path=Common\+::path\+To\+Scn\+Data)
+\begin{DoxyCompactList}\small\item\em Save E\+E\+R to file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{class_stats_a18bbfb9f7d603836cb90358abf0b523b}{convert\+Dot\+In\+Number} (float number, Q\+String \&str\+Number, int precision=6)
+\begin{DoxyCompactList}\small\item\em Convert decimal dot do decimal comma. \end{DoxyCompactList}\item 
+static void \hyperlink{class_stats_a7be329bf12951876f8ff2d5a6643b8c6}{load\+Eer} (Q\+Vector$<$ float $>$ \&err\+Vector, Q\+String file\+Name, Q\+String dir\+Path=Common\+::path\+To\+Scn\+Data)
+\begin{DoxyCompactList}\small\item\em Load E\+E\+R from file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_stats_aed37043dcbe3ae28913decde490d2509}{Q\+Vector$<$ \hyperlink{class_stat_values}{Stat\+Values} $>$ \hyperlink{class_stats_aed37043dcbe3ae28913decde490d2509}{stat\+Values\+Vector}}\label{class_stats_aed37043dcbe3ae28913decde490d2509}
+
+\begin{DoxyCompactList}\small\item\em Vector of statistical data for each face area. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class of statistacal data. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_stats_aa82b4e692bf11102c4fb0f74b5cae157}{\index{Stats@{Stats}!Stats@{Stats}}
+\index{Stats@{Stats}!Stats@{Stats}}
+\subsubsection[{Stats}]{\setlength{\rightskip}{0pt plus 5cm}Stats\+::\+Stats (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat}]{imposter\+Result, }
+\item[{cv\+::\+Mat}]{genuine\+Result}
+\end{DoxyParamCaption}
+)}}\label{class_stats_aa82b4e692bf11102c4fb0f74b5cae157}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em imposter\+Result} & Results of imposter users comparation \\
+\hline
+{\em genuine\+Result} & Results of genuine users comparation \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_stats_a473b818344949038f30b72de2e88e323}{\index{Stats@{Stats}!compute\+Fmr\+Fnrm@{compute\+Fmr\+Fnrm}}
+\index{compute\+Fmr\+Fnrm@{compute\+Fmr\+Fnrm}!Stats@{Stats}}
+\subsubsection[{compute\+Fmr\+Fnrm}]{\setlength{\rightskip}{0pt plus 5cm}void Stats\+::compute\+Fmr\+Fnrm (
+\begin{DoxyParamCaption}
+\item[{int}]{col, }
+\item[{float \&}]{fmr, }
+\item[{float \&}]{fnmr, }
+\item[{float}]{threshold}
+\end{DoxyParamCaption}
+)}}\label{class_stats_a473b818344949038f30b72de2e88e323}
+
+
+Compute F\+M\+R and F\+N\+M\+R for particular treshold. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em col} & Dd of face area \\
+\hline
+{\em fmr} & Output F\+M\+R \\
+\hline
+{\em fnmr} & Output F\+N\+M\+R \\
+\hline
+{\em threshold} & Treshold \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_stats_a91c0ad0cbb9624758be71c8c1e8da512}{\index{Stats@{Stats}!compute\+Hist@{compute\+Hist}}
+\index{compute\+Hist@{compute\+Hist}!Stats@{Stats}}
+\subsubsection[{compute\+Hist}]{\setlength{\rightskip}{0pt plus 5cm}void Stats\+::compute\+Hist (
+\begin{DoxyParamCaption}
+\item[{int}]{col, }
+\item[{bool}]{norm\+As\+Percentage = {\ttfamily true}}
+\end{DoxyParamCaption}
+)}}\label{class_stats_a91c0ad0cbb9624758be71c8c1e8da512}
+
+
+Compute min and max value to set range for histogram. This method is overloaded. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em col} & Id of face area for what compute histogram \\
+\hline
+{\em norm\+As\+Percentage} & Normalize values in histogram as percenage of all \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_stats_a4b7b039369d8ea1c979ab1f1fdb16f19}{\index{Stats@{Stats}!compute\+Hist@{compute\+Hist}}
+\index{compute\+Hist@{compute\+Hist}!Stats@{Stats}}
+\subsubsection[{compute\+Hist}]{\setlength{\rightskip}{0pt plus 5cm}void Stats\+::compute\+Hist (
+\begin{DoxyParamCaption}
+\item[{int}]{col, }
+\item[{float}]{min, }
+\item[{float}]{max, }
+\item[{bool}]{norm\+As\+Percentage = {\ttfamily true}}
+\end{DoxyParamCaption}
+)}}\label{class_stats_a4b7b039369d8ea1c979ab1f1fdb16f19}
+
+
+Compute histogram. This method is overloaded. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em col} & Id of face area for what compute histogram \\
+\hline
+{\em min} & Lower value of histogramr ange \\
+\hline
+{\em max} & Upper value of histogram range \\
+\hline
+{\em norm\+As\+Percentage} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_stats_a18bbfb9f7d603836cb90358abf0b523b}{\index{Stats@{Stats}!convert\+Dot\+In\+Number@{convert\+Dot\+In\+Number}}
+\index{convert\+Dot\+In\+Number@{convert\+Dot\+In\+Number}!Stats@{Stats}}
+\subsubsection[{convert\+Dot\+In\+Number}]{\setlength{\rightskip}{0pt plus 5cm}void Stats\+::convert\+Dot\+In\+Number (
+\begin{DoxyParamCaption}
+\item[{float}]{number, }
+\item[{Q\+String \&}]{str\+Number, }
+\item[{int}]{precision = {\ttfamily 6}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_stats_a18bbfb9f7d603836cb90358abf0b523b}
+
+
+Convert decimal dot do decimal comma. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em number} & Number to convert \\
+\hline
+{\em str\+Number} & Output converted number \\
+\hline
+{\em precision} & Precision of converted number \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_stats_a7be329bf12951876f8ff2d5a6643b8c6}{\index{Stats@{Stats}!load\+Eer@{load\+Eer}}
+\index{load\+Eer@{load\+Eer}!Stats@{Stats}}
+\subsubsection[{load\+Eer}]{\setlength{\rightskip}{0pt plus 5cm}void Stats\+::load\+Eer (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ float $>$ \&}]{err\+Vector, }
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{dir\+Path = {\ttfamily Common\+:\+:pathToScnData}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_stats_a7be329bf12951876f8ff2d5a6643b8c6}
+
+
+Load E\+E\+R from file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em err\+Vector} & Vector of loaded err. \\
+\hline
+{\em file\+Name} & File name to load. \\
+\hline
+{\em dir\+Path} & Directory in witch file is. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_stats_a28e28f91a188f277f86c7de6c511b415}{\index{Stats@{Stats}!print\+Graph\+Fmr\+Fnmr@{print\+Graph\+Fmr\+Fnmr}}
+\index{print\+Graph\+Fmr\+Fnmr@{print\+Graph\+Fmr\+Fnmr}!Stats@{Stats}}
+\subsubsection[{print\+Graph\+Fmr\+Fnmr}]{\setlength{\rightskip}{0pt plus 5cm}void Stats\+::print\+Graph\+Fmr\+Fnmr (
+\begin{DoxyParamCaption}
+\item[{int}]{col, }
+\item[{float}]{threshold\+Start, }
+\item[{float}]{threshold\+Stop, }
+\item[{float}]{step}
+\end{DoxyParamCaption}
+)}}\label{class_stats_a28e28f91a188f277f86c7de6c511b415}
+
+
+Print values of F\+M\+R and F\+N\+M\+R for tresholds. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em col} & Id of face area for what print F\+M\+R and F\+N\+M\+R \\
+\hline
+{\em threshold\+Start} & Compute stats from this number \\
+\hline
+{\em threshold\+Stop} & End computing stats from this number \\
+\hline
+{\em step} & Step of computed stats \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_stats_afa92f0a16604f8cd777dd656da1743ed}{\index{Stats@{Stats}!print\+Hist@{print\+Hist}}
+\index{print\+Hist@{print\+Hist}!Stats@{Stats}}
+\subsubsection[{print\+Hist}]{\setlength{\rightskip}{0pt plus 5cm}void Stats\+::print\+Hist (
+\begin{DoxyParamCaption}
+\item[{int}]{col}
+\end{DoxyParamCaption}
+)}}\label{class_stats_afa92f0a16604f8cd777dd656da1743ed}
+
+
+Print histogram values for genuine and imposter users. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em col} & Id of face area for what print histogram \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_stats_a122a0658815a100a161757a575f5cf01}{\index{Stats@{Stats}!save\+Eer@{save\+Eer}}
+\index{save\+Eer@{save\+Eer}!Stats@{Stats}}
+\subsubsection[{save\+Eer}]{\setlength{\rightskip}{0pt plus 5cm}void Stats\+::save\+Eer (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{dir\+Path = {\ttfamily Common\+:\+:pathToScnData}}
+\end{DoxyParamCaption}
+)}}\label{class_stats_a122a0658815a100a161757a575f5cf01}
+
+
+Save E\+E\+R to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File name to save \\
+\hline
+{\em dir\+Path} & Directory to save \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+stats.\+h\item 
+stats.\+cpp\end{DoxyCompactItemize}

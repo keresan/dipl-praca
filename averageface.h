@@ -56,13 +56,10 @@ private:
     Mesh _gridMesh;
 
     /**
-     * @brief vaha _averageModel pri pocitani priemeru s dalsim modelom.
-     *        S kazdym dalsim pridanym modelom vzrastie vaha o +1.
+	 * @brief weights of _averageModel. Use for computing average model.
+	 * With each another added model rise up +1
      */
     int _weight;
-
-
-
 
 };
 

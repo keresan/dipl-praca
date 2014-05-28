@@ -1,0 +1,117 @@
+\hypertarget{class_landmark_detector}{\section{Landmark\+Detector Class Reference}
+\label{class_landmark_detector}\index{Landmark\+Detector@{Landmark\+Detector}}
+}
+
+
+Class for landmark detection.  
+
+
+
+
+{\ttfamily \#include $<$landmarkdetector.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_landmark_detector_ab1b5f48ca28480126aa72016e5f27456}{{\bfseries Landmark\+Detector} (cv\+::\+Mat depth\+Map)}\label{class_landmark_detector_ab1b5f48ca28480126aa72016e5f27456}
+
+\item 
+\hypertarget{class_landmark_detector_ab7d2787e5bff6190b282710f40a81467}{void \hyperlink{class_landmark_detector_ab7d2787e5bff6190b282710f40a81467}{detect\+Nose\+Tip} ()}\label{class_landmark_detector_ab7d2787e5bff6190b282710f40a81467}
+
+\begin{DoxyCompactList}\small\item\em Detect nose tip. \end{DoxyCompactList}\item 
+\hypertarget{class_landmark_detector_a197a7813b3f023433fb19c1928e173b0}{void \hyperlink{class_landmark_detector_a197a7813b3f023433fb19c1928e173b0}{detect\+Nose\+Root} ()}\label{class_landmark_detector_a197a7813b3f023433fb19c1928e173b0}
+
+\begin{DoxyCompactList}\small\item\em Detect nose root. \end{DoxyCompactList}\item 
+\hypertarget{class_landmark_detector_a842700d6ba9db23adf9f9308a45eb30d}{void \hyperlink{class_landmark_detector_a842700d6ba9db23adf9f9308a45eb30d}{detect\+Nose\+Corners} ()}\label{class_landmark_detector_a842700d6ba9db23adf9f9308a45eb30d}
+
+\begin{DoxyCompactList}\small\item\em Detect nose corners. \end{DoxyCompactList}\item 
+\hypertarget{class_landmark_detector_a5b4a55e448e6e6f5d0885a2f9d87bf2d}{void \hyperlink{class_landmark_detector_a5b4a55e448e6e6f5d0885a2f9d87bf2d}{detect\+Inner\+Eye\+Corners} ()}\label{class_landmark_detector_a5b4a55e448e6e6f5d0885a2f9d87bf2d}
+
+\begin{DoxyCompactList}\small\item\em Detect inner eye corners. \end{DoxyCompactList}\item 
+\hypertarget{class_landmark_detector_aa3c53cac45cfc7605b0f7ad85a5e8ca7}{void \hyperlink{class_landmark_detector_aa3c53cac45cfc7605b0f7ad85a5e8ca7}{detect\+Nose\+Bottom} ()}\label{class_landmark_detector_aa3c53cac45cfc7605b0f7ad85a5e8ca7}
+
+\begin{DoxyCompactList}\small\item\em Detect nose bottom. \end{DoxyCompactList}\item 
+bool \hyperlink{class_landmark_detector_a05ccf70a8911910dcdea9b07dc5dc0bc}{detect\+All} (\hyperlink{class_landmarks}{Landmarks} \&landmarks)
+\begin{DoxyCompactList}\small\item\em Detect all landmarks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \hyperlink{class_landmark_detector_aa2c1f6f7e3761542be61143bc71c2927}{check\+Landmarks} (\hyperlink{class_landmarks}{Landmarks} \&src\+Landmarks, \hyperlink{class_landmarks}{Landmarks} \&ref\+Landmarks)
+\begin{DoxyCompactList}\small\item\em Check distance between two landmarks sets. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_landmark_detector_a11f027af8a1ae3515d8371b7df1c2e88}{cv\+::\+Point {\bfseries nose\+Tip}}\label{class_landmark_detector_a11f027af8a1ae3515d8371b7df1c2e88}
+
+\item 
+\hypertarget{class_landmark_detector_a9cd890a65aad92f3a90aa2ea0c051a73}{cv\+::\+Point {\bfseries nose\+Root}}\label{class_landmark_detector_a9cd890a65aad92f3a90aa2ea0c051a73}
+
+\item 
+\hypertarget{class_landmark_detector_a63dea171e498afd5b1ea3d5561ec63bb}{cv\+::\+Point {\bfseries eye\+Inner\+Corner\+Left}}\label{class_landmark_detector_a63dea171e498afd5b1ea3d5561ec63bb}
+
+\item 
+\hypertarget{class_landmark_detector_ad8ddb3fce40489e398bc1dd055d3e936}{cv\+::\+Point {\bfseries eye\+Inner\+Corner\+Right}}\label{class_landmark_detector_ad8ddb3fce40489e398bc1dd055d3e936}
+
+\item 
+\hypertarget{class_landmark_detector_aabda0f65b4d054befd2115408c33420d}{cv\+::\+Point {\bfseries nose\+Corner\+Left}}\label{class_landmark_detector_aabda0f65b4d054befd2115408c33420d}
+
+\item 
+\hypertarget{class_landmark_detector_aba55847250b8ec56c64e085d90b42615}{cv\+::\+Point {\bfseries nose\+Corner\+Right}}\label{class_landmark_detector_aba55847250b8ec56c64e085d90b42615}
+
+\item 
+\hypertarget{class_landmark_detector_a523f207dd4d020c2a157c907a2172ec9}{cv\+::\+Point {\bfseries nose\+Bottom}}\label{class_landmark_detector_a523f207dd4d020c2a157c907a2172ec9}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for landmark detection. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_landmark_detector_aa2c1f6f7e3761542be61143bc71c2927}{\index{Landmark\+Detector@{Landmark\+Detector}!check\+Landmarks@{check\+Landmarks}}
+\index{check\+Landmarks@{check\+Landmarks}!Landmark\+Detector@{Landmark\+Detector}}
+\subsubsection[{check\+Landmarks}]{\setlength{\rightskip}{0pt plus 5cm}bool Landmark\+Detector\+::check\+Landmarks (
+\begin{DoxyParamCaption}
+\item[{{\bf Landmarks} \&}]{src\+Landmarks, }
+\item[{{\bf Landmarks} \&}]{ref\+Landmarks}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_landmark_detector_aa2c1f6f7e3761542be61143bc71c2927}
+
+
+Check distance between two landmarks sets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src\+Landmarks} & Source landmark \\
+\hline
+{\em ref\+Landmarks} & Reference landmark \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if distance is ok. 
+\end{DoxyReturn}
+\hypertarget{class_landmark_detector_a05ccf70a8911910dcdea9b07dc5dc0bc}{\index{Landmark\+Detector@{Landmark\+Detector}!detect\+All@{detect\+All}}
+\index{detect\+All@{detect\+All}!Landmark\+Detector@{Landmark\+Detector}}
+\subsubsection[{detect\+All}]{\setlength{\rightskip}{0pt plus 5cm}bool Landmark\+Detector\+::detect\+All (
+\begin{DoxyParamCaption}
+\item[{{\bf Landmarks} \&}]{landmarks}
+\end{DoxyParamCaption}
+)}}\label{class_landmark_detector_a05ccf70a8911910dcdea9b07dc5dc0bc}
+
+
+Detect all landmarks. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Vector} & of landmarks to store it. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if no exeption during detection appears 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+landmarkdetector.\+h\item 
+landmarkdetector.\+cpp\end{DoxyCompactItemize}

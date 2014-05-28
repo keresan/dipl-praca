@@ -4,6 +4,11 @@ ScoreNormalizer::ScoreNormalizer() {
 
 }
 
+/**
+ * @brief Constructor.
+ * @param method Method of score normalization
+ * @param trainData Data from traning set. Need for set parameters for score normmalization
+ */
 ScoreNormalizer::ScoreNormalizer(ScoreNormalizer::NormalizeMethod method, cv::Mat &trainData) {
 
 	_method = method;
@@ -12,13 +17,12 @@ ScoreNormalizer::ScoreNormalizer(ScoreNormalizer::NormalizeMethod method, cv::Ma
 			prepareZScore(trainData);
 		break;
 		default:
-			assert(false);
+			throw std::runtime_error("ScoreNormalizer(): unknown normalization method");
 	}
 }
 
 /**
- * @brief ScoreNormalizer::ScoreNormalizer - firstly, equal size of training set - multiple smallest one to be
- * equal size as biggest one
+ * @brief Constructor. Prepare parameters for score normalization.
  * @param method
  * @param trainData1
  * @param trainData2
@@ -35,14 +39,22 @@ ScoreNormalizer::ScoreNormalizer(ScoreNormalizer::NormalizeMethod method, cv::Ma
 	}
 }
 
+/**
+ * @brief Constructor. Load parameter of normalization from file.
+ * @param method Method of normalization
+ * @param fileName File to load
+ * @param dirPath Directory with file
+ */
 ScoreNormalizer::ScoreNormalizer(ScoreNormalizer::NormalizeMethod method, QString fileName, QString dirPath) {
 	_method = method;
 	load(fileName,dirPath);
 }
 
-
-
-
+/**
+ * @brief Normalize vector of values
+ * @param inputScore Vector of float
+ * @param normScore Normalize vector of float
+ */
 void ScoreNormalizer::normalize(QVector<float> &inputScore, QVector<float> &normScore) {
 	switch(_method) {
 		case zScore:
@@ -53,6 +65,10 @@ void ScoreNormalizer::normalize(QVector<float> &inputScore, QVector<float> &norm
 	}
 }
 
+/**
+ * @brief Compute parameters for zscore normalization.
+ * @param trainData Datesets from which compute parameters
+ */
 void ScoreNormalizer::prepareZScore(cv::Mat &trainData) {
 
 	for(int c = 0; c < trainData.cols; c++) {
@@ -65,24 +81,12 @@ void ScoreNormalizer::prepareZScore(cv::Mat &trainData) {
 	}
 }
 
+/**
+ * @brief Concat two datasets. Multiple smallest one to be equal as biggest one.
+ * @param src1dst
+ * @param src2
+ */
 void ScoreNormalizer::concatAsComparable(cv::Mat &src1dst, cv::Mat &src2) {
-
-	/*
-	qDebug() << "src1dst:" << src1dst.rows << "x" << src1dst.cols;
-	qDebug() << "src2:" << src2.rows << "x" << src2.cols;
-	cv::Scalar mean, std;
-
-	cv::Mat tmpConcat;
-	cv::vconcat(src1dst,src2,tmpConcat);
-	cv::meanStdDev(tmpConcat.col(0),mean, std);
-	qDebug() << "tmpConcat:" << mean[0] << std[0];
-
-
-	cv::meanStdDev(src1dst.col(0),mean, std);
-	qDebug() << "src1dst:" << mean[0] << std[0];
-	cv::meanStdDev(src2.col(0),mean, std);
-	qDebug() << "src2:" << mean[0] << std[0];
-	*/
 
 	//which one is bigger ?
 	cv::Mat big, small;
@@ -94,36 +98,23 @@ void ScoreNormalizer::concatAsComparable(cv::Mat &src1dst, cv::Mat &src2) {
 		small = src1dst;
 	}
 
-	// matToSaveGenuine << matToSaveImposter => je nutne rozmnozit matToSaveGenuine aby bola porovnatejnej
-	// velkosti ako matToSaveImposter
-	// tato operacia je dolezita pri vyuziti z-score, inak bude davat skreslene vysledky
 	int diff = big.rows / small.rows;
 	cv::Mat tmp = small;
 	for(int i = 0; i < diff; i++) {
 		cv::vconcat(small,tmp,small);
 	}
 
-	/*
-	cv::meanStdDev(small.col(0),mean, std);
-	qDebug() << "small:" << mean[0] << std[0];
-	cv::meanStdDev(big.col(0),mean, std);
-	qDebug() << "big:" << mean[0] << std[0];
-
-	qDebug() << "small:" << small.rows << "x" << small.cols;
-	qDebug() << "big:" << big.rows << "x" << big.cols;
-	*/
-
 	//contac big and small
 	cv::vconcat(big,small,src1dst);
 
-	/*
-	cv::meanStdDev(src1dst.col(0),mean, std);
-	qDebug() << "after concat:" << mean[0] << std[0];
-	qDebug() << "after concat:" << src1dst.rows << "x" << src1dst.cols;
-	*/
+
 
 }
-
+/**
+ * @brief Normaliza score with zscore method.
+ * @param inputScore Input score
+ * @param normScore Normalize score
+ */
 void ScoreNormalizer::normalizeZScore(QVector<float> &inputScore, QVector<float> &normScore) {
 
 	normScore.clear();
@@ -135,7 +126,11 @@ void ScoreNormalizer::normalizeZScore(QVector<float> &inputScore, QVector<float>
 	}
 }
 
-
+/**
+ * @brief Save normalization parameters to file.
+ * @param fileName Name of file
+ * @param dirPath Directory with file
+ */
 void ScoreNormalizer::save(QString fileName, QString dirPath) {
 	QDir dir(dirPath);
 	QString path = dir.absoluteFilePath(fileName);
@@ -156,6 +151,11 @@ void ScoreNormalizer::save(QString fileName, QString dirPath) {
 	storage.release();
 }
 
+/**
+ * @brief Load normalization parameters from file.
+ * @param fileName Name of file
+ * @param dirPath Directory with file
+ */
 void ScoreNormalizer::load(QString fileName, QString dirPath) {
 
 	QDir dir(dirPath);

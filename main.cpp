@@ -8,123 +8,70 @@
 #include "glwidget.h"
 #include <QTime>
 
+#include "run.h"
 
+/*
+ * --compare --rootdir <path-to-root-direcotry> --model1 <path-to-model1> --model2 <path-to-model2>
+ * --crdepthamps --rootdir <path-to-root-direcotry> --modelsdir <path-to-3d-models>
+ * --evaluate --rootdir <path-to-root-direcotry>
+ */
 int main(int argc, char *argv[]) {
-    QApplication a(argc, argv);
+	QApplication a(argc, argv);
 
-    //face 1
-   // Mesh face1 = Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d548.abs", true);
-//    Mesh face1 = Mesh::fromABS("/Users/martin/Documents/sklad/frgc_data/Fall2003range/02463d548.abs","/Users/martin/Documents/sklad/frgc_data/Fall2003range/02463d549.ppm", true);
+	bool result = false;
 
-    //face2
-    //Mesh face2 = Mesh::fromABS("/Users/martin/Documents/sklad/frgc_data/Fall2003range/02463d546.abs", true);
-    //Mesh face1 = Mesh::fromABS("/Users/martin/Documents/sklad/frgc_data/Fall2003range/02463d546.abs","/Users/martin/Documents/sklad/frgc_data/Fall2003range/02463d547.ppm", true);
+	if(a.arguments().size() > 2) {
+		if(a.arguments()[1] == "--crdepthmaps"
+				&& a.arguments().size() == 6
+				&& a.arguments()[2] == "--rootdir"
+				&& a.arguments()[4] == "--modelsdir") {
 
-    //Mesh averageFace = Mesh::fromOBJ("/Users/martin/Documents/sklad/frgc_data/averageFace.obj_final.obj",true);
+			QString rootDirectory = a.arguments()[3];
+			QString modelDirectory = a.arguments()[5];
 
+			Run system(rootDirectory, modelDirectory);
 
-    //Mesh face1 = Mesh::fromABS("/Users/martin/Documents/sklad/frgc_data/Fall2003range/02463d550.abs", true);
+			system.createDepthmaps();
+			result = true;
 
-    //Mesh face1 = Mesh::fromABS("/Users/martin/Documents/sklad/frgc_data/Fall2003range/04221d431.abs", true);
-    //Mesh face2 = Mesh::fromABS("/Users/martin/Documents/sklad/frgc_data/Fall2003range/04202d438.abs", true);
+		} else if(a.arguments()[1] == "--evaluate"
+				&& a.arguments().size() == 4
+				&& a.arguments()[2] == "--rootdir") {
 
-    //cv::Point3d mean = face1.getMeanPoint();
-    //face1 = face1.crop(mean, 70,70,100,100);
-    //face1.centralize();
+			QString rootDirectory = a.arguments()[3];
 
+			Run system(rootDirectory,"");
 
-    //Mesh gridMesh = Mesh::create2DGrid(cv::Point3d(-50,90,0), cv::Point3d(50,-60,0),2,2);
+			//system.compareFacesInit();
+			system.compareFaces();
+			system.showResults();
+			result = true;
 
-    //Mesh newMesh = face1.getNearest2dPoints(gridMesh, 5);
+		} else if(a.arguments()[1] == "--compare"
+				  && a.arguments().size() == 8
+				  && a.arguments()[2] == "--rootdir"
+				  && a.arguments()[4] == "--model1"
+				  && a.arguments()[6] == "--model2") {
 
-    //qDebug() << "expectedPoints: " << gridMesh.pointsMat.rows;
-    //qDebug() << "new mesh: " << newMesh.pointsMat.rows;
+			QString rootDirectory = a.arguments()[3];
+			QString model1Path = a.arguments()[5];
+			QString model2Path = a.arguments()[7];
 
-    //Mesh gridMesh = Mesh::create2dGrid(cv::Point3d(-70,130,0), cv::Point3d(70,100,0),2,2);
+			Run system(rootDirectory,"");
 
-    //Mesh newMesh = face1.getExtract2dGrid(gridMesh);
-    //face1 = face1.crop(cv::Point3d(0,0,0),70,70,130,100);
+			system.compareTwoFaces(model1Path,model2Path);
 
-    //newMesh.writeOBJ("/Users/martin/Documents/skola/diplomka/pomocne/02463d548.abs_grid_2.obj",'.');
+			result = true;
+		}
+	}
 
-    //GLWidget window;
-    //window.setWindowTitle("pokus1");
-    //window.addFace(&gridMesh);
+	if(!result) {
+		qWarning() << "usage:";
+		qWarning() << "--compare --rootdir <path-to-root-direcotry> --model1 <path-to-model1> --model2 <path-to-model2>";
+		qWarning() << "--crdepthamps --rootdir <path-to-root-direcotry> --modelsdir <path-to-3d-models>";
+		qWarning() << "--evaluate --rootdir <path-to-root-direcotry>";
+		exit(EXIT_FAILURE);
+	}
 
-    //window.addFace(&newMesh);
-    //window.show();
-
-
-    //Mesh newMesh;
-    //AverageFace model("/Users/martin/Documents/sklad/frgc_data/Fall2003range/","02463d550.abs_landmarks-start.txt");
-    //model.process("/Users/martin/Documents/sklad/frgc_data/averageFace_2.obj");
-
-
-    /*
-    averageFace._color = QColor(Qt::green);
-
-    face1.rotate(0,0,0.5);
-    face1._color = QColor(Qt::yellow);
-    face2._color = QColor(Qt::blue);
-
-    GLWidget window;
-
-    window.addFace(&face1);
-    //window.addFace(&face2);
-    window.addFace(&averageFace);
-    window.show();
-
-    averageFace.printStats();
-
-    QTime myTimer;
-    myTimer.start();
-    */
-
-    /*
-    for(int i = 0; i < 30; i++) {
-        qDebug() << i;
-        Common::delay(2);
-        FaceAligner::align(face1, averageFace, 5);
-        window.repaint();
-    }
-    */
-
-
-
-    /*
-    transformValues* values = FaceAligner::align(face1, averageFace, 500, 50);
-    int miliSec = myTimer.elapsed();
-    qDebug() << "miliSec "<< miliSec;
-    Common::delay(2);
-
-    for(int i = values->rotation.count() -1; i >=0; i--) {
-        Matrix r = values->rotation.at(i);
-        cv::Point3d p = values->translate.at(i);
-        r = r.t();
-        p = -p;
-
-        AverageFace::transform(face1.pointsMat, r);
-        AverageFace::translate(face1.pointsMat,p);
-        AverageFace::transform(averageFace.pointsMat, r);
-        AverageFace::translate(averageFace.pointsMat,p);
-
-        window.repaint();
-    }
-    */
-
-
-    //face1 = face1.radiusSelect(30);
-    //window.repaint();
-
-
-    //qDebug() << "after rotation:";
-    //face1.printStats();
-   // window.repaint();
-
-    //Common::printMatrix(inverseMatrix);
-
-    MainWindow w;
-    w.show();
-
-    return a.exec();
+	exit(EXIT_SUCCESS);
 }

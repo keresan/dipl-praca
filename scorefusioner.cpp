@@ -1,13 +1,20 @@
 #include "scorefusioner.h"
 
-ScoreFusioner::ScoreFusioner() {
+ScoreFusioner::ScoreFusioner() {}
 
-}
-
+/**
+ * @brief Constructor. Implicit method of fusion is weighted sum
+ * @param weights Weights of weighted sum
+ */
 ScoreFusioner::ScoreFusioner(QVector<float> &weights) {
 	_weights = weights;
 }
 
+/**
+ * @brief Constructor. Implicit method of fusion is weighted sum. Set weights as complement.
+ * @param weights Weights
+ * @param complement Complement
+ */
 void ScoreFusioner::setWeightsAsComplement(QVector<float> weights, float complement) {
 	if(weights.size() == 0) {
 		throw std::runtime_error("fusion(): vector of weights is empty");
@@ -27,6 +34,12 @@ void ScoreFusioner::setWeightsAsComplement(QVector<float> weights, float complem
 	}
 }
 
+/**
+ * @brief Fusion Vector of score.
+ * @param src Vector of score.
+ * @param fusionMethod Method of fusion
+ * @return Fusion score
+ */
 float ScoreFusioner::fusion(QVector<float> &src, ScoreFusioner::FusionMethod fusionMethod) {
 	if(fusionMethod == ScoreFusioner::WeightedSum && _weights.size() == 0) {
 		throw std::runtime_error("fusion(): vector of weights not entered");
@@ -44,7 +57,11 @@ float ScoreFusioner::fusion(QVector<float> &src, ScoreFusioner::FusionMethod fus
 	}
 
 }
-
+/**
+ * @brief Sum method
+ * @param src Vector of score to fusion
+ * @return Fusion of score
+ */
 float ScoreFusioner::sum(QVector<float> &src) {
 	float sum = 0;
 
@@ -54,6 +71,11 @@ float ScoreFusioner::sum(QVector<float> &src) {
 	return sum;
 }
 
+/**
+ * @brief Weighted sum method.
+ * @param src Vector of score to fusion
+ * @return Fusion of score
+ */
 float ScoreFusioner::wSum(QVector<float> &src) {
 	float sum = 0;
 

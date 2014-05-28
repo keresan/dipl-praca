@@ -26,10 +26,10 @@ typedef cv::Vec3b Color;
 typedef QVector<Color> VectorOfColors;
 
 
-class Mesh;
-
-class Mesh
-{
+/**
+ * @brief Class for represent 3D model of face
+ */
+class Mesh {
 public:
 	typedef cv::Vec3i Triangle;
 	typedef cv::Vec3b Color;
@@ -67,8 +67,7 @@ public:
 
 	void  cropMe(cv::Point2d topLeft, cv::Point2d bottomRight);
 
-    Mesh selectGrid(cv::Point3d topLeft, cv::Point3d bottomRight, int stepX, int stepY);
-    Mesh zLevelSelect(double zValue);
+	Mesh zLevelSelect(double zValue);
     Mesh radiusSelect(double radius, cv::Point3d center = cv::Point3d(0,0,0));
 
     //read, write
@@ -92,9 +91,6 @@ public:
     Mesh getClosedPoints(Mesh &inputMesh, cv::flann::Index &index, float *distance);
 	float getClosedDistance(cv::flann::Index &index);
     int getClosed2dPoint(cv::Point2d point);
-
-    //void rotate(cv::Vec3d xyz);
-    //void scale(cv::Point3d scaleParam);
 
     static void averageMesh(Mesh &src, Mesh &dst, int dstWeight);
 

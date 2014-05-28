@@ -1,0 +1,128 @@
+\hypertarget{class_g_l_widget}{\section{G\+L\+Widget Class Reference}
+\label{class_g_l_widget}\index{G\+L\+Widget@{G\+L\+Widget}}
+}
+
+
+Class for painting mesh.  
+
+
+
+
+{\ttfamily \#include $<$glwidget.\+h$>$}
+
+Inheritance diagram for G\+L\+Widget\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_g_l_widget}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_g_l_widget_ab79c391c86de1ffb76f6950b49d82c0c}{{\bfseries G\+L\+Widget} (Q\+Widget $\ast$parent=0)}\label{class_g_l_widget_ab79c391c86de1ffb76f6950b49d82c0c}
+
+\item 
+void \hyperlink{class_g_l_widget_ac0d2a8ecf60907a81c0d73475d851025}{resize\+G\+L} (int width, int height)
+\begin{DoxyCompactList}\small\item\em Occurs when widget is resized. \end{DoxyCompactList}\item 
+Q\+Size \hyperlink{class_g_l_widget_a57698bc426052845b43a135a13540154}{size\+Hint} () const 
+\begin{DoxyCompactList}\small\item\em Set size of window. \end{DoxyCompactList}\item 
+Q\+Size \hyperlink{class_g_l_widget_ade3142625c1bfda0576e419b176cf8b1}{minimum\+Size\+Hint} () const 
+\begin{DoxyCompactList}\small\item\em Minimum size of window. \end{DoxyCompactList}\item 
+\hypertarget{class_g_l_widget_a3947bf1a616e02627b92efb202ffc678}{void {\bfseries add\+Face} (const \hyperlink{class_mesh}{Mesh} $\ast$f)}\label{class_g_l_widget_a3947bf1a616e02627b92efb202ffc678}
+
+\item 
+\hypertarget{class_g_l_widget_a80be0cd34782a9d2d34b4c50f8605f6e}{void {\bfseries add\+Landmarks} (\hyperlink{class_landmarks}{Landmarks} $\ast$landmarks)}\label{class_g_l_widget_a80be0cd34782a9d2d34b4c50f8605f6e}
+
+\item 
+\hypertarget{class_g_l_widget_a517e3a0f84e2bacd25e0f861c8ecc5d4}{void {\bfseries add\+Curve} (Q\+Vector$<$ cv\+::\+Point3d $>$ \&curve)}\label{class_g_l_widget_a517e3a0f84e2bacd25e0f861c8ecc5d4}
+
+\item 
+\hypertarget{class_g_l_widget_ac1f9329242410b4e5fd256a6d84f9aa7}{void \hyperlink{class_g_l_widget_ac1f9329242410b4e5fd256a6d84f9aa7}{delete\+All} ()}\label{class_g_l_widget_ac1f9329242410b4e5fd256a6d84f9aa7}
+
+\begin{DoxyCompactList}\small\item\em Delete all painted object. \end{DoxyCompactList}\item 
+\hypertarget{class_g_l_widget_a2c2339ade3be153ffa90223e568dd470}{void \hyperlink{class_g_l_widget_a2c2339ade3be153ffa90223e568dd470}{clear\+All} ()}\label{class_g_l_widget_a2c2339ade3be153ffa90223e568dd470}
+
+\begin{DoxyCompactList}\small\item\em Clear all painted object. \end{DoxyCompactList}\item 
+\hypertarget{class_g_l_widget_aad214e6cbfd0d5f38a9a26aa9d1177b8}{const \hyperlink{class_mesh}{Mesh} $\ast$ {\bfseries get\+Face} ()}\label{class_g_l_widget_aad214e6cbfd0d5f38a9a26aa9d1177b8}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_g_l_widget_ac25c4189967c4f728dc94fb96e22fc65}{void \hyperlink{class_g_l_widget_ac25c4189967c4f728dc94fb96e22fc65}{init} ()}\label{class_g_l_widget_ac25c4189967c4f728dc94fb96e22fc65}
+
+\begin{DoxyCompactList}\small\item\em Initialization. \end{DoxyCompactList}\item 
+\hypertarget{class_g_l_widget_a7fab13e8cc9fc0730ca54c08b2c923a7}{void \hyperlink{class_g_l_widget_a7fab13e8cc9fc0730ca54c08b2c923a7}{initialize\+G\+L} ()}\label{class_g_l_widget_a7fab13e8cc9fc0730ca54c08b2c923a7}
+
+\begin{DoxyCompactList}\small\item\em Initializa Open\+G\+L. \end{DoxyCompactList}\item 
+\hypertarget{class_g_l_widget_a640b5570cb2b37724fd5b58a77339c5e}{void \hyperlink{class_g_l_widget_a640b5570cb2b37724fd5b58a77339c5e}{paint\+G\+L} ()}\label{class_g_l_widget_a640b5570cb2b37724fd5b58a77339c5e}
+
+\begin{DoxyCompactList}\small\item\em Paint faces. \end{DoxyCompactList}\item 
+\hypertarget{class_g_l_widget_ab144cc8064c1bbf6d0ef0646ca0bd06c}{void {\bfseries mouse\+Press\+Event} (Q\+Mouse\+Event $\ast$event)}\label{class_g_l_widget_ab144cc8064c1bbf6d0ef0646ca0bd06c}
+
+\item 
+\hypertarget{class_g_l_widget_a9043bac13d6f0a5307ea5c7f9b3caa50}{void {\bfseries mouse\+Move\+Event} (Q\+Mouse\+Event $\ast$event)}\label{class_g_l_widget_a9043bac13d6f0a5307ea5c7f9b3caa50}
+
+\item 
+\hypertarget{class_g_l_widget_ab992c4c25439a5ef23031991015451c1}{void {\bfseries mouse\+Release\+Event} (Q\+Mouse\+Event $\ast$event)}\label{class_g_l_widget_ab992c4c25439a5ef23031991015451c1}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for painting mesh. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_g_l_widget_ade3142625c1bfda0576e419b176cf8b1}{\index{G\+L\+Widget@{G\+L\+Widget}!minimum\+Size\+Hint@{minimum\+Size\+Hint}}
+\index{minimum\+Size\+Hint@{minimum\+Size\+Hint}!G\+L\+Widget@{G\+L\+Widget}}
+\subsubsection[{minimum\+Size\+Hint}]{\setlength{\rightskip}{0pt plus 5cm}Q\+Size G\+L\+Widget\+::minimum\+Size\+Hint (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_g_l_widget_ade3142625c1bfda0576e419b176cf8b1}
+
+
+Minimum size of window. 
+
+\begin{DoxyReturn}{Returns}
+Size of window 
+\end{DoxyReturn}
+\hypertarget{class_g_l_widget_ac0d2a8ecf60907a81c0d73475d851025}{\index{G\+L\+Widget@{G\+L\+Widget}!resize\+G\+L@{resize\+G\+L}}
+\index{resize\+G\+L@{resize\+G\+L}!G\+L\+Widget@{G\+L\+Widget}}
+\subsubsection[{resize\+G\+L}]{\setlength{\rightskip}{0pt plus 5cm}void G\+L\+Widget\+::resize\+G\+L (
+\begin{DoxyParamCaption}
+\item[{int}]{width, }
+\item[{int}]{height}
+\end{DoxyParamCaption}
+)}}\label{class_g_l_widget_ac0d2a8ecf60907a81c0d73475d851025}
+
+
+Occurs when widget is resized. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & New width \\
+\hline
+{\em height} & New height \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_g_l_widget_a57698bc426052845b43a135a13540154}{\index{G\+L\+Widget@{G\+L\+Widget}!size\+Hint@{size\+Hint}}
+\index{size\+Hint@{size\+Hint}!G\+L\+Widget@{G\+L\+Widget}}
+\subsubsection[{size\+Hint}]{\setlength{\rightskip}{0pt plus 5cm}Q\+Size G\+L\+Widget\+::size\+Hint (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_g_l_widget_a57698bc426052845b43a135a13540154}
+
+
+Set size of window. 
+
+\begin{DoxyReturn}{Returns}
+Window size 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+glwidget.\+h\item 
+glwidget.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,180 @@
+\hypertarget{class_depth_map}{\section{Depth\+Map Class Reference}
+\label{class_depth_map}\index{Depth\+Map@{Depth\+Map}}
+}
+
+
+Class for create depthmap.  
+
+
+
+
+{\ttfamily \#include $<$depthmap.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_depth_map_a0773d4da48d5d2cdf3decff197db019a}{Depth\+Map} (\hyperlink{class_mesh}{Mesh} \&face, cv\+::\+Point2d top\+Left=Common\+::depth\+Map\+T\+L, cv\+::\+Point2d bottom\+Right=Common\+::depth\+Map\+B\+R, int pixels\+X=Common\+::depth\+Map\+Pixels\+X, int piselx\+Y=Common\+::depth\+Map\+Pixels\+Y)
+\begin{DoxyCompactList}\small\item\em Constructor. Initialize area for computing depthmap. \end{DoxyCompactList}\item 
+bool \hyperlink{class_depth_map_a0be94946c67ba80566c19aadc026d4e6}{map\+Point\+To\+Indecies} (cv\+::\+Point2d p, int \&row, int \&col)
+\begin{DoxyCompactList}\small\item\em Map point position to row and col indecies. \end{DoxyCompactList}\item 
+bool \hyperlink{class_depth_map_a79ad9525acbb3d788d775f888f48ce2e}{map\+Indecies\+To\+Point} (int row, int col, cv\+::\+Point2f \&p)
+\begin{DoxyCompactList}\small\item\em Map row and col indecies to point in depthmap. \end{DoxyCompactList}\item 
+int \hyperlink{class_depth_map_ae5e2cebe7a07e19d86dde7d47889b505}{select\+From\+Depth\+Map} (cv\+::\+Point2d tl, cv\+::\+Point2d br, Q\+Vector$<$ cv\+::\+Point2f $>$ \&vector)
+\begin{DoxyCompactList}\small\item\em Choose point from depthmap, who are between top\+Left and Bottom right. \end{DoxyCompactList}\item 
+\hypertarget{class_depth_map_a130f13224c20f8e33af169f38cca9b54}{void \hyperlink{class_depth_map_a130f13224c20f8e33af169f38cca9b54}{print\+Points} ()}\label{class_depth_map_a130f13224c20f8e33af169f38cca9b54}
+
+\begin{DoxyCompactList}\small\item\em Print points of depthmap. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{class_depth_map_af0fe5f99b08baf794373af986a16d702}{show\+All\+Landmarks} (cv\+::\+Mat const \&depth\+Map, \hyperlink{class_landmarks}{Landmarks} \&landmarks, Q\+String label, bool add\+Time=true)
+\begin{DoxyCompactList}\small\item\em Show depthmap with all landmarks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_depth_map_a4afb0e3ceb1025768b99f3910dfc82e0}{cv\+::\+Mat {\bfseries depth\+Map}}\label{class_depth_map_a4afb0e3ceb1025768b99f3910dfc82e0}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for create depthmap. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_depth_map_a0773d4da48d5d2cdf3decff197db019a}{\index{Depth\+Map@{Depth\+Map}!Depth\+Map@{Depth\+Map}}
+\index{Depth\+Map@{Depth\+Map}!Depth\+Map@{Depth\+Map}}
+\subsubsection[{Depth\+Map}]{\setlength{\rightskip}{0pt plus 5cm}Depth\+Map\+::\+Depth\+Map (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{face, }
+\item[{cv\+::\+Point2d}]{top\+Left = {\ttfamily Common\+:\+:depthMapTL}, }
+\item[{cv\+::\+Point2d}]{bottom\+Right = {\ttfamily Common\+:\+:depthMapBR}, }
+\item[{int}]{pixels\+X = {\ttfamily Common\+:\+:depthMapPixelsX}, }
+\item[{int}]{piselx\+Y = {\ttfamily Common\+:\+:depthMapPixelsY}}
+\end{DoxyParamCaption}
+)}}\label{class_depth_map_a0773d4da48d5d2cdf3decff197db019a}
+
+
+Constructor. Initialize area for computing depthmap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em face} & Model of face \\
+\hline
+{\em top\+Left} & Top Left point of interested area \\
+\hline
+{\em bottom\+Right} & Bottom right point of interested area \\
+\hline
+{\em pixels\+X} & Pixels resolution in axis X \\
+\hline
+{\em piselx\+Y} & Pixels resolution in axis Y \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_depth_map_a79ad9525acbb3d788d775f888f48ce2e}{\index{Depth\+Map@{Depth\+Map}!map\+Indecies\+To\+Point@{map\+Indecies\+To\+Point}}
+\index{map\+Indecies\+To\+Point@{map\+Indecies\+To\+Point}!Depth\+Map@{Depth\+Map}}
+\subsubsection[{map\+Indecies\+To\+Point}]{\setlength{\rightskip}{0pt plus 5cm}bool Depth\+Map\+::map\+Indecies\+To\+Point (
+\begin{DoxyParamCaption}
+\item[{int}]{row, }
+\item[{int}]{col, }
+\item[{cv\+::\+Point2f \&}]{p}
+\end{DoxyParamCaption}
+)}}\label{class_depth_map_a79ad9525acbb3d788d775f888f48ce2e}
+
+
+Map row and col indecies to point in depthmap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & Index of row \\
+\hline
+{\em col} & Index of col \\
+\hline
+{\em p} & Point to map \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if point is mapped correctly 
+\end{DoxyReturn}
+\hypertarget{class_depth_map_a0be94946c67ba80566c19aadc026d4e6}{\index{Depth\+Map@{Depth\+Map}!map\+Point\+To\+Indecies@{map\+Point\+To\+Indecies}}
+\index{map\+Point\+To\+Indecies@{map\+Point\+To\+Indecies}!Depth\+Map@{Depth\+Map}}
+\subsubsection[{map\+Point\+To\+Indecies}]{\setlength{\rightskip}{0pt plus 5cm}bool Depth\+Map\+::map\+Point\+To\+Indecies (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Point2d}]{p, }
+\item[{int \&}]{row, }
+\item[{int \&}]{col}
+\end{DoxyParamCaption}
+)}}\label{class_depth_map_a0be94946c67ba80566c19aadc026d4e6}
+
+
+Map point position to row and col indecies. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Point to map \\
+\hline
+{\em row} & Index of row \\
+\hline
+{\em col} & Index of col \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if indecies are mapped correctly 
+\end{DoxyReturn}
+\hypertarget{class_depth_map_ae5e2cebe7a07e19d86dde7d47889b505}{\index{Depth\+Map@{Depth\+Map}!select\+From\+Depth\+Map@{select\+From\+Depth\+Map}}
+\index{select\+From\+Depth\+Map@{select\+From\+Depth\+Map}!Depth\+Map@{Depth\+Map}}
+\subsubsection[{select\+From\+Depth\+Map}]{\setlength{\rightskip}{0pt plus 5cm}int Depth\+Map\+::select\+From\+Depth\+Map (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Point2d}]{tl, }
+\item[{cv\+::\+Point2d}]{br, }
+\item[{Q\+Vector$<$ cv\+::\+Point2f $>$ \&}]{vector}
+\end{DoxyParamCaption}
+)}}\label{class_depth_map_ae5e2cebe7a07e19d86dde7d47889b505}
+
+
+Choose point from depthmap, who are between top\+Left and Bottom right. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tl} & Top left point \\
+\hline
+{\em br} & Bottom Right point \\
+\hline
+{\em vector} & Vector of points who are in interested area \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of picked up points 
+\end{DoxyReturn}
+\hypertarget{class_depth_map_af0fe5f99b08baf794373af986a16d702}{\index{Depth\+Map@{Depth\+Map}!show\+All\+Landmarks@{show\+All\+Landmarks}}
+\index{show\+All\+Landmarks@{show\+All\+Landmarks}!Depth\+Map@{Depth\+Map}}
+\subsubsection[{show\+All\+Landmarks}]{\setlength{\rightskip}{0pt plus 5cm}void Depth\+Map\+::show\+All\+Landmarks (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat const \&}]{depth\+Map, }
+\item[{{\bf Landmarks} \&}]{landmarks, }
+\item[{Q\+String}]{label, }
+\item[{bool}]{add\+Time = {\ttfamily true}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_depth_map_af0fe5f99b08baf794373af986a16d702}
+
+
+Show depthmap with all landmarks. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depth\+Map} & Depthmap to show \\
+\hline
+{\em landmarks} & \\
+\hline
+{\em label} & \\
+\hline
+{\em add\+Time} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+depthmap.\+h\item 
+depthmap.\+cpp\end{DoxyCompactItemize}

@@ -9,6 +9,9 @@ namespace Ui {
 class MainWindow;
 }
 
+/**
+ * @brief Need for show up models of face
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

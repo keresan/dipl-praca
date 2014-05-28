@@ -4,12 +4,17 @@
 #include "mesh.h"
 #include "averageface.h"
 
-
+/**
+ * @brief Transformation values
+ */
 struct tTransformValue {
     Matrix rotation;
     cv::Point3d translate;
 };
 
+/**
+ * @brief Class for align face
+ */
 class FaceAligner {
 public:
     FaceAligner();
@@ -26,9 +31,19 @@ public:
 	void buildIndex(cv::flann::Index &index, Mesh &face, cv::Mat &features);
 
 
+	/**
+	 * @brief Transform values of each iteration.
+	 */
     QVector<tTransformValue> transformValues;
 
+	/**
+	 * @brief Final distance between align face and average face
+	 */
 	double finalDistance;
+
+	/**
+	 * @brief Count of iteration to align face
+	 */
 	double finalIterations;
 
 private:

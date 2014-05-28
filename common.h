@@ -18,26 +18,30 @@ typedef cv::Mat_<cv::Vec3b> ImageBGR;
 typedef cv::Mat_<uint8_t> ImageGrayscale;
 
 /**
- * @brief The Common class
+ * @brief This class containt static method who are used in entire project. There are constants settings for face recognition process too.
  */
 class Common {
 public:
-    //static double absSum(Matrix &m);
     static QVector<cv::Vec3i> delaunayTriangulation(QVector<cv::Point2d> &points);
 
     static void printMatrix(const Matrix &m);
     static void delay(int msec);
 
-	//setings
+	//direcotry structure
+	static QString pathToWarehouse;
+	static QString pathTo3DModels;
+	static QString pathToCreatedDepthmaps;
 
+	static QString pathToSubspacesDir, pathToComResultDir;
+	static QString pathToAverageModel, pathToAverageModelNormalize, pathToAverageDepthmap,pathToAverageLm, pathToScnData;
+	static QString pathToAverageFaceDir;
+	static QString pathToLandmarkDir;
+
+	//setings
 	static const cv::Point3d averageFaceTL, averageFaceBR;
 	static const cv::Point2d depthMapTL, depthMapBR;
 	static const int depthMapPixelsX, depthMapPixelsY;
-	static const QString pathToWarehouse;
-	static const QString pathToDepthmapF2003,pathToFall2003,pathToSpring2003, pathToDepthmapS2003, pathToDepthmapS2004,pathToSpring2004;
 
-	static const QString pathToSubspacesDir, pathToComResultDir;
-	static const QString pathToAverageFace, pathToAverageDepthmap,pathToAverageLm, pathToScnData;
 	static const QString wrongDpSuffixLabel, wrongLmSuffixLabel;
 	static const QString vectorSizeLabel, subVectorSizeLabel;
 	static const int lmDeltaFromAvg;
@@ -58,7 +62,7 @@ public:
 
 	static const double depthmapInitValue;
 
-	static const QString lmPathToLmDir, lmAvgLmLabel, lmSavePosLabel, lmSaveIsLabel;
+	static const QString lmAvgLmLabel, lmSavePosLabel, lmSaveIsLabel;
 
 	static const QString eigenMethod0Label, eigenMethod1Label,eigenMethod2Label,eigenMethod3Label;
 	static const QString eigenMethod1rLabel,eigenMethod2rLabel,eigenMethod3rLabel;
@@ -135,28 +139,19 @@ public:
 	static const QString statEerArenaMethod2rLabel;
 	static const QString statEerArenaMethod3rLabel;
 
-
-
 	static cv::Mat norm_0_255(cv::InputArray _src);
-
 	static void loadFilesPathFromDir(QString pathToDir, QStringList &list, const QStringList &filters = QStringList("*xml"));
-
 	static void loadDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap,  double &distance, int &iterations);
-
 	static void loadDepthmapProcess(QString fileName, QString dirPath, cv::Mat &depthmap, cv::Mat &averageFace,  double &distance, int &iterations);
 	static void saveDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap,  double distance, int iterations);
-
 	static void saveCmpResult(cv::Mat &resultMatrix, QString fileName, QString dirPath = Common::pathToComResultDir);
 	static void loadCmpResult(cv::Mat &resultMatrix, QString fileName, QString dirPath = Common::pathToComResultDir);
-
 	static void processLoadedMap(cv::Mat &depthmap, cv::Mat &averageFace);
-
 	static void replaceInitValues(cv::Mat &depthmap, cv::Mat &src);
-
 	static bool isGenuinePerson(QString baseName1, QString baseName2);
-
 	static void convertToMatrix(QVector<QVector<float> > &src, cv::Mat &dst);
 
+	static void setDirStruct(QString rootDir, QString faceModelDir);
 };
 
 double euclideanDistance(const cv::Point3d &p1, const cv::Point3d &p2);

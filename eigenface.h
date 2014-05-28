@@ -13,22 +13,19 @@ typedef QVector<tFaceAreas> VectorOfDivideFaces;
 typedef QVector< QVector<cv::Mat> > VectorOfDivideAreas;
 
 /**
- * @brief FeatureVector - on each row of matrix is one feature vector of area
+ * @brief On each row of matrix is one feature vector of area
  */
 typedef cv::Mat tFeatures;
 
+/**
+ * @brief Class for Eigenface method
+ */
 class EigenFace {
 public:
 	EigenFace();
 
-	void pcaTransformation(QVector<cv::Mat> &images, QStringList &labels);
-
-	void pcaTransformation_eigen(QVector<cv::Mat> &images, QStringList &labels);
-
 	static cv::Mat toRowMatrix(QVector<cv::Mat> &src, int rtype, double alpha = 1, double beta = 0);
 	static void toRowMatrix(cv::Mat &src, cv::Mat &dst, int rtype, double alpha = 1, double beta = 0);
-
-	//static cv::Mat averageImg(cv::Mat &src, cv::Mat & dst, double dstWeight);
 
 	void train(VectorOfDivideAreas &vector, int numberOfComponents = 0);
 
@@ -42,18 +39,15 @@ public:
 
 	void backProject(tFeatures &features, QVector<cv::Mat> &result);
 
-	void test();
-
 private:
 	void convertToVectorOfAreas(VectorOfDivideFaces &src, VectorOfDivideAreas &dst);
 	void convertToVectorOfFaces(VectorOfDivideAreas &src, VectorOfDivideFaces &dst);
 
-
-
-
+	/**
+	 * @brief PCA subspace for each face area
+	 */
 	QVector<cv::PCA> _pcaSubspaces;
 
-	cv::PCA pca;
 };
 
 

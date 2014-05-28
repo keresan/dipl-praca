@@ -1,8 +1,12 @@
 #include "run.h"
 
-
-Run::Run(QMainWindow* parent) {
-
+/**
+ * @brief Constructor. Sets directory structure.
+ * @param rootDir Root directory of structure
+ * @param faceModelDir Directory with face models
+ * @param parent Need only for showing 3D models
+ */
+Run::Run(QString rootDir, QString faceModelDir, QMainWindow* parent) {
     window = new GLWidget();
     this->parent = parent;
 
@@ -12,8 +16,13 @@ Run::Run(QMainWindow* parent) {
 
 	_isArena = true;
 	_isEigenface = true;
+
+	Common::setDirStruct(rootDir,faceModelDir);
 }
 
+/**
+ * @brief Test method. Select grid from depthmap and show it.
+ */
 void Run::test_selectGrid() {
 
     //face 1
@@ -41,6 +50,9 @@ void Run::test_selectGrid() {
 
 }
 
+/**
+ * @brief Test method. Show face model and and grid.
+ */
 void Run::test_show() {
 	 Mesh *face1 = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/04581d202.abs", true);
 
@@ -54,6 +66,9 @@ void Run::test_show() {
 
 }
 
+/**
+ * @brief Test method. Crop mesh.
+ */
 void Run::test_crop() {
 	Mesh *face1 = new Mesh(Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d558.abs", true));
 
@@ -68,12 +83,15 @@ void Run::test_crop() {
 	delete face1;
 }
 
-void Run::alignFace() {
+/**
+ * @brief Test method. Aling face to average model face.
+ */
+void Run::test_alignFace() {
 
 	//Mesh *face = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/04287d53.abs", true);
 	//Mesh *face = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/04440d101.abs", true);
 	Mesh *face = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/04287d49.abs", true);
-	Mesh *averageFace = new Mesh(Common::pathToAverageFace, false);
+	Mesh *averageFace = new Mesh(Common::pathToAverageModelNormalize, false);
 
 	/*
 	Mesh *face11 = new Mesh(Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d558.abs", true));
@@ -112,6 +130,9 @@ void Run::alignFace() {
 
 }
 
+/**
+ * @brief Test method. Aling multiple faces to average model face.
+ */
 void Run::test_alignFace2() {
 	Mesh *face1 = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d558.abs", true);
 	Mesh *face2 = new Mesh("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d546.abs", true);
@@ -159,31 +180,11 @@ void Run::test_alignFace2() {
 
 }
 
-void Run::test_depth() {
-    QTime myTimer;
-    myTimer.start();
-    Mesh *face = new Mesh(Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d548.abs", true));
-    qDebug() << "nacitanie tvare: "<< myTimer.elapsed() << "ms";
-    myTimer.restart();
 
-    Mesh *gridMesh = new Mesh(Mesh::create2dGrid(cv::Point3d(-100,150,-50), cv::Point3d(100,150,-50),5,5));
-    gridMesh->_color =  QColor(Qt::green);
-
-    qDebug() << "vytvorenie gridu: "<< myTimer.elapsed() << "ms";
-    myTimer.restart();
-
-    Mesh *newMesh = new Mesh();
-    face->getExtract2dGrid_2(*gridMesh,*newMesh);
-    qDebug() << "extrahovanie tvare: "<< myTimer.elapsed() << "ms";
-    qDebug() << "pocet bodov: " << newMesh->pointsMat.rows;
-    myTimer.restart();
-
-    //window->addFace(face);
-    //window->addFace(gridMesh);
-    window->addFace(newMesh);
-}
-
-void Run::depthMapMapping() {
+/**
+ * @brief Test method. Print values of depthmap.
+ */
+void Run::test_depthMapMapping() {
     Mesh *face = new Mesh(Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d548.abs", true));
 
 	DepthMap map(*face);
@@ -238,10 +239,11 @@ void Run::depthMapMapping() {
 	map.mapPointToIndecies(queryPoint,row,col);
 	qDebug("[%5.1f %5.1f] -> %d,%d",queryPoint.x, queryPoint.y, row,col);
 	*/
-
-
-
 }
+
+/**
+ * @brief Test method. Select specific area from depthmap.
+ */
 void Run::test_depth_select() {
     Mesh *face = new Mesh(Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d548.abs", true));
 	DepthMap map(*face);
@@ -264,7 +266,10 @@ void Run::test_depth_select() {
 
 }
 
-void Run::showDepthMap() {
+/**
+ * @brief Test method. Create and show depthmap.
+ */
+void Run::test_showDepthMap() {
 	//Mesh *face = new Mesh(Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/02463d548.abs", true));
 	Mesh *face = new Mesh(Mesh::fromABS("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/04203d436.abs", true));
 
@@ -295,20 +300,23 @@ void Run::showDepthMap() {
 	//Common::printMatrix(map.depthMap);
 }
 
-void Run::createAverageFace() {
+/**
+ * @brief Create average face.
+ * @param pathToMarkedFaces Directory in which are models with marked landmarks
+ * @param pathToFirstFace Path to first face in direcotry. This face will be used as main and other faces will be normalizad to it.
+ */
+void Run::createAverageFace(QString pathToMarkedFaces, QString pathToFirstFace) {
 
-	//celkovo 75 tvari pouzitych
-
-	QString pathToLandmarks("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range_marked/");
-	QString pathToFaces("/Users/martin/Documents/[]sklad/frgc_data/Fall2003range/");
-	QString pathToFirstFace("02463d550.abs_landmarks.txt");
-
-	AverageFace avg(pathToLandmarks,pathToFaces,pathToFirstFace);
+	//"02463d550.abs_landmarks.txt"
+	AverageFace avg(pathToMarkedFaces,Common::pathToCreatedDepthmaps,pathToFirstFace);
 
 	avg.process("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_06.obj");
 
 }
 
+/**
+ * @brief Normalize average face model.
+ */
 void Run::normalizeAverageFace() {
 	Mesh *averageFace = new Mesh(Mesh::fromOBJ(Common::pathToWarehouse+"/averageFace/averageFace_final.obj", true));
 
@@ -336,10 +344,15 @@ void Run::normalizeAverageFace() {
 	window->addFace(gridMesh);
 	window->addFace(finalMesh);
 
-	finalMesh->writeOBJ(Common::pathToAverageFace,'.');
+	finalMesh->writeOBJ(Common::pathToAverageModelNormalize,'.');
 }
 
-void Run::createDepthMaps() {
+/**
+ * @brief Created depthmaps
+ */
+void Run::createDepthmaps() {
+
+	qDebug() << "#####  Create depthmaps";
 
 	QTime myTimer;
 	myTimer.start();
@@ -348,27 +361,28 @@ void Run::createDepthMaps() {
 
 	QStringList facePaths;
 
-	Mesh *modelFace = new Mesh(Common::pathToAverageFace, false);
+	Mesh *modelFace = new Mesh(Common::pathToAverageModelNormalize, false);
 
-	/*
-	facePaths.append(Common::pathToFall2003+"04287d49.abs");
-	facePaths.append(Common::pathToFall2003+"04287d51.abs");
-	facePaths.append(Common::pathToFall2003+"04287d53.abs");
-	facePaths.append(Common::pathToFall2003+"04395d200.abs");
-	//facePaths.append(Common::pathToAverageFace);
-	facePaths.append("/Users/martin/Documents/[]sklad/frgc_data/averageFace/averageFace_final.obj");
-	*/
-	Common::loadFilesPathFromDir(Common::pathToFall2003,facePaths,QStringList("*abs"));
+	Common::loadFilesPathFromDir(Common::pathTo3DModels,facePaths,QStringList("*abs"));
+
+	qDebug() << "depthmaps to create: " << facePaths.size();
+	if(facePaths.size() == 0) {
+		return;
+	}
 
 	int indexStart = 0;
-	int indexStop = 3000;
+	int indexStop = 10;
 
+	qDebug("%5s %10s %11s %10s %10s","#", "file", "iterations","distance","time [ms]");
 	for(int i=0; i< facePaths.size();i++) {
+
+		/*
 		if(i < indexStart) {
 			continue;
 		} else if(i == indexStop) {
 			break;
 		}
+		*/
 
 		myTimer.restart();
 
@@ -378,200 +392,31 @@ void Run::createDepthMaps() {
 		double distance;
 		controller.createDepthmap(*face, *modelFace, depthmap, distance, iterations);
 
-		//compute max
-		//double max;
-		//cv::minMaxLoc(depthmap, NULL, &max);
-
-		//qDebug() << max;
-
-		//save as image
-		/*
-		cv::Mat dst;
-		cv::normalize(depthMap,dst,0,255,cv::NORM_MINMAX, CV_8UC1);
-		cv::imwrite(Common::pathToDepthmap.toStdString()+face->name.toStdString()+"_18.jpg", dst );
-		cv::imshow(face->name.toStdString(),dst);
-		*/
-
-		//show depthmap
-
-		/*
-		cv::Mat dst;
-		cv::normalize(depthmap,dst,0,255,cv::NORM_MINMAX, CV_8UC1);
-		cv::imshow(face->name.toStdString(),dst);
-		*/
-
 		//save as Mat object
 
-		Common::saveDepthmap(face->name+".xml", Common::pathToDepthmapF2003,depthmap, distance, iterations);
+		Common::saveDepthmap(face->name+".xml", Common::pathToCreatedDepthmaps,depthmap, distance, iterations);
 		//Common::saveDepthMap(face->name+".xml", Common::pathToWarehouse+"depthmap_tmp2/",depthmap, distance, iterations);
 
-
-		qDebug("%4d: %10s %3d %6.1f %5d ms",i, face->name.toStdString().c_str(),iterations, distance,myTimer.elapsed());
+		qDebug("%4d: %10s %11d %10.1f %10d",i, face->name.toStdString().c_str(),iterations, distance,myTimer.elapsed());
 
 		delete face;
 	}
 
 	delete modelFace;
 
+	this->detectWrongDepthmaps();
+
 	qDebug() << "done";
 
 }
 
-/*
-void Run::eigenface() {
-
-
-	std::vector<cv::Mat> images;
-	std::vector<int> labels;
-
-
-	images.push_back(cv::imread("/Users/martin/Documents/[]sklad/frgc_data/depthmap/02463d546.jpg", 0));
-	labels.push_back(546);
-
-	//images.push_back(cv::imread("/Users/martin/Documents/[]sklad/frgc_data/depthmap/02463d550.jpg", 0));
-	//labels.push_back(550);
-
-	//images.push_back(cv::imread("/Users/martin/Documents/[]sklad/frgc_data/depthmap/02463d552.jpg", 0));
-	//labels.push_back(552);
-
-	images.push_back(cv::imread("/Users/martin/Documents/[]sklad/frgc_data/depthmap/02463d554.jpg", 0));
-	labels.push_back(554);
-
-	//images.push_back(cv::imread("/Users/martin/Documents/[]sklad/frgc_data/depthmap/02463d556.jpg", 0));
-	//labels.push_back(556);
-
-	int height = images[0].rows;
-
-	cv::Mat Sample = images[images.size() - 1];
-	int testLabel = labels[labels.size() - 1];
-	//images.pop_back();
-	//labels.pop_back();
-
-	int num_components = 10;
-	double threshold = 10.0;
-
-	cv::Ptr<cv::FaceRecognizer> model = cv::createEigenFaceRecognizer();
-	model->train(images, labels);
-
-	int predictedLabel = -1;
-	double confidence = -1.0;
-
-	//model->predict(testSample, predictedLabel, confidence);
-
-	//qDebug("Predicted class = %d (score: %f) / Actual class = %d.", predictedLabel, confidence, testLabel);
-
-	// Here is how to get the eigenvalues of this Eigenfaces model:
-	cv::Mat eigenvalues = model->getMat("eigenvalues");
-
-	// And we can do the same to display the Eigenvectors (read Eigenfaces):
-	cv::Mat W = model->getMat("eigenvectors");
-
-	// Get the sample mean from the training data
-	cv::Mat mean = model->getMat("mean");
-
-	cv::imshow("mean",  Common::norm_0_255(mean.reshape(1, height)));
-
-	// show eigenvectors
-	qDebug() << "pocet eigenfaces: " << W.cols;
-	 for(int i = 0; i < W.cols; i++) {
-		 cv::Mat ev = W.col(i).clone();
-		 // Reshape to original size & normalize to [0...255] for imshow.
-		 cv::Mat grayscale = Common::norm_0_255(ev.reshape(1, height));
-		 // Show the image & apply a Jet colormap for better sensing.
-		 cv::Mat cgrayscale;
-		 cv::applyColorMap(grayscale, cgrayscale, cv::COLORMAP_JET);
-
-		 cv::imshow(cv::format("eigenface %d",labels[i]),cgrayscale);
-
-		// cv::waitKey(0);
-	 }
-}
-
-void Run::eigenface_pca() {
-
-	QVector<cv::Mat> images;
-	//QVector<cv::Mat> meanFace;
-
-	QStringList faces;
-	faces.append("02463d546");
-	faces.append("02463d554");
-
-	//faces.append("02463d550");
-	//faces.append("02463d552");
-	//faces.append("02463d556");
-
-	for(int i =0; i < faces.count(); i++) {
-		cv::Mat image = cv::imread("/Users/martin/Documents/[]sklad/frgc_data/depthmap/"+faces.at(i).toStdString()+".jpg",cv::IMREAD_GRAYSCALE);
-		images.append(image);
-		double min, max;
-		cv::minMaxLoc(image, &min, &max);
-		qDebug("%d: min= %.2f, max= %.2f",i,min,max);
-	}
-
-	cv::Mat data = EigenFace::toRowMatrix(images,CV_32FC1);
-	int num_components = 10;
-
-	//average
-	cv::Mat meanFace;
-	cv::addWeighted(images[0], 0.5, images[1],0.5, 0.0, meanFace);
-
-	QVector<cv::Mat> meanArray;
-	meanArray.append(meanFace);
-	cv::Mat meanVector = EigenFace::toRowMatrix(meanArray, CV_32FC1);
-
-
-	//meanFace.append(cv::imread("/Users/martin/Documents/[]sklad/frgc_data/depthmap/mean_face.jpg",cv::IMREAD_GRAYSCALE));
-	//cv::Mat mean = EigenFace::toRowMatrix(meanFace, CV_32FC1);
-
-	//cv::imshow("mean",mean);
-
-
-	//cv::PCA pca(data, meanVector, CV_PCA_DATA_AS_ROW, num_components);
-	cv::PCA pca(data, cv::noArray(), CV_PCA_DATA_AS_ROW, num_components);
-
-
-	cv::Mat meanFromPca = pca.mean.clone();
-	//cv::Mat eigenvalues = pca.eigenvalues.clone();
-	cv::Mat eigenvectors = pca.eigenvectors.clone();
-
-
-
-	cv::imshow("meanFromPca", Common::norm_0_255(meanFromPca.reshape(1, images[0].rows)));
-	//cv::imwrite("/Users/martin/Documents/[]sklad/frgc_data/depthmap/mean_face.jpg", Common::norm_0_255(mean.reshape(1, images[0].rows)));
-
-	cv::imshow("mean",meanFace);
-
-	for(int i = 0; i < faces.count(); i++) {
-
-		cv::Mat grayscale = Common::norm_0_255(eigenvectors.row(i).reshape(1, images[0].rows));
-		// Show the image & apply a Jet colormap for better sensing.
-		//cv::Mat cgrayscale;
-		//cv::applyColorMap(grayscale, cgrayscale, cv::COLORMAP_JET);
-
-		imshow(faces.at(i).toStdString(), grayscale);
-		//imshow(faces.at(i).toStdString(), Common::norm_0_255(eigenvectors.row(i)).reshape(1, images[0].rows));
-	}
-
-	//compute distance
-	qDebug() << "max distance: " << cv::norm(eigenvectors.row(0), eigenvectors.row(1), cv::NORM_INF);
-	qDebug() << "manhattan distance: " << cv::norm(eigenvectors.row(0), eigenvectors.row(1), cv::NORM_L1);
-	qDebug() << "euclidian distance: " << cv::norm(eigenvectors.row(0), eigenvectors.row(1), cv::NORM_L2);
-
-	qDebug() << "L2:" << cv::norm(eigenvectors.row(0), cv::NORM_L2);
-	qDebug() << "L2:" << cv::norm(eigenvectors.row(1), cv::NORM_L2);
-
-}
-*/
-
+/**
+ * @brief Mark depthmap files, which are wrong.
+ */
 void Run::detectWrongDepthmaps() {
-	/*
-	 * z prvych 500 vylucenych 32+8 => 8%
-	 *
-	 * z prvych 100 vylucenych 87 => 8,7%
-	 */
 
 	//average landmarks
-	Landmarks averageLandmarks(Common::lmPathToLmDir+Common::lmAvgLmLabel);
+	Landmarks averageLandmarks(Common::pathToLandmarkDir+Common::lmAvgLmLabel);
 
 	cv::Mat averageFace;
 	double distance;
@@ -581,17 +426,13 @@ void Run::detectWrongDepthmaps() {
 	Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),averageFace,averageFace,distance,iterations);
 
 
-
 	QStringList facePaths;
-	Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
+	Common::loadFilesPathFromDir(Common::pathToCreatedDepthmaps,facePaths);
 
 	//facePaths.append(Common::pathToDepthmapF2003+"04265d265.xml");
 
 	for(int i =0; i < facePaths.size(); i++) {
 		QFileInfo fileInfo(facePaths.at(i));
-
-		//QFile::rename(fileInfo.absoluteFilePath(), fileInfo.absolutePath()+"/"+fileInfo.baseName()+".xml");
-		//continue;
 
 		cv::Mat depthmap;
 		Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),depthmap,averageFace,distance,iterations);
@@ -614,7 +455,6 @@ void Run::detectWrongDepthmaps() {
 		}
 
 		//check landmarks
-
 		Landmarks landmarks;
 		LandmarkDetector detector(depthmap);
 		bool result = detector.detectAll(landmarks);
@@ -631,29 +471,14 @@ void Run::detectWrongDepthmaps() {
 			continue;
 		}
 
-		//DepthMap::showAllLandmarks(depthmap, landmarks,fileInfo.baseName());
-
-
-		//cv::Mat crop = depthmap(Common::faceCropArea);
-		//cv::imshow(fileInfo.baseName().toStdString(), Common::norm_0_255(crop));
-
-		//Common::delay(300);
-
-		/*
-		double min,max;
-		cv::minMaxLoc(depthmap, &min, &max);
-		//qDebug() << fileInfo.fileName() << min << max;
-		if(min < Common::depthmapInitValue+10) {
-			Common::delay(2000);
-		}
-		*/
-
 	}
 
 }
 
-
-void Run::loadDeptmap() {
+/**
+ * @brief Test Method. Load and show all depthmaps in directory.
+ */
+void Run::test_loadDeptmap() {
 	QStringList facePaths;
 
 	cv::Mat averageFace;
@@ -666,32 +491,8 @@ void Run::loadDeptmap() {
 
 	qDebug() << averageFace.rows << averageFace.cols;
 
-	//get list of files
-
-	//Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
-
-	//NaN
-	//facePaths.append(Common::pathToDepthmapF2003+"04440d101.xml");
-
-
-	/*
-	facePaths.append(Common::pathToWarehouse+"depthmap_tmp2/"+"04287d49.xml");
-	facePaths.append(Common::pathToWarehouse+"depthmap_tmp2/"+"04287d53.xml");
-	facePaths.append(Common::pathToWarehouse+"depthmap_tmp2/"+"04287d51.xml");
-	facePaths.append(Common::pathToWarehouse+"depthmap_tmp2/"+"04395d200.xml");
-	*/
-	//facePaths.append(Common::pathToWarehouse+"depthmap_tmp2/"+"averageFace_final.xml");
-
-	//facePaths.append("04691d130.xml");
-	//facePaths.append("04225d303.xml");
-	//facePaths.append("04225d299.xml");
-	//facePaths.append("02463d554");
-	//facePaths.append("02463d556");
-
-	facePaths.append(Common::pathToDepthmapF2003+"04219d419.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04273d246.xml");
-
-	//04273d247
+	facePaths.append(Common::pathToCreatedDepthmaps+"04219d419.xml");
+	facePaths.append(Common::pathToCreatedDepthmaps+"04273d246.xml");
 
 	for(int i =0; i < facePaths.size(); i++) {
 		QFileInfo fileInfo(facePaths.at(i));
@@ -718,7 +519,6 @@ void Run::loadDeptmap() {
 		cv::imshow(fileInfo.baseName().toStdString(), Common::norm_0_255(depthmap));
 
 		//Common::delay(500);
-
 
 		/*
 		cv::Mat crop = depthMap(cv::Rect(40,50,240,200));
@@ -749,47 +549,16 @@ void Run::loadDeptmap() {
 	}
 }
 
-void Run::showLandmarks() {
+/**
+ * @brief Test method. Shows depthmap with landmarks.
+ */
+void Run::test_showLandmarks() {
 	QStringList facePaths;
 
 	//average landmarks
-	Landmarks averageLandmarks(Common::lmPathToLmDir+Common::lmAvgLmLabel);
+	Landmarks averageLandmarks(Common::pathToLandmarkDir+Common::lmAvgLmLabel);
 
-	/*
-	QDir dir;
-	dir.setPath(Common::pathToDepthmapF2003);
-	dir.setFilter(QDir::Files | QDir::NoSymLinks);
-	dir.setNameFilters(QStringList()<<"*xml");
-	faceLabels = dir.entryList();
-	*/
-
-	/*
-	faceLabels.append("04202d454.xml");
-
-	//faceLabels.append("04217d401.xml");// - chyba
-	//faceLabels.append("04203d436.xml");
-	faceLabels.append("02463d552.xml"); // predloha pre grafy
-	//faceLabels.append("04397d348.xml"); - chyba, ale preskoci
-	//faceLabels.append("04300d266.xml"); - chyba a spadne
-	faceLabels.append("04222d397.xml");
-	faceLabels.append("04287d49.xml");
-	faceLabels.append("04287d51.xml");
-	faceLabels.append("04287d53.xml");
-	//faceLabels.append("04400d294.xml");
-
-	//faceLabels.append("04202d438.xml");
-
-	//faceLabels.append("04581d202.xml");
-	//faceLabels.append("04225d303.xml");
-	//faceLabels.append("02463d556.xml");
-	*/
-	//facePaths.append(Common::pathToDepthmapF2003+"04265d267.xml");
-	//facePaths.append(Common::pathToDepthmapF2003+"04299d193.xml");
-	//facePaths.append(Common::pathToDepthmapF2003+"04219d419.xml");
-	//facePaths.append(Common::pathToDepthmapF2003+"04265d267.xml_wrong_lm");
-
-
-	Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
+	Common::loadFilesPathFromDir(Common::pathToCreatedDepthmaps,facePaths);
 
 	//load average face
 	cv::Mat averageFace;
@@ -864,7 +633,11 @@ void Run::showLandmarks() {
 
 	}
 }
-void Run::init() {
+
+/**
+ * @brief Create PCA subspace for all didive method.
+ */
+void Run::initPCA() {
 
 	qDebug() << "#####  Eigenface Initialization";
 
@@ -875,25 +648,14 @@ void Run::init() {
 	QStringList facePaths;
 	QStringList labels;
 
-	Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,allFacePaths);
+	Common::loadFilesPathFromDir(Common::pathToCreatedDepthmaps,allFacePaths);
 
 	//prepare file list
-
-
 	for(int i = 0; i < allFacePaths.size(); i+=1) {
 		if(facePaths.size() < 300) {
 			facePaths.append(allFacePaths[i]);
 		}
 	}
-
-	//kontrola spravneho tvorenia vstupu pre pca
-	/*
-	for(int i = 0; i < allFacePaths.size(); i+=5) {
-		if(facePaths.size() < 10) {
-			facePaths.append(allFacePaths[i]);
-		}
-	}
-	*/
 
 	//load average face
 	cv::Mat averageFace;
@@ -968,24 +730,12 @@ void Run::init() {
 
 }
 
-void Run::divideFace() {
+/**
+ * @brief Test method. Divide face and show areas.
+ */
+void Run::test_divideFace() {
 	QStringList faceLabels;
-
-	/*
-	QDir dir;
-	dir.setPath(Common::pathToDepthmapF2003);
-	dir.setFilter(QDir::Files | QDir::NoSymLinks);
-	dir.setNameFilters(QStringList()<<"*xml");
-	faceLabels = dir.entryList();
-	*/
-
-	//faceLabels.append("04202d454.xml");
-
-	//faceLabels.append("04217d401.xml"); - chyba
-	faceLabels.append("04203d436.xml");
-	//faceLabels.append("04202d438.xml");
-
-	//faceLabels.append("04581d202.xml");
+	faceLabels.append("04581d202.xml");
 	//faceLabels.append("04225d303.xml");
 	//faceLabels.append("02463d556.xml");
 
@@ -998,7 +748,7 @@ void Run::divideFace() {
 		cv::Mat depthMap;
 		double distance;
 
-		cv::FileStorage storage(Common::pathToDepthmapF2003.toStdString()+faceLabels.at(i).toStdString(), cv::FileStorage::READ);
+		cv::FileStorage storage(Common::pathToCreatedDepthmaps.toStdString()+faceLabels.at(i).toStdString(), cv::FileStorage::READ);
 		storage[Common::depthmapDepthmapLabel.toStdString()] >> depthMap;
 		storage[Common::depthmapDistanceFromModelLabel.toStdString()] >> distance;
 
@@ -1034,7 +784,10 @@ void Run::divideFace() {
 
 }
 
-void Run::processFace() {
+/**
+ * @brief Test method. Project depthmap to pca subspace.
+ */
+void Run::test_processFace() {
 	bool result;
 
 
@@ -1061,7 +814,7 @@ void Run::processFace() {
 
 
 	//load face
-	QString path = Common::pathToDepthmapF2003+"04395d202.xml";
+	QString path = Common::pathToCreatedDepthmaps+"04395d202.xml";
 
 	QFileInfo fileInfo(path);
 	Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),depthmap,averageFace,distance,iterations);
@@ -1076,10 +829,12 @@ void Run::processFace() {
 
 }
 
+/**
+ * @brief Compute parameters for future evaluation proces.
+ */
 void Run::compareFacesInit() {
 	qDebug() << "#####  Compare Faces Initialization";
 	bool result = false;
-
 
 	FaceDivider::DivideMethod divideMethod = _divideMethod;
 	Comparator::CompareMethod compareMethod = _compareMethod;
@@ -1183,11 +938,12 @@ void Run::compareFacesInit() {
 	QVector<tFeatures> featuresVector;
 	QVector<QVector<cv::Mat> >featuresVectorArena;
 
-	Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
+	Common::loadFilesPathFromDir(Common::pathToCreatedDepthmaps,facePaths);
 
 	int indexStart = 400;
 	int indexStop = 700; //700
 
+	QStringList personsLabel;
 
 	for(int i =0; i < facePaths.size(); i++) {
 		tFeatures features;
@@ -1199,9 +955,20 @@ void Run::compareFacesInit() {
 			break;
 		}
 
+
+
 		//load depthmap
 		QFileInfo fileInfo(facePaths.at(i));
 		Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(), depthmap,averageFace,distance,iterations);
+
+		/*
+		//check, how many persons are in set
+		QStringList label = fileInfo.baseName().split('d');
+		if(! personsLabel.contains(label.at(0))) {
+			personsLabel.append(label.at(0));
+			qDebug() << fileInfo.baseName();
+		}
+		*/
 
 		// eigenface algorithm
 		if(_isEigenface) {
@@ -1235,6 +1002,7 @@ void Run::compareFacesInit() {
 		}
 		labels.append(fileInfo.baseName());
 	}
+	//qDebug() << "different persons count:" << personsLabel.size();
 	qDebug() << "featuresVector.size() a.k.a pocet vstupnych tvari:" << featuresVector.size();
 	qDebug() << "featuresVectorArena.size() a.k.a pocet vstupnych tvari:" << featuresVectorArena.size();
 
@@ -1325,9 +1093,11 @@ void Run::compareFacesInit() {
 	//save result - naco sa to uklada pri inicializacii ?? ???
 	//Common::saveCmpResult(matToSaveImposter, saveImposterFile);
 	//Common::saveCmpResult(matToSaveGenuine, saveGenuineFile );
-
 }
 
+/**
+ * @brief Compare set of faces. Each with each.
+ */
 void Run::compareFaces() {
 
 	qDebug() << "#####  Compare Faces";
@@ -1468,9 +1238,9 @@ void Run::compareFaces() {
 	QStringList facePaths;
 	QStringList labels;
 
+	QStringList personsLabel;
 
 	//load normalizer
-
 	/*
 	ScoreNormalizer normArena, normEigenface;
 	if(_isEigenface) {
@@ -1479,92 +1249,45 @@ void Run::compareFaces() {
 	if(_isArena) {
 		normArena= ScoreNormalizer(ScoreNormalizer::zScore,loadScnFile);
 	}
-
 	*/
 
-	//ScoreNormalizer normImposter(ScoreNormalizer::zScore,Common::cmpResultImposterMethod1Label);
-
-	/*
-	facePaths.append(Common::pathToDepthmapF2003+"04202d438.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04287d53.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04435d354.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04395d200.xml");
-	*/
-
-	/*
-	facePaths.append(Common::pathToDepthmapF2003+"04202d438.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04435d340.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04217d405.xml");
-	*/
-
-	//facePaths.append(Common::pathToDepthmapF2003+"02463d546.xml_init");
-	//facePaths.append(Common::pathToDepthmapF2003+"04201d370.xml_init");
-	//facePaths.append(Common::pathToDepthmapF2003+"04447d131.xml");
-
-	//facePaths.append(Common::pathToDepthmapF2003+"04430d271.xml");
-	//facePaths.append(Common::pathToDepthmapF2003+"04435d344.xml");
-
-	/*
-=== "04575d300" vs "04579d260" : false 0.107441
-=== "04575d300" vs "04588d137" : false 0.152751
-	 */
-
-
-	/*
-	facePaths.append(Common::pathToDepthmapF2003+"04575d302.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04575d300.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04579d260.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04588d137.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04618d164.xml");
-	*/
-
-	/*
-=== "04429d347" vs "04435d344" : false 139.923
-=== "04557d335" vs "04579d260" : false 136.917
-=== "04557d337" vs "04579d260" : false 139.57
-	 */
-
-	/*
-	facePaths.append(Common::pathToDepthmapF2003+"04429d347.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04435d344.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04557d335.xml");
-	facePaths.append(Common::pathToDepthmapF2003+"04579d260.xml");
-	*/
-
-	//facePaths.append("averageFace_final_norm_4_4");
-	//facePaths.append("averageFace_final");
-
-	/*
-	facePaths.append("04395d200");
-	facePaths.append("04395d202");
-	facePaths.append("04388d293");
-	facePaths.append("04388d297");
-	facePaths.append("04379d286");
-	*/
-
-	Common::loadFilesPathFromDir(Common::pathToDepthmapF2003,facePaths);
+	Common::loadFilesPathFromDir(Common::pathToCreatedDepthmaps,facePaths);
+	qDebug() << "faces to compare: " << facePaths.size();
+	if(facePaths.size() == 0) {
+		return;
+	}
 
 	Controller controller;
 	QVector<tFeatures> featuresVector;
 	QVector<QVector<cv::Mat> >featuresVectorArena;
 
 	int indexStart = 400;
-	int indexStop = 1000; //1000
+	int indexStop = 410; //1000
 
 	for(int i =0; i < facePaths.size(); i++) {
 		tFeatures features;
 		QVector<cv::Mat> featuresArena;
 
+		/*
 		if(i < indexStart && facePaths.size() > indexStart) {
 			continue;
 		} else if(i > indexStop) {
 			break;
 		}
+		*/
 
 		//load face depthmap
 		QFileInfo fileInfo(facePaths.at(i));
 		Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(), depthmap,averageFace,distance,iterations);
 
+		/*
+		//check, how many persons are in set
+		QStringList label = fileInfo.baseName().split('d');
+		if(! personsLabel.contains(label.at(0))) {
+			personsLabel.append(label.at(0));
+			qDebug() << fileInfo.baseName();
+		}
+		*/
 		//qDebug() << facePaths.at(i) << depthmap.rows << "x" << depthmap.cols;
 
 		// eigenface algorithm
@@ -1598,8 +1321,9 @@ void Run::compareFaces() {
 		}
 		labels.append(fileInfo.baseName());
 	}
-	qDebug() << "featuresVector.size() a.k.a pocet vstupnych tvari:" << featuresVector.size();
-	qDebug() << "featuresVectorArena.size() a.k.a pocet vstupnych tvari:" << featuresVectorArena.size();
+	//qDebug() << "different persons count:" << personsLabel.size();
+	//qDebug() << "featuresVector.size() a.k.a pocet vstupnych tvari:" << featuresVector.size();
+	//qDebug() << "featuresVectorArena.size() a.k.a pocet vstupnych tvari:" << featuresVectorArena.size();
 
 
 	//initialize fusioner for arena and eigenface
@@ -1653,7 +1377,6 @@ void Run::compareFaces() {
 			QVector<float> distancesArena;
 			//QVector<float> distancesArenaNormalize;
 			QVector<float> distanceBoth;
-
 
 
 			// eigenface compare
@@ -1720,19 +1443,11 @@ void Run::compareFaces() {
 
 			}
 
-			/*
-			//qDebug() << "===" << labels.at(i) << "vs" << labels.at(j) << ":" << isGenuine << distances[0];
-			for(int k = 0; k < distances.size(); k++ ) {
-				//qDebug() << k << ":" << distances.at(k) << "->" << normDistances.at(k);
-				;
-			}
-			*/
-
 			counter++;
 		}
 	}
-	qDebug() << "filter counter: " << filterCounter;
-	qDebug() << "pocet porovnani: " << counter;
+	//qDebug() << "filter counter: " << filterCounter;
+	qDebug() << "compare counter: " << counter;
 
 	if(_isEigenface) {
 		//convert to matrix
@@ -1740,8 +1455,8 @@ void Run::compareFaces() {
 		Common::convertToMatrix(genResult, matToSaveGenuine);
 		Common::convertToMatrix(impResult, matToSaveImposter);
 
-		qDebug() << "matToSaveGenuine" << matToSaveGenuine.rows << "x" << matToSaveGenuine.cols;
-		qDebug() << "matToSaveImposter" << matToSaveImposter.rows << "x" << matToSaveImposter.cols;
+		//qDebug() << "matToSaveGenuine" << matToSaveGenuine.rows << "x" << matToSaveGenuine.cols;
+		//qDebug() << "matToSaveImposter" << matToSaveImposter.rows << "x" << matToSaveImposter.cols;
 
 		//save it
 		Common::saveCmpResult(matToSaveImposter, saveImposterFile);
@@ -1754,8 +1469,8 @@ void Run::compareFaces() {
 		Common::convertToMatrix(genResultBoth, matToSaveGenuineBoth);
 		Common::convertToMatrix(impResultBoth, matToSaveImposterBoth);
 
-		qDebug() << "matToSaveGenuineBoth" << matToSaveGenuineBoth.rows << "x" << matToSaveGenuineBoth.cols;
-		qDebug() << "matToSaveImposterBoth" << matToSaveImposterBoth.rows << "x" << matToSaveImposterBoth.cols;
+		//qDebug() << "matToSaveGenuineBoth" << matToSaveGenuineBoth.rows << "x" << matToSaveGenuineBoth.cols;
+		//qDebug() << "matToSaveImposterBoth" << matToSaveImposterBoth.rows << "x" << matToSaveImposterBoth.cols;
 
 		//save it
 		Common::saveCmpResult(matToSaveImposterBoth, saveImposterArenaFile);
@@ -1769,8 +1484,11 @@ void Run::compareFaces() {
 		Common::convertToMatrix(genResultBoth, matToSaveGenuineBoth);
 		Common::convertToMatrix(impResultBoth, matToSaveImposterBoth);
 
-		qDebug() << "matToSaveGenuineBoth" << matToSaveGenuineBoth.rows << "x" << matToSaveGenuineBoth.cols;
-		qDebug() << "matToSaveImposterBoth" << matToSaveImposterBoth.rows << "x" << matToSaveImposterBoth.cols;
+		//qDebug() << "matToSaveGenuineBoth" << matToSaveGenuineBoth.rows << "x" << matToSaveGenuineBoth.cols;
+		//qDebug() << "matToSaveImposterBoth" << matToSaveImposterBoth.rows << "x" << matToSaveImposterBoth.cols;
+
+		qDebug() << "genuine users counter: " << matToSaveGenuineBoth.rows;
+		qDebug() << "imposter users counter: " << matToSaveImposterBoth.rows;
 
 		//save it
 		Common::saveCmpResult(matToSaveImposterBoth, saveImposterBothFile);
@@ -1780,8 +1498,10 @@ void Run::compareFaces() {
 
 }
 
-
-void Run::histogram() {
+/**
+ * @brief Print stats of evaluation proces. FMR, FNMr, EER, histograms, ...
+ */
+void Run::showResults() {
 
 	FaceDivider::DivideMethod divideMethod = _divideMethod;
 	QString loadGenuineFile;
@@ -1852,7 +1572,6 @@ void Run::histogram() {
 		default:
 			throw std::runtime_error("compareFaces(): unknown divide method");;
 	}
-
 	cv::Mat genResult, impResult;
 
 	if(_isEigenface && _isArena) {
@@ -1873,6 +1592,7 @@ void Run::histogram() {
 
 	stats.computeEer();
 
+	qDebug() << "final EER:";
 	for(int i = 0; i < stats.statValuesVector.size(); i++) {
 
 		//qDebug() << "==" << i << ":";
@@ -1882,18 +1602,201 @@ void Run::histogram() {
 
 		QString err;
 		Stats::convertDotInNumber(stats.statValuesVector.at(i).eer,err);
-		//qDebug("%s",err.toStdString().c_str());
+		qDebug("%2d: %s",i, err.toStdString().c_str());
 	}
-
 	//stats.computeHist(0,0,1.4);
 	//stats.printHist(0);
 	//stats.computeGraphFmrFnmr(0,0,1.3,0.01);
-
 }
 
-void Run::test_eigen() {
-	EigenFace eigenface;
+/**
+ * @brief Compare two models of faces and print it score.
+ * @param model1 Path to face model1
+ * @param model2 Path to face model2
+ */
+void Run::compareTwoFaces(QString model1, QString model2) {
+	qDebug() << "#####  Compare two faces";
 
-	eigenface.test();
+	Controller controller;
+
+	Mesh *modelFace = new Mesh(Common::pathToAverageModelNormalize, false);
+
+	Mesh *face1 = new Mesh(model1, true);
+	Mesh *face2 = new Mesh(model2, true);
+
+	cv::Mat depthmap1, depthmap2;
+	int iterations1,iterations2;
+	double distance1,distance2;
+	controller.createDepthmap(*face1, *modelFace, depthmap1, distance1, iterations1);
+	controller.createDepthmap(*face2, *modelFace, depthmap2, distance2, iterations2);
+
+	//check it
+	if(iterations1 == Common::alignerMaxIterations
+			|| iterations2 == Common::alignerMaxIterations
+			|| distance1 > Common::alignerDistanceTresholdToContinue-2000
+			|| distance2 > Common::alignerDistanceTresholdToContinue-2000) {
+		qDebug() << "failure to acquire";
+		return;
+	}
+
+
+	FaceDivider::DivideMethod divideMethod = _divideMethod;
+	Comparator::CompareMethod compareMethod = _compareMethod;
+	ScoreFusioner::FusionMethod fusionMethod = ScoreFusioner::WeightedSum;
+
+	QString eigenMethodLabel;
+	QString loadScnArenaFile;
+	QString loadScnFile;
+	QString errMethodLabel;
+	QString errArenaMethodLabel;
+
+	switch(divideMethod) {
+		case FaceDivider::method1:
+			eigenMethodLabel = Common::eigenMethod1Label;
+			loadScnArenaFile  = Common::scnStatArenaMethod1Label;
+			loadScnFile = Common::scnStatMethod1Label;
+			errMethodLabel = Common::statEerMethod1Label;
+			errArenaMethodLabel = Common::statEerArenaMethod1Label;
+			break;
+		case FaceDivider::method2:
+			eigenMethodLabel = Common::eigenMethod2Label;
+			loadScnArenaFile  = Common::scnStatArenaMethod2Label;
+			loadScnFile = Common::scnStatMethod2Label;
+			errMethodLabel = Common::statEerMethod2Label;
+			errArenaMethodLabel = Common::statEerArenaMethod2Label;
+			break;
+		case FaceDivider::method3:
+			eigenMethodLabel = Common::eigenMethod3Label;
+			loadScnArenaFile  = Common::scnStatArenaMethod3Label;
+			loadScnFile = Common::scnStatMethod3Label;
+			errMethodLabel = Common::statEerMethod3Label;
+			errArenaMethodLabel = Common::statEerArenaMethod3Label;
+			break;
+		default:
+			throw std::runtime_error("compareTwoFaces(): unknown divide method");
+	}
+
+	//load average landmarks
+	Landmarks avgLandmarks(Common::pathToAverageLm);
+
+	//load pca subspace
+	EigenFace eigenface;
+	eigenface.loadSubspaces(eigenMethodLabel);
+
+	//load average depthmap
+	cv::Mat averageFace;
+	double distance;
+	int iterations;
+	QString path = Common::pathToAverageDepthmap;
+	QFileInfo fileInfo(path);
+	Common::loadDepthmapProcess(fileInfo.fileName(),fileInfo.path(),averageFace,averageFace,distance,iterations);
+
+	//process depthmap
+	Common::processLoadedMap(depthmap1,averageFace);
+	Common::processLoadedMap(depthmap2,averageFace);
+
+	//project to subspace
+	tFeatures features1,features2;
+	QVector<cv::Mat> featuresArena1,featuresArena2;
+	bool result1,result2,result3,result4;
+
+	// eigenface algorithm
+	controller.processFace(depthmap1,
+						   "",
+						   avgLandmarks,
+						   result1,
+						   divideMethod,
+						   eigenface,
+						   features1,
+						   false);
+
+	controller.processFace(depthmap2,
+						   "",
+						   avgLandmarks,
+						   result2,
+						   divideMethod,
+						   eigenface,
+						   features2,
+						   false);
+	// arena algorithm
+	controller.procesFaceArena(depthmap1,
+							   "",
+							   avgLandmarks,
+							   result3,
+							   divideMethod,
+							   featuresArena1);
+	controller.procesFaceArena(depthmap2,
+							   "",
+							   avgLandmarks,
+							   result4,
+							   divideMethod,
+							   featuresArena2);
+
+	if(!(result1 && result2 && result3 && result4)) {
+		qDebug() << "failure to enroll";
+		return;
+	}
+
+	//initialize fusioner for arena and eigenface
+	ScoreFusioner fusionerEigenFace, fusionerArena, fusionerBoth;
+
+	QVector<float>  weightsBoth,weightsArena,weightsEigenface;
+
+	if(_isEigenface) {
+		Stats::loadEer(weightsEigenface, errMethodLabel);
+		if(fusionMethod == ScoreFusioner::WeightedSum) {
+			fusionerEigenFace.setWeightsAsComplement(weightsEigenface);
+		}
+	}
+	if(_isArena) {
+		Stats::loadEer(weightsArena, errArenaMethodLabel);
+		if(fusionMethod == ScoreFusioner::WeightedSum) {
+			fusionerArena.setWeightsAsComplement(weightsArena);
+		}
+
+	}
+	if(_isArena && _isEigenface) {
+		weightsBoth = weightsEigenface << weightsArena;
+		if(fusionMethod == ScoreFusioner::WeightedSum) {
+			fusionerBoth.setWeightsAsComplement(weightsBoth);
+		}
+	}
+
+	QVector<float> distances;
+	QVector<float> distancesArena;
+	QVector<float> distanceBoth;
+
+	float finalScore;
+
+	// eigenface compare
+	if(_isEigenface) {
+		Comparator::compare(features1,features2,distances, compareMethod);
+
+		//score fusion
+		finalScore = fusionerEigenFace.fusion(distances,fusionMethod);
+		distanceBoth = distanceBoth << distances;
+	}
+
+	//arena compare
+	if(_isArena) {
+		Comparator::compare(featuresArena1,featuresArena2,distancesArena, compareMethod);
+
+		//score fusion
+		finalScore = fusionerArena.fusion(distancesArena,fusionMethod);\
+		distanceBoth = distanceBoth << distancesArena;
+	}
+
+
+	// fusion arena and eigenface result
+	if(_isArena && _isEigenface) {
+		finalScore = fusionerBoth.fusion(distanceBoth,fusionMethod);
+	}
+
+
+	delete face1;
+	delete face2;
+	delete modelFace;
+
+	qDebug() << "final score:" << finalScore;
 }
 

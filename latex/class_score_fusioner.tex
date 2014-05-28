@@ -1,0 +1,143 @@
+\hypertarget{class_score_fusioner}{\section{Score\+Fusioner Class Reference}
+\label{class_score_fusioner}\index{Score\+Fusioner@{Score\+Fusioner}}
+}
+
+
+Class for score fusion.  
+
+
+
+
+{\ttfamily \#include $<$scorefusioner.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_score_fusioner_a000eb98fb47d65c0fd37335d70efe2af}{enum \hyperlink{class_score_fusioner_a000eb98fb47d65c0fd37335d70efe2af}{Fusion\+Method} \{ {\bfseries Sum}, 
+{\bfseries Weighted\+Sum}
+ \}}\label{class_score_fusioner_a000eb98fb47d65c0fd37335d70efe2af}
+
+\begin{DoxyCompactList}\small\item\em Method of score fusion. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_score_fusioner_a61b9b1b5c1e4ce3fdea672f2efd269d2}{Score\+Fusioner} (Q\+Vector$<$ float $>$ \&weights)
+\begin{DoxyCompactList}\small\item\em Constructor. Implicit method of fusion is weighted sum. \end{DoxyCompactList}\item 
+void \hyperlink{class_score_fusioner_aadab5b01ddfb09d26c93212d83f0fa3c}{set\+Weights\+As\+Complement} (Q\+Vector$<$ float $>$ weights, float complement=0.\+4)
+\begin{DoxyCompactList}\small\item\em Constructor. Implicit method of fusion is weighted sum. Set weights as complement. \end{DoxyCompactList}\item 
+float \hyperlink{class_score_fusioner_add16d5bae3281d59d12a2064d0916f08}{fusion} (Q\+Vector$<$ float $>$ \&src, \hyperlink{class_score_fusioner_a000eb98fb47d65c0fd37335d70efe2af}{Score\+Fusioner\+::\+Fusion\+Method} fusion\+Method)
+\begin{DoxyCompactList}\small\item\em Fusion Vector of score. \end{DoxyCompactList}\item 
+float \hyperlink{class_score_fusioner_acba5f63751da0e18ac74a123a9f37177}{sum} (Q\+Vector$<$ float $>$ \&src)
+\begin{DoxyCompactList}\small\item\em Sum method. \end{DoxyCompactList}\item 
+float \hyperlink{class_score_fusioner_afa3d0b428f49c4382558336f922cd6f6}{w\+Sum} (Q\+Vector$<$ float $>$ \&src)
+\begin{DoxyCompactList}\small\item\em Weighted sum method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for score fusion. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_score_fusioner_a61b9b1b5c1e4ce3fdea672f2efd269d2}{\index{Score\+Fusioner@{Score\+Fusioner}!Score\+Fusioner@{Score\+Fusioner}}
+\index{Score\+Fusioner@{Score\+Fusioner}!Score\+Fusioner@{Score\+Fusioner}}
+\subsubsection[{Score\+Fusioner}]{\setlength{\rightskip}{0pt plus 5cm}Score\+Fusioner\+::\+Score\+Fusioner (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ float $>$ \&}]{weights}
+\end{DoxyParamCaption}
+)}}\label{class_score_fusioner_a61b9b1b5c1e4ce3fdea672f2efd269d2}
+
+
+Constructor. Implicit method of fusion is weighted sum. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em weights} & Weights of weighted sum \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_score_fusioner_add16d5bae3281d59d12a2064d0916f08}{\index{Score\+Fusioner@{Score\+Fusioner}!fusion@{fusion}}
+\index{fusion@{fusion}!Score\+Fusioner@{Score\+Fusioner}}
+\subsubsection[{fusion}]{\setlength{\rightskip}{0pt plus 5cm}float Score\+Fusioner\+::fusion (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ float $>$ \&}]{src, }
+\item[{{\bf Score\+Fusioner\+::\+Fusion\+Method}}]{fusion\+Method}
+\end{DoxyParamCaption}
+)}}\label{class_score_fusioner_add16d5bae3281d59d12a2064d0916f08}
+
+
+Fusion Vector of score. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Vector of score. \\
+\hline
+{\em fusion\+Method} & Method of fusion \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Fusion score 
+\end{DoxyReturn}
+\hypertarget{class_score_fusioner_aadab5b01ddfb09d26c93212d83f0fa3c}{\index{Score\+Fusioner@{Score\+Fusioner}!set\+Weights\+As\+Complement@{set\+Weights\+As\+Complement}}
+\index{set\+Weights\+As\+Complement@{set\+Weights\+As\+Complement}!Score\+Fusioner@{Score\+Fusioner}}
+\subsubsection[{set\+Weights\+As\+Complement}]{\setlength{\rightskip}{0pt plus 5cm}void Score\+Fusioner\+::set\+Weights\+As\+Complement (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ float $>$}]{weights, }
+\item[{float}]{complement = {\ttfamily 0.4}}
+\end{DoxyParamCaption}
+)}}\label{class_score_fusioner_aadab5b01ddfb09d26c93212d83f0fa3c}
+
+
+Constructor. Implicit method of fusion is weighted sum. Set weights as complement. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em weights} & Weights \\
+\hline
+{\em complement} & Complement \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_score_fusioner_acba5f63751da0e18ac74a123a9f37177}{\index{Score\+Fusioner@{Score\+Fusioner}!sum@{sum}}
+\index{sum@{sum}!Score\+Fusioner@{Score\+Fusioner}}
+\subsubsection[{sum}]{\setlength{\rightskip}{0pt plus 5cm}float Score\+Fusioner\+::sum (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ float $>$ \&}]{src}
+\end{DoxyParamCaption}
+)}}\label{class_score_fusioner_acba5f63751da0e18ac74a123a9f37177}
+
+
+Sum method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Vector of score to fusion \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Fusion of score 
+\end{DoxyReturn}
+\hypertarget{class_score_fusioner_afa3d0b428f49c4382558336f922cd6f6}{\index{Score\+Fusioner@{Score\+Fusioner}!w\+Sum@{w\+Sum}}
+\index{w\+Sum@{w\+Sum}!Score\+Fusioner@{Score\+Fusioner}}
+\subsubsection[{w\+Sum}]{\setlength{\rightskip}{0pt plus 5cm}float Score\+Fusioner\+::w\+Sum (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ float $>$ \&}]{src}
+\end{DoxyParamCaption}
+)}}\label{class_score_fusioner_afa3d0b428f49c4382558336f922cd6f6}
+
+
+Weighted sum method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Vector of score to fusion \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Fusion of score 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+scorefusioner.\+h\item 
+scorefusioner.\+cpp\end{DoxyCompactItemize}

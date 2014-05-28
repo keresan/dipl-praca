@@ -9,7 +9,7 @@
 #include "landmarks.h"
 
 /**
- * Paint 3D model
+ * @brief Class for painting mesh
  */
 class GLWidget : public QGLWidget
 {
@@ -24,11 +24,6 @@ public:
     GLWidget(QWidget *parent = 0);
 
     ~GLWidget();
-    /**
-     * Occurs when widget is resized
-     * @param width new width
-     * @param height new height
-     */
     void resizeGL(int width, int height);
     QSize sizeHint() const;
     QSize minimumSizeHint() const;
@@ -46,11 +41,9 @@ protected:
     void init();
     void initializeGL();
     void paintGL();
-    void refreshData();
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
-    void timerEvent(QTimerEvent *) { refreshData(); }
 
 
 private:

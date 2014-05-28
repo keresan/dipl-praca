@@ -13,40 +13,50 @@ GLWidget::GLWidget(QWidget* parent) : QGLWidget(parent) {
 GLWidget::~GLWidget() {
 }
 
+/**
+ * @brief Set size of window
+ * @return Window size
+ */
 QSize GLWidget::sizeHint() const {
      return QSize(600, 600);
 }
 
+/**
+ * @brief Minimum size of window
+ * @return Size of window
+ */
 QSize GLWidget::minimumSizeHint() const {
      return QSize(200, 200);
 }
 
+/**
+ * @brief Initialization.
+ */
 void GLWidget::init() {
     //refreshData();
     xnew = ynew = znew = xold = yold = zold = xx1 = yy1 = zz1 = stav = 0;
     //startTimer(100);
 }
 
+/**
+ * @brief Delete all painted object.
+ */
 void GLWidget::deleteAll() {
     for (int i = 0; i < faces.count(); i++)
         delete faces[i];
     faces.clear();
-
-    for (int i = 0; i < landmarks.count(); i++)
-        delete landmarks[i];
-    landmarks.clear();
-
-    curves.clear();
 }
 
+/**
+ * @brief Clear all painted object.
+ */
 void GLWidget::clearAll() {
     faces.clear();
-    landmarks.clear();
-    curves.clear();
 }
 
-
-
+/**
+ * @brief Initializa OpenGL
+ */
 void GLWidget::initializeGL() {
     glClearColor(0.78f,0.78f,0.78f,0.0f);
 
@@ -59,23 +69,9 @@ void GLWidget::initializeGL() {
     //glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 }
 
-void GLWidget::refreshData() {
-    /*if (!Kinect::getRGB(rgb))
-    {
-        std::cout << "Kinect rgb error" << std::endl;
-        exit(1);
-    }
-    if (!Kinect::getDepth(depth, 20, NULL, 200, 1500))
-    {
-        std::cout << "Kinect depth error" << std::endl;
-        exit(1);
-    }
-
-    face = Kinect::createMesh(depth, rgb);
-    SurfaceProcessor::centralize(face);
-    updateGL();*/
-}
-
+/**
+ * @brief Paint faces.
+ */
 void GLWidget::paintGL() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -164,61 +160,7 @@ void GLWidget::paintGL() {
         }
     }
 
-	//paint landmarks
-	/* landmark uz je 2d
-    foreach(Landmarks *l, landmarks) {
-        glDisable(GL_LIGHTING);
-        glDisable(GL_LIGHT0);
-        glLineWidth(5);
-        glColor3f(l->color().redF() ,l->color().greenF(),l->color().blueF());
-
-        glBegin(GL_LINES);
-
-        QVector<cv::Point3d>* landmarkArray;
-        landmarkArray = l->getLandmarks();
-
-        for( int i =0; i < l->getLandmarks()->count(); i++) {
-            if(l->is(i)) {
-                if(i == Landmarks::mean) {
-                    cv::Point3d p = l->pos(i);
-                    glVertex3f(p.x, p.y, p.z);
-                    glVertex3f(p.x, p.y, p.z+40);
-                } else {
-                    cv::Point3d p = l->pos(i);
-                    glVertex3f(p.x, p.y, p.z);
-                    glVertex3f(p.x, p.y, p.z+10);
-                }
-
-            }
-        }
-
-        glEnd();
-    }
-	*/
-
-	//paint curves
-	if (curves.count() > 0) {
-        glDisable(GL_LIGHTING);
-        glDisable(GL_LIGHT0);
-
-        glLineWidth(3);
-        glColor3f(1,1,0);
-
-		foreach (const QVector<cv::Point3d> &curve, curves) {
-            glBegin(GL_LINE_STRIP);
-            int n = curve.count();
-            for (int i = 0; i < n; i++)
-            {
-                const cv::Point3d &p = curve[i];
-                if (p.x == p.x && p.y == p.y && p.z == p.z)
-                {
-                    glVertex3d(p.x, p.y, p.z+3);
-                }
-            }
-            glEnd();
-        }
-    }
-
+	// paint asix
 	glLineWidth(2);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_LIGHT0);
@@ -257,7 +199,11 @@ void GLWidget::paintGL() {
 	glEnd();
 }
 
-
+/**
+ * @brief Occurs when widget is resized
+ * @param width New width
+ * @param height New height
+ */
 void GLWidget::resizeGL(int width, int height) {
     //proces resize keep good aspect ratio for 3D scene
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

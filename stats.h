@@ -4,21 +4,38 @@
 #include "common.h"
 #include "qmath.h"
 
+/**
+ * @brief Statistical values for one area face.
+ */
 class StatValues {
 public:
 	StatValues() {};
 
+	/**
+	 * @brief equal error rate
+	 */
 	float eer;
+	/**
+	 * @brief minimum value
+	 */
 	float min;
+	/**
+	 * @brief maximum value
+	 */
 	float max;
-	//float mean;
+	/**
+	 * @brief histogram of imposters users
+	 */
 	cv::MatND histImposer;
+	/**
+	 * @brief histogram of genuine users
+	 */
 	cv::MatND histGenuine;
-
-
-
 };
 
+/**
+ * @brief Class of statistacal data.
+ */
 class Stats
 {
 public:
@@ -30,25 +47,29 @@ public:
 
 	void computeMinMaxAvg();
 	void computeFmrFnrm(int col, float &fmr, float &fnmr, float threshold);
-	void computeGraphFmrFnmr(int col, float thresholdStart, float thresholdStop, float step);
+	void printGraphFmrFnmr(int col, float thresholdStart, float thresholdStop, float step);
 	void computeEer();
 
 	void static convertDotInNumber(float number,QString &strNumber,int precision = 6);
 
-
+	/**
+	 * @brief Vector of statistical data for each face area
+	 */
 	QVector<StatValues> statValuesVector;
 
 	void saveEer(QString fileName, QString dirPath = Common::pathToScnData);
 	static void loadEer(QVector<float> &errVector, QString fileName, QString dirPath = Common::pathToScnData);
 
-
-
 private:
 
-	cv::Mat _impResult, _genResult;
-
-
-
+	/**
+	 * @brief Imposter users set
+	 */
+	cv::Mat _impResult;
+	/**
+	 * @brief Genuine users set
+	 */
+	cv::Mat _genResult;
 };
 
 

@@ -3,12 +3,18 @@
 
 #include "common.h"
 
+/**
+ * @brief Class for score fusion.
+ */
 class ScoreFusioner
 {
 public:
 	ScoreFusioner();
 	ScoreFusioner(QVector<float> &weights);
 
+	/**
+	 * @brief Method of score fusion.
+	 */
 	enum FusionMethod {
 		Sum,
 		WeightedSum,
@@ -24,6 +30,9 @@ public:
 
 
 private:
+	/**
+	 * @brief Weight coeficients
+	 */
 	QVector<float> _weights;
 };
 

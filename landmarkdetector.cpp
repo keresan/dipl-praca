@@ -7,8 +7,8 @@ LandmarkDetector::LandmarkDetector(cv::Mat depthMap){
 }
 
 /**
- * @brief LandmarkDetector::detectAll
- * @param landmarks
+ * @brief Detect all landmarks
+ * @param Vector of landmarks to store it.
  * @return  True if no exeption during detection appears
  */
 bool LandmarkDetector::detectAll(Landmarks &landmarks) {
@@ -37,6 +37,9 @@ bool LandmarkDetector::detectAll(Landmarks &landmarks) {
 }
 
 
+/**
+ * @brief Detect nose tip.
+ */
 void LandmarkDetector::detectNoseTip() {
 
 	cv::Mat noseTipArea = _depthMap(cv::Range(Common::detectNoseTipAreaStartY,Common::detectNoseTipAreaStartY+Common::detectNoseTipAreaHeight),
@@ -72,7 +75,7 @@ void LandmarkDetector::detectNoseTip() {
 	cv::minMaxIdx(profileCurveX,NULL,NULL,NULL,indexMax);
 	noseTip.x = indexMax[1];
 
-
+	/*
 	cv::Mat normalizeMap = Common::norm_0_255(_depthMap);
 	cv::Mat colorMap;
 	cvtColor(normalizeMap, colorMap, CV_GRAY2RGB);
@@ -80,7 +83,6 @@ void LandmarkDetector::detectNoseTip() {
 	int lineType = 8;
 	float diameter = 0.5;
 
-	/*
 	int deltaY = Common::detectNoseTipAreaStartY;
 
 	for(int i = 0; i < profileCurveX.size()-1; i++) {
@@ -112,14 +114,12 @@ void LandmarkDetector::detectNoseTip() {
 
 }
 
+/**
+ * @brief Detect inner eye corners
+ */
 void LandmarkDetector::detectInnerEyeCorners() {
-
-
 	cv::Mat eyeArea = _depthMap(cv::Range(noseRoot.y-Common::detectEyeAreaHalfHeight, noseRoot.y+Common::detectEyeAreaHalfHeight),
 									cv::Range(noseRoot.x-Common::detectEyeAreaWidth, noseRoot.x+Common::detectEyeAreaWidth) );
-
-
-
 
 	std::vector<float> profileCurveX(eyeArea.cols);
 	std::vector<float> profileCurveXgradient(eyeArea.cols);
@@ -259,12 +259,8 @@ void LandmarkDetector::detectInnerEyeCorners() {
 }
 
 /**
- * @brief LandmarkDetector::detecNasalBridge
- * @return
- * urobit verikalnu profilovu krivku od spicky nosa +- 30px v horizontalnej ose - ziskame tym profil nosa
- * nosal bridge musi byt konvexny
+ * @brief Detect nose root.
  */
-
 void LandmarkDetector::detectNoseRoot() {
 
 
@@ -287,13 +283,6 @@ void LandmarkDetector::detectNoseRoot() {
 
 	//smooth
 	cv::medianBlur(profileCurveY, profileCurveY,5);
-
-	//profileCurveY[51] = 201;
-	//profileCurveY[52] = 213;
-	//profileCurveY[53] = 213;
-	//profileCurveY[54] = 213;
-	//median bluer s ksize 5 je schopny napravit az 2 chybne pixeli po sebe
-
 
 	//gradient
 	cv::Sobel(profileCurveY, profileCurveYgradient,CV_32F,1,0,3,1,0,cv::BORDER_DEFAULT);
@@ -365,6 +354,9 @@ void LandmarkDetector::detectNoseRoot() {
 
 }
 
+/**
+ * @brief Detect nose bottom.
+ */
 void LandmarkDetector::detectNoseBottom() {
 
 
@@ -446,6 +438,9 @@ void LandmarkDetector::detectNoseBottom() {
 	*/
 }
 
+/**
+ * @brief Detect nose corners.
+ */
 void LandmarkDetector::detectNoseCorners() {
 
 
@@ -564,6 +559,11 @@ void LandmarkDetector::detectNoseCorners() {
 	*/
 }
 
+/**
+ * @brief Compute gradient
+ * @param src Sourve vector
+ * @param dst Gradient vector
+ */
 void  LandmarkDetector::derivateVector(std::vector<float> &src, std::vector<float> &dst) {
 	for(unsigned long i = 0; i < src.size() - 1; i++) {
 		dst[i] = (src[i+1] - src[i])*10;
@@ -572,39 +572,13 @@ void  LandmarkDetector::derivateVector(std::vector<float> &src, std::vector<floa
 	dst.back() = src.back();
 }
 
-void LandmarkDetector::averageBlur(std::vector<float> &src, std::vector<float> &dst, int ksize) {
 
-	int kHalfSize = ksize / 2;
-	std::vector<float> tmpDst(src.size());
-
-	qDebug() << ksize << "-->" << kHalfSize;
-	for(unsigned long i  = 0; i < src.size(); i++) {
-
-		float average = 0;
-		int counter = 0;
-		//qDebug() << "i: " << i << "j=" << i - ksize << "az" << i+ ksize;
-		for(int j = i - kHalfSize; j <= i+ kHalfSize; j++) {
-			if(j >= 0 && j < src.size()) {
-				//qDebug() << "j=" << j <<"=" << src[j];
-				average += src[j];
-				counter++;
-			}
-		}
-
-
-		//qDebug() << "counter=" << counter;
-		average /= (float)counter;
-		//qDebug() << i <<" average: " << average;
-
-		tmpDst[i] = average;
-	}
-
-	//copy tmpDst to dst
-	dst = tmpDst;
-
-}
-
-
+/**
+ * @brief Check distance between two landmarks sets
+ * @param srcLandmarks Source landmark
+ * @param refLandmarks Reference landmark
+ * @return True if distance is ok.
+ */
 bool LandmarkDetector::checkLandmarks(Landmarks &srcLandmarks, Landmarks &refLandmarks) {
 	VectorOfLandmarks src = srcLandmarks.getLandmarks();
 	VectorOfLandmarks ref =  refLandmarks.getLandmarks();

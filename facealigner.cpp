@@ -1,9 +1,22 @@
 #include "facealigner.h"
 
+/**
+ * @brief Constructor
+ */
 FaceAligner::FaceAligner() {
 
 }
 
+
+/**
+ * @brief Align face
+ * @param face Face to align
+ * @param modelFace Average model face
+ * @param maxIterations Maximum of iteration
+ * @param treshold Distance between iterations to stop
+ * @param test Verbose mode
+ * @return
+ */
 int FaceAligner::align(Mesh &face, Mesh &modelFace, int maxIterations, int treshold, bool test) {
 
 	transformValues.clear();
@@ -44,6 +57,15 @@ int FaceAligner::align(Mesh &face, Mesh &modelFace, int maxIterations, int tresh
 	return result;
 }
 
+/**
+ * @brief Compute align values
+ * @param still Still mesh
+ * @param moving Mesh to be aligned
+ * @param maxIterations Maximum iterations to align
+ * @param threshold Distance between iterations to stop
+ * @param test Verbose mode
+ * @return Number of iterations
+ */
 int FaceAligner::computeAlign(Mesh &still, Mesh &moving, int maxIterations, int threshold, bool test) {
 
     //pokus o vytvorenie meshu still s mensim poctom bodov
@@ -103,7 +125,10 @@ int FaceAligner::computeAlign(Mesh &still, Mesh &moving, int maxIterations, int 
 	return iterations;
 }
 
-
+/**
+ * @brief Transform face.
+ * @param face Face to transform
+ */
 void FaceAligner::alignFace(Mesh &face) {
 
     // computeAlign() must be call first !
@@ -123,6 +148,10 @@ void FaceAligner::alignFace(Mesh &face) {
     }
 }
 
+/**
+ * @brief Transform face fast.
+ * @param face Transformed face
+ */
 void FaceAligner::alignFaceFast(Mesh &face) {
 
     // computeAlign() must be call first !
@@ -148,6 +177,12 @@ void FaceAligner::alignFaceFast(Mesh &face) {
     AverageFace::translate(face.pointsMat,accP);
 }
 
+/**
+ * @brief Create FLANN index for search up.
+ * @param index Index
+ * @param face Face
+ * @param features Features
+ */
 void FaceAligner::buildIndex(cv::flann::Index &index, Mesh &face, cv::Mat &features) {
 
 	features = cv::Mat(face.pointsMat.rows, 2, CV_32F);
@@ -156,39 +191,23 @@ void FaceAligner::buildIndex(cv::flann::Index &index, Mesh &face, cv::Mat &featu
 
 }
 
+/**
+ * @brief Pre-align. Find best startinh position for align algorithm
+ * @param face Face to Align
+ * @param modelFace Average model face
+ * @param rangeX Max Distance of searching in axis X
+ * @param rangeY Max Distance of searching in axis Y
+ * @param step Step of searching
+ * @param test Verbose mode
+ */
 void FaceAligner::findBestStartingPosition(Mesh &face, Mesh &modelFace, int rangeX, int rangeY, int step, bool test) {
 
 	Mesh bpModelFace(modelFace);
-
-	//qDebug() << "face points: " << face.pointsMat.rows << "x" << face.pointsMat.cols;
-	//qDebug() << "face triangles: " << face.triangles.count();
-
-	//QTime myTimer, myTimer2;
-	//myTimer.start();
 
 	//build index
 	cv::flann::Index *index = new cv::flann::Index();
 	cv::Mat features;
 	buildIndex(*index, face, features);
-
-	/*
-	features = cv::Mat(face.pointsMat.rows, 2, CV_32F);
-	face.pointsMat.convertTo(features, CV_32F);
-	index.build(features, cv::flann::KMeansIndexParams());
-	*/
-
-	/**
-	  * zistene zaujimaovsti:
-	  * 1) ak sa index vytvori vo funkcii buildIndex(), tak for trva o 2.5 sekundy viacej
-	  *	 - index sa v oboch pripadoch vytvori rovnako rychlo
-	  *  - pouzitie index.release() na konci na to nema ziadny vplyv.
-	  *
-	  *  mozno to bude mat nieco s features, ze sa musi kopirovat spolu s indexom zo stacku...
-	  *  a je to presne tak !! chyba medzi stolickou a klavesnicou...
-	  */
-
-	//qDebug() << "vytvorenie indexu: "<< myTimer.elapsed() << "ms";
-	//myTimer.restart();
 
 	int prevX = 0;
 	int prevY = 0;

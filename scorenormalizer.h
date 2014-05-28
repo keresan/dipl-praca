@@ -3,8 +3,14 @@
 
 #include "common.h"
 
+/**
+ * @brief Class for score normalization.
+ */
 class ScoreNormalizer {
 public:
+	/**
+	 * @brief Score normalization method
+	 */
 	enum NormalizeMethod {
 		zScore = 1
 	};
@@ -24,9 +30,18 @@ private:
 	void concatAsComparable(cv::Mat &src1dst, cv::Mat &src2);
 	void normalizeZScore(QVector<float> &inputScore, QVector<float> &normScore);
 
+	/**
+	 * @brief Normalize method
+	 */
 	NormalizeMethod _method;
 
+	/**
+	 * @brief Standard deviaton
+	 */
 	QVector<float> _stdDeviaton;
+	/**
+	 * @brief Arithmetic mean
+	 */
 	QVector<float> _mean;
 
 };

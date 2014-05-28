@@ -1,0 +1,201 @@
+\hypertarget{class_face_aligner}{\section{Face\+Aligner Class Reference}
+\label{class_face_aligner}\index{Face\+Aligner@{Face\+Aligner}}
+}
+
+
+Class for align face.  
+
+
+
+
+{\ttfamily \#include $<$facealigner.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_face_aligner_a1fa7f30e09cbee4cb2fe4c4423b7f919}{\hyperlink{class_face_aligner_a1fa7f30e09cbee4cb2fe4c4423b7f919}{Face\+Aligner} ()}\label{class_face_aligner_a1fa7f30e09cbee4cb2fe4c4423b7f919}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+int \hyperlink{class_face_aligner_af0bf1c512ec1c25be1600c175f29af3f}{align} (\hyperlink{class_mesh}{Mesh} \&face, \hyperlink{class_mesh}{Mesh} \&model\+Face, int max\+Iterations=100, int treshold=50, bool test=false)
+\begin{DoxyCompactList}\small\item\em Align face. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_aligner_a784d5bcd6ab0ec3d231682ceeafd5797}{find\+Best\+Starting\+Position} (\hyperlink{class_mesh}{Mesh} \&face, \hyperlink{class_mesh}{Mesh} \&model\+Face, int range\+X=30, int range\+Y=30, int step=15, bool test=false)
+\begin{DoxyCompactList}\small\item\em Pre-\/align. Find best startinh position for align algorithm. \end{DoxyCompactList}\item 
+int \hyperlink{class_face_aligner_affaf430869c2c6ba9aadebe9dd24f285}{compute\+Align} (\hyperlink{class_mesh}{Mesh} \&still, \hyperlink{class_mesh}{Mesh} \&moving, int max\+Iterations, int threshold, bool test=false)
+\begin{DoxyCompactList}\small\item\em Compute align values. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_aligner_ae0440700562df1c90665dc6f74d2d123}{align\+Face} (\hyperlink{class_mesh}{Mesh} \&face)
+\begin{DoxyCompactList}\small\item\em Transform face. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_aligner_ac537bae8e86727951f2123cc29f338cc}{align\+Face\+Fast} (\hyperlink{class_mesh}{Mesh} \&face)
+\begin{DoxyCompactList}\small\item\em Transform face fast. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_aligner_a8b1c57fddfaf47aefcdaf2f8400642e3}{build\+Index} (cv\+::flann\+::\+Index \&index, \hyperlink{class_mesh}{Mesh} \&face, cv\+::\+Mat \&features)
+\begin{DoxyCompactList}\small\item\em Create F\+L\+A\+N\+N index for search up. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_face_aligner_a7688c60fe7dde82bf3c6d1e41ec024f0}{Q\+Vector$<$ \hyperlink{structt_transform_value}{t\+Transform\+Value} $>$ \hyperlink{class_face_aligner_a7688c60fe7dde82bf3c6d1e41ec024f0}{transform\+Values}}\label{class_face_aligner_a7688c60fe7dde82bf3c6d1e41ec024f0}
+
+\begin{DoxyCompactList}\small\item\em Transform values of each iteration. \end{DoxyCompactList}\item 
+\hypertarget{class_face_aligner_aa0f2d987bb234d2c74bd72d0ce7ecc96}{double \hyperlink{class_face_aligner_aa0f2d987bb234d2c74bd72d0ce7ecc96}{final\+Distance}}\label{class_face_aligner_aa0f2d987bb234d2c74bd72d0ce7ecc96}
+
+\begin{DoxyCompactList}\small\item\em Final distance between align face and average face. \end{DoxyCompactList}\item 
+\hypertarget{class_face_aligner_a3b13f838d2c05d1f6a98ae63d6c53c1f}{double \hyperlink{class_face_aligner_a3b13f838d2c05d1f6a98ae63d6c53c1f}{final\+Iterations}}\label{class_face_aligner_a3b13f838d2c05d1f6a98ae63d6c53c1f}
+
+\begin{DoxyCompactList}\small\item\em Count of iteration to align face. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for align face. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_face_aligner_af0bf1c512ec1c25be1600c175f29af3f}{\index{Face\+Aligner@{Face\+Aligner}!align@{align}}
+\index{align@{align}!Face\+Aligner@{Face\+Aligner}}
+\subsubsection[{align}]{\setlength{\rightskip}{0pt plus 5cm}int Face\+Aligner\+::align (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{face, }
+\item[{{\bf Mesh} \&}]{model\+Face, }
+\item[{int}]{max\+Iterations = {\ttfamily 100}, }
+\item[{int}]{treshold = {\ttfamily 50}, }
+\item[{bool}]{test = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{class_face_aligner_af0bf1c512ec1c25be1600c175f29af3f}
+
+
+Align face. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em face} & Face to align \\
+\hline
+{\em model\+Face} & Average model face \\
+\hline
+{\em max\+Iterations} & Maximum of iteration \\
+\hline
+{\em treshold} & Distance between iterations to stop \\
+\hline
+{\em test} & Verbose mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\hypertarget{class_face_aligner_ae0440700562df1c90665dc6f74d2d123}{\index{Face\+Aligner@{Face\+Aligner}!align\+Face@{align\+Face}}
+\index{align\+Face@{align\+Face}!Face\+Aligner@{Face\+Aligner}}
+\subsubsection[{align\+Face}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Aligner\+::align\+Face (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{face}
+\end{DoxyParamCaption}
+)}}\label{class_face_aligner_ae0440700562df1c90665dc6f74d2d123}
+
+
+Transform face. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em face} & Face to transform \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_aligner_ac537bae8e86727951f2123cc29f338cc}{\index{Face\+Aligner@{Face\+Aligner}!align\+Face\+Fast@{align\+Face\+Fast}}
+\index{align\+Face\+Fast@{align\+Face\+Fast}!Face\+Aligner@{Face\+Aligner}}
+\subsubsection[{align\+Face\+Fast}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Aligner\+::align\+Face\+Fast (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{face}
+\end{DoxyParamCaption}
+)}}\label{class_face_aligner_ac537bae8e86727951f2123cc29f338cc}
+
+
+Transform face fast. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em face} & Transformed face \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_aligner_a8b1c57fddfaf47aefcdaf2f8400642e3}{\index{Face\+Aligner@{Face\+Aligner}!build\+Index@{build\+Index}}
+\index{build\+Index@{build\+Index}!Face\+Aligner@{Face\+Aligner}}
+\subsubsection[{build\+Index}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Aligner\+::build\+Index (
+\begin{DoxyParamCaption}
+\item[{cv\+::flann\+::\+Index \&}]{index, }
+\item[{{\bf Mesh} \&}]{face, }
+\item[{cv\+::\+Mat \&}]{features}
+\end{DoxyParamCaption}
+)}}\label{class_face_aligner_a8b1c57fddfaf47aefcdaf2f8400642e3}
+
+
+Create F\+L\+A\+N\+N index for search up. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & Index \\
+\hline
+{\em face} & Face \\
+\hline
+{\em features} & Features \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_aligner_affaf430869c2c6ba9aadebe9dd24f285}{\index{Face\+Aligner@{Face\+Aligner}!compute\+Align@{compute\+Align}}
+\index{compute\+Align@{compute\+Align}!Face\+Aligner@{Face\+Aligner}}
+\subsubsection[{compute\+Align}]{\setlength{\rightskip}{0pt plus 5cm}int Face\+Aligner\+::compute\+Align (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{still, }
+\item[{{\bf Mesh} \&}]{moving, }
+\item[{int}]{max\+Iterations, }
+\item[{int}]{threshold, }
+\item[{bool}]{test = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{class_face_aligner_affaf430869c2c6ba9aadebe9dd24f285}
+
+
+Compute align values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em still} & Still mesh \\
+\hline
+{\em moving} & \hyperlink{class_mesh}{Mesh} to be aligned \\
+\hline
+{\em max\+Iterations} & Maximum iterations to align \\
+\hline
+{\em threshold} & Distance between iterations to stop \\
+\hline
+{\em test} & Verbose mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of iterations 
+\end{DoxyReturn}
+\hypertarget{class_face_aligner_a784d5bcd6ab0ec3d231682ceeafd5797}{\index{Face\+Aligner@{Face\+Aligner}!find\+Best\+Starting\+Position@{find\+Best\+Starting\+Position}}
+\index{find\+Best\+Starting\+Position@{find\+Best\+Starting\+Position}!Face\+Aligner@{Face\+Aligner}}
+\subsubsection[{find\+Best\+Starting\+Position}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Aligner\+::find\+Best\+Starting\+Position (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{face, }
+\item[{{\bf Mesh} \&}]{model\+Face, }
+\item[{int}]{range\+X = {\ttfamily 30}, }
+\item[{int}]{range\+Y = {\ttfamily 30}, }
+\item[{int}]{step = {\ttfamily 15}, }
+\item[{bool}]{test = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{class_face_aligner_a784d5bcd6ab0ec3d231682ceeafd5797}
+
+
+Pre-\/align. Find best startinh position for align algorithm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em face} & Face to Align \\
+\hline
+{\em model\+Face} & Average model face \\
+\hline
+{\em range\+X} & Max Distance of searching in axis X \\
+\hline
+{\em range\+Y} & Max Distance of searching in axis Y \\
+\hline
+{\em step} & Step of searching \\
+\hline
+{\em test} & Verbose mode \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+facealigner.\+h\item 
+facealigner.\+cpp\end{DoxyCompactItemize}

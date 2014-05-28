@@ -1,0 +1,165 @@
+\hypertarget{class_comparator}{\section{Comparator Class Reference}
+\label{class_comparator}\index{Comparator@{Comparator}}
+}
+
+
+Class for comparation features vecters. Provide euclidian, cityblock and correlation distance.  
+
+
+
+
+{\ttfamily \#include $<$comparator.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_comparator_a59be943b72aa42e567f0fd76c3d52531}{enum {\bfseries Compare\+Method} \{ {\bfseries Euclidian\+Distance}, 
+{\bfseries Cityblock\+Distance}, 
+{\bfseries Correlation\+Distance}
+ \}}\label{class_comparator_a59be943b72aa42e567f0fd76c3d52531}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{class_comparator_a04476f39d9d50c79bbe1dcedd20ba7bf}{compare} (t\+Features \&features1, t\+Features \&features2, Q\+Vector$<$ float $>$ \&result, Comparator\+::\+Compare\+Method method)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_comparator_a04476f39d9d50c79bbe1dcedd20ba7bf}{Comparator\+::compare} Compare two matrix of features. \end{DoxyCompactList}\item 
+static void \hyperlink{class_comparator_ab1e88afbea79dfba4fedb5d3c37b3f7a}{compare} (Q\+Vector$<$ cv\+::\+Mat $>$ \&features1, Q\+Vector$<$ cv\+::\+Mat $>$ \&features2, Q\+Vector$<$ float $>$ \&result, Comparator\+::\+Compare\+Method method)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_comparator_a04476f39d9d50c79bbe1dcedd20ba7bf}{Comparator\+::compare} Compare two vector of matrices of features. \end{DoxyCompactList}\item 
+static double \hyperlink{class_comparator_a4e839516afb3b8190089bb4987e68aff}{compare\+Feature} (cv\+::\+Mat \&feature1, cv\+::\+Mat \&feature2, Comparator\+::\+Compare\+Method method)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_comparator_a4e839516afb3b8190089bb4987e68aff}{Comparator\+::compare\+Feature} Compare two features. Call compare funciton by compare metod. \end{DoxyCompactList}\item 
+static double \hyperlink{class_comparator_a29fccf795aec4767d5c7c8189538141d}{correlation\+Distance} (cv\+::\+Mat \&feature1, cv\+::\+Mat \&feature2)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_comparator_a29fccf795aec4767d5c7c8189538141d}{Comparator\+::correlation\+Distance} Compute correlation distance btween to feature vectors. \end{DoxyCompactList}\item 
+static double \hyperlink{class_comparator_ad57d5bebc010ff5b38a566d27ff2ce4f}{correlation\+Metric} (cv\+::\+Mat \&feature1, cv\+::\+Mat \&feature2)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_comparator_ad57d5bebc010ff5b38a566d27ff2ce4f}{Comparator\+::correlation\+Metric} Compute correlation distance btween to feature vectors. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for comparation features vecters. Provide euclidian, cityblock and correlation distance. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_comparator_a04476f39d9d50c79bbe1dcedd20ba7bf}{\index{Comparator@{Comparator}!compare@{compare}}
+\index{compare@{compare}!Comparator@{Comparator}}
+\subsubsection[{compare}]{\setlength{\rightskip}{0pt plus 5cm}void Comparator\+::compare (
+\begin{DoxyParamCaption}
+\item[{t\+Features \&}]{features1, }
+\item[{t\+Features \&}]{features2, }
+\item[{Q\+Vector$<$ float $>$ \&}]{result, }
+\item[{Comparator\+::\+Compare\+Method}]{method}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_comparator_a04476f39d9d50c79bbe1dcedd20ba7bf}
+
+
+\hyperlink{class_comparator_a04476f39d9d50c79bbe1dcedd20ba7bf}{Comparator\+::compare} Compare two matrix of features. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em features1} & Features 1 \\
+\hline
+{\em features2} & Features 2 \\
+\hline
+{\em result} & Result of comparation \\
+\hline
+{\em method} & Comparation method \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_comparator_ab1e88afbea79dfba4fedb5d3c37b3f7a}{\index{Comparator@{Comparator}!compare@{compare}}
+\index{compare@{compare}!Comparator@{Comparator}}
+\subsubsection[{compare}]{\setlength{\rightskip}{0pt plus 5cm}void Comparator\+::compare (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ cv\+::\+Mat $>$ \&}]{features1, }
+\item[{Q\+Vector$<$ cv\+::\+Mat $>$ \&}]{features2, }
+\item[{Q\+Vector$<$ float $>$ \&}]{result, }
+\item[{Comparator\+::\+Compare\+Method}]{method}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_comparator_ab1e88afbea79dfba4fedb5d3c37b3f7a}
+
+
+\hyperlink{class_comparator_a04476f39d9d50c79bbe1dcedd20ba7bf}{Comparator\+::compare} Compare two vector of matrices of features. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em features1} & Features 1 \\
+\hline
+{\em features2} & Features 2 \\
+\hline
+{\em result} & Result of comparation \\
+\hline
+{\em method} & Comparation method \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_comparator_a4e839516afb3b8190089bb4987e68aff}{\index{Comparator@{Comparator}!compare\+Feature@{compare\+Feature}}
+\index{compare\+Feature@{compare\+Feature}!Comparator@{Comparator}}
+\subsubsection[{compare\+Feature}]{\setlength{\rightskip}{0pt plus 5cm}double Comparator\+::compare\+Feature (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{feature1, }
+\item[{cv\+::\+Mat \&}]{feature2, }
+\item[{Comparator\+::\+Compare\+Method}]{method}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_comparator_a4e839516afb3b8190089bb4987e68aff}
+
+
+\hyperlink{class_comparator_a4e839516afb3b8190089bb4987e68aff}{Comparator\+::compare\+Feature} Compare two features. Call compare funciton by compare metod. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em feature1} & Feature \\
+\hline
+{\em feature2} & Feature \\
+\hline
+{\em method} & Comparation method \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Result of comparation 
+\end{DoxyReturn}
+\hypertarget{class_comparator_a29fccf795aec4767d5c7c8189538141d}{\index{Comparator@{Comparator}!correlation\+Distance@{correlation\+Distance}}
+\index{correlation\+Distance@{correlation\+Distance}!Comparator@{Comparator}}
+\subsubsection[{correlation\+Distance}]{\setlength{\rightskip}{0pt plus 5cm}double Comparator\+::correlation\+Distance (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{feature1, }
+\item[{cv\+::\+Mat \&}]{feature2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_comparator_a29fccf795aec4767d5c7c8189538141d}
+
+
+\hyperlink{class_comparator_a29fccf795aec4767d5c7c8189538141d}{Comparator\+::correlation\+Distance} Compute correlation distance btween to feature vectors. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em feature1} & Features \\
+\hline
+{\em feature2} & Features \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Correlation 
+\end{DoxyReturn}
+\hypertarget{class_comparator_ad57d5bebc010ff5b38a566d27ff2ce4f}{\index{Comparator@{Comparator}!correlation\+Metric@{correlation\+Metric}}
+\index{correlation\+Metric@{correlation\+Metric}!Comparator@{Comparator}}
+\subsubsection[{correlation\+Metric}]{\setlength{\rightskip}{0pt plus 5cm}double Comparator\+::correlation\+Metric (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{feature1, }
+\item[{cv\+::\+Mat \&}]{feature2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_comparator_ad57d5bebc010ff5b38a566d27ff2ce4f}
+
+
+\hyperlink{class_comparator_ad57d5bebc010ff5b38a566d27ff2ce4f}{Comparator\+::correlation\+Metric} Compute correlation distance btween to feature vectors. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em feature1} & Feature \\
+\hline
+{\em feature2} & Feature \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Correlation 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+comparator.\+h\item 
+comparator.\+cpp\end{DoxyCompactItemize}

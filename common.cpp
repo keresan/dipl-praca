@@ -10,15 +10,11 @@
 #include <cmath>
 #include <QStringList>
 
+
+
 const cv::Point3d Common::averageFaceTL = cv::Point3d(-50,70,0);
 const cv::Point3d Common::averageFaceBR = cv::Point3d(50,-10,0);
 
-/*
-const cv::Point2d Common::depthMapTL = cv::Point2d(-60,90);
-const cv::Point2d Common::depthMapBR = cv::Point2d(60,-40);
-const int Common::depthMapPixelsX = 120*2;
-const int Common::depthMapPixelsY = 140*2;
-*/
 const cv::Point2d Common::depthMapTL = cv::Point2d(-80,100);
 const cv::Point2d Common::depthMapBR = cv::Point2d(80,-70);
 const int Common::depthMapPixelsX = 160*2;
@@ -26,23 +22,6 @@ const int Common::depthMapPixelsY = 170*2;
 const int Common::faceWidth = 100;
 const cv::Rect Common::faceCropArea = cv::Rect(60,50,200,190); //treba zmenit aj detectNoseTipAreaStartY
 //const cv::Rect Common::faceCropArea = cv::Rect(50,30,220,240); //orig
-
-//const cv::Rect Common::faceCropArea = cv::Rect(30,20,260,230); //pokus1
-
-const QString Common::pathToWarehouse = "/Users/martin/Documents/[]sklad/frgc_data/";
-const QString Common::pathToSubspacesDir = Common::pathToWarehouse + "subspaces/";
-const QString Common::pathToComResultDir = Common::pathToWarehouse + "compare_result/";
-const QString Common::pathToScnData = Common::pathToWarehouse + "score_data_init/";
-
-const QString Common::pathToDepthmapF2003 = Common::pathToWarehouse + "depthmap_f2003_2/";
-const QString Common::pathToFall2003 = Common::pathToWarehouse + "Fall2003range/";
-const QString Common::pathToDepthmapS2003 = Common::pathToWarehouse + "depthmap_s2003/";
-const QString Common::pathToSpring2003 = "/Volumes/data/sklad/FRGC_databaza/Spring2003range/";
-const QString Common::pathToDepthmapS2004 = Common::pathToWarehouse + "depthmap_s2004/";
-const QString Common::pathToSpring2004 = "/Volumes/data/sklad/FRGC_databaza/Spring2004range/";
-
-const QString Common::pathToAverageFace = Common::pathToWarehouse + "averageFace/averageFace_final_norm_4_4.obj";
-const QString Common::pathToAverageDepthmap = Common::pathToWarehouse + "averageFace/averageFace_final.xml";
 
 const QString Common::wrongDpSuffixLabel = "_wrong_dp";
 const QString Common::wrongLmSuffixLabel = "_wrong_lm";
@@ -60,13 +39,13 @@ const QString Common::depthmapDistanceFromModelLabel = "distance_from_model";
 const QString Common::depthmapDepthmapLabel = "depthmap"; //povodne bolo deptamp !!!!!!!!!!
 const double Common::depthmapInitValue = -999.0;
 
-const QString Common::lmPathToLmDir = Common::pathToWarehouse + "landmarks/";
+
 const QString Common::lmAvgLmLabel = "average-landmarks.xml";
 const QString Common::lmSavePosLabel = "landmark";
 const QString Common::lmSaveIsLabel = "isEntered";
 const int Common::lmDeltaFromAvg = 25;
 
-const QString Common::pathToAverageLm = Common::lmPathToLmDir + Common::lmAvgLmLabel;
+
 
 const QString Common::eigenMethod0Label = "method-0";
 const QString Common::eigenMethod1Label = "method-1";
@@ -186,19 +165,58 @@ const QString Common::scnStatArenaMethod1rLabel = "method1r-scn-arena.xml";
 const QString Common::scnStatArenaMethod2rLabel = "method2r-scn-arena.xml";
 const QString Common::scnStatArenaMethod3rLabel = "method3r-scn-arena.xml";
 
-/*
-void Common::printMatrix(CvMat *m)
-{
-    assert(m != NULL);
-    for (int r = 0; r < m->rows; r++)
-    {
-        for (int c = 0; c < m->cols; c++)
-            std::cout << cvmGet(m, r, c) << " ";
-        std::cout << std::endl;
-    }
-}
-*/
+QString Common::pathToWarehouse;
+QString Common::pathToSubspacesDir;
+QString Common::pathToComResultDir;
+QString Common::pathToScnData;
+QString Common::pathToLandmarkDir;
 
+QString Common::pathToCreatedDepthmaps;
+QString Common::pathTo3DModels;
+
+QString Common::pathToAverageModelNormalize;
+QString Common::pathToAverageDepthmap;
+QString Common::pathToAverageLm;
+QString Common::pathToAverageFaceDir;
+
+/**
+ * @brief Set and create structure of directories. One of faceModelDir or createdDepthmapDir must not be empty.
+ * @param rootDir Path to root directory
+ * @param faceModelDir Path to directory with 3D models. If depthmaps are already computed, can be empty.
+ */
+void Common::setDirStruct(QString rootDir, QString faceModelDir) {
+
+
+	QDir root(rootDir);
+	QDir models(faceModelDir);
+
+	pathToWarehouse = root.absolutePath();
+	pathTo3DModels = models.absolutePath();
+
+
+	pathToCreatedDepthmaps = pathToWarehouse + "/created_depthmap/";
+	pathToSubspacesDir = pathToWarehouse + "/subspaces/";
+	pathToComResultDir = pathToWarehouse + "/compare_result/";
+	pathToScnData = pathToWarehouse + "/score_data_init/";
+	pathToLandmarkDir = pathToWarehouse + "/landmarks/";
+	pathToAverageFaceDir = pathToWarehouse + "/averageFace/";
+
+	//create directories
+	root.mkpath(pathToSubspacesDir);
+	root.mkpath(pathToComResultDir);
+	root.mkpath(pathToScnData);
+	root.mkpath(pathToLandmarkDir);
+	root.mkpath(pathToAverageFaceDir);
+
+	pathToAverageModelNormalize = pathToAverageFaceDir + "averageFace_final_norm.obj";
+	pathToAverageDepthmap = pathToAverageFaceDir + "averageFace_final.xml";
+	pathToAverageLm = pathToLandmarkDir + lmAvgLmLabel;
+}
+
+/**
+ * @brief Print matrix row by row using qDebug().
+ * @param m Matrix to print
+ */
 void Common::printMatrix(const Matrix &m) {
     QDebug deb = qDebug();
     for (int r = 0; r < m.rows; r++)
@@ -214,12 +232,22 @@ void Common::printMatrix(const Matrix &m) {
     }
 }
 
+/**
+ * @brief Delay application for some time.
+ * @param msec Time to delay
+ */
 void Common::delay(int msec) {
     QTime dieTime= QTime::currentTime().addMSecs(msec);
     while( QTime::currentTime() < dieTime )
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
+/**
+ * @brief Load files names from directory and concat it with ther absolute path.
+ * @param pathToDir Path of directory for file search
+ * @param list Result
+ * @param filters Filter of file name or file type
+ */
 void Common::loadFilesPathFromDir(QString pathToDir, QStringList &list, const QStringList &filters) {
 
 	QDir dir;
@@ -227,25 +255,23 @@ void Common::loadFilesPathFromDir(QString pathToDir, QStringList &list, const QS
 	dir.setFilter(QDir::Files | QDir::NoSymLinks);
 	dir.setNameFilters(filters);
 	list = dir.entryList();
+
 	//get absolute path
 	for(int i = 0; i < list.size(); i++ ) {
 		list[i] = dir.absoluteFilePath(list.at(i));
-
-		/*
-		QString absolutePath = dir.absoluteFilePath(list.at(i));
-		QString fileBaseName = QFileInfo(absolutePath).baseName();
-		QString fileExtension = QFileInfo(absolutePath).suffix();
-		QString fileName = QFileInfo(absolutePath).fileName();
-
-		qDebug() << list.at(i)
-				 << "->" << absolutePath
-				 << "->" << fileBaseName
-				 << "+" << fileExtension
-				 << "=" << fileName;
-		*/
 	}
 }
 
+/**
+ * @brief Load depthmap from xml file and process it.
+ * @param fileName Name of depthmap to load
+ * @param dirPath Path to directory in which depthmap is
+ * @param depthmap Loaded depthmap
+ * @param averageFace Depthmap of average face, need to be there for face proccesing
+ * @param distance Loaded distance from map
+ * @param iterations Loaded iterations
+ * @see @link processLoadedMap @endlink
+ */
 void Common::loadDepthmapProcess(QString fileName, QString dirPath, cv::Mat &depthmap, cv::Mat &averageFace, double &distance, int &iterations) {
 	QDir dir(dirPath);
 	QString path = dir.absoluteFilePath(fileName);
@@ -260,14 +286,19 @@ void Common::loadDepthmapProcess(QString fileName, QString dirPath, cv::Mat &dep
 
 	if(depthmap.rows == 0 || depthmap.cols == 0) {
 		qDebug() << path;
-		throw std::runtime_error("empty depthmap");
+		throw std::runtime_error("loadDepthmapProcess(): empty depthmap");
 	}
-
-
 	processLoadedMap(depthmap, averageFace);
-
 }
 
+/**
+ * @brief Load depthmap from xml file.
+ * @param fileName Name of depthmap to load
+ * @param dirPath Path to directory in which depthmap is
+ * @param depthmap Loaded depthmap
+ * @param distance Loaded distance from map
+ * @param iterations Loaded iterations
+ */
 void Common::loadDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap, double &distance, int &iterations) {
 	QDir dir(dirPath);
 	QString path = dir.absoluteFilePath(fileName);
@@ -281,6 +312,12 @@ void Common::loadDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap, 
 	storage.release();
 }
 
+/**
+ * @brief Crop, blur and replece unitialized pixels with pixels from depthmap
+ * @param depthmap
+ * @param averageFace
+ * @see @link replaceInitValues @endlink
+ */
 void Common::processLoadedMap(cv::Mat &depthmap, cv::Mat &averageFace) {
 
 	//crop
@@ -301,6 +338,14 @@ void Common::processLoadedMap(cv::Mat &depthmap, cv::Mat &averageFace) {
 
 }
 
+/**
+ * @brief Save depthmap to xml file.
+ * @param fileName Name of file to save depthmap
+ * @param dirPath Direcotry path to save
+ * @param depthmap Depthmap to save
+ * @param distance Distance to save
+ * @param iterations Iterations to save
+ */
 void Common::saveDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap, double distance, int iterations) {
 
 	QDir dir(dirPath);
@@ -314,12 +359,15 @@ void Common::saveDepthmap(QString fileName, QString dirPath, cv::Mat &depthmap, 
 	storage.release();
 }
 
-
+/**
+ * @brief Save results of face comparation.
+ * @param resultMatrix Result of comparation
+ * @param fileName Name of file to save
+ * @param dirPath Directory path to save file
+ */
 void Common::saveCmpResult(cv::Mat &resultMatrix, QString fileName, QString dirPath) {
 	QDir dir(dirPath);
 	QString path = dir.absoluteFilePath(fileName);
-
-	//qDebug() << path;
 
 	cv::FileStorage storage(path.toStdString(), cv::FileStorage::WRITE);
 	storage << Common::cmpResultLabel.toStdString() << resultMatrix;
@@ -327,6 +375,12 @@ void Common::saveCmpResult(cv::Mat &resultMatrix, QString fileName, QString dirP
 	storage.release();
 }
 
+/**
+ * @brief Load result of camparation from file
+ * @param resultMatrix Matrix of loaded results
+ * @param fileName Name of file with results
+ * @param dirPath Direcotry path to load file
+ */
 void Common::loadCmpResult(cv::Mat &resultMatrix, QString fileName, QString dirPath) {
 	QDir dir(dirPath);
 	QString path = dir.absoluteFilePath(fileName);
@@ -338,6 +392,12 @@ void Common::loadCmpResult(cv::Mat &resultMatrix, QString fileName, QString dirP
 
 }
 
+/**
+ * @brief Euclidian distance of two 3D points.
+ * @param p1 Point one
+ * @param p2 Point two
+ * @return euclidian distance
+ */
 double euclideanDistance(const cv::Point3d &p1, const cv::Point3d &p2)
 {
     double dx = p1.x-p2.x;
@@ -346,6 +406,12 @@ double euclideanDistance(const cv::Point3d &p1, const cv::Point3d &p2)
     return sqrt(dx*dx + dy*dy + dz*dz);
 }
 
+/**
+ * @brief Euclidian distance od 2D points
+ * @param p1 Point one
+ * @param p2 Point two
+ * @return
+ */
 double euclideanDistance(const cv::Point &p1, const cv::Point &p2)
 {
     double dx = p1.x-p2.x;
@@ -354,9 +420,9 @@ double euclideanDistance(const cv::Point &p1, const cv::Point &p2)
 }
 
 /**
- * @brief Common::delaunayTriangulation - Delaunay triangulation
- * @param points
- * @return
+ * @brief Delaunay triangulation. Compute triangles from cloud points.
+ * @param points Vector of 2D points
+ * @return Vector of triangles
  */
 QVector<cv::Vec3i> Common::delaunayTriangulation(QVector<cv::Point2d> &points) {
     int n = points.count();
@@ -420,10 +486,6 @@ QVector<cv::Vec3i> Common::delaunayTriangulation(QVector<cv::Point2d> &points) {
         if (p3.x <= minx) continue;
         if (p3.y <= miny) continue;
 
-        //subdiv.locate(p1, edge, v1);
-        //subdiv.locate(p2, edge, v2);
-        //subdiv.locate(p3, edge, v3);
-
         //save indecies of triangles points
         cv::Vec3i triangleIndicies;
         triangleIndicies[0] = coord2Index[QPair<float, float>(p1.x, p1.y)];
@@ -433,13 +495,14 @@ QVector<cv::Vec3i> Common::delaunayTriangulation(QVector<cv::Point2d> &points) {
         result.append(triangleIndicies);
     }
 
-    for(int i= 0; i < result.count(); i++) {
-      ;//  qDebug("%7d %7d %7d", result.at(i)[0], result.at(i)[1], result.at(i)[2]);
-    }
-
     return result;
 }
 
+/**
+ * @brief Normalize input image to range 0 - 255. Important for showing image using opencv.
+ * @param _src Vector of input images
+ * @return
+ */
 cv::Mat Common::norm_0_255(cv::InputArray _src) {
 	cv::Mat src = _src.getMat();
 	// Create and return normalized image:
@@ -458,6 +521,11 @@ cv::Mat Common::norm_0_255(cv::InputArray _src) {
 	return dst;
 }
 
+/**
+ * @brief Replace unknown values of point in depthamp with values from src
+ * @param depthmap
+ * @param src
+ */
 void Common::replaceInitValues(cv::Mat &depthmap, cv::Mat &src) {
 
 	if(depthmap.rows != src.rows && depthmap.cols != src.cols) {
@@ -471,25 +539,24 @@ void Common::replaceInitValues(cv::Mat &depthmap, cv::Mat &src) {
 				float replaceValue = src.at<float>(r,c);
 				if(replaceValue < Common::depthmapInitValue+2) {
 					throw std::runtime_error("replaceInitValues(): unknown pixel value in source depthmap");
-					//qDebug() << "replaceInitValues():" << r << "x" << c << "=" << replaceValue;
-
 				} else {
 					depthmap.at<float>(r,c) = replaceValue;
 				}
-
 			}
 		}
 	}
 }
 
 
+/**
+ * @brief Decide if base names belong to same person or not.
+ * @param baseName1 - label of person 1
+ * @param baseName2 - label of person 2
+ * @return True if base names belong to same person, otherwise false
+ */
 bool Common::isGenuinePerson(QString baseName1, QString baseName2) {
-
-
-
 	QStringList person1 = baseName1.split('d');
 	QStringList person2 = baseName2.split('d');
-
 
 	assert(person1.size() == person2.size());
 	assert(person1.size() == 2);
@@ -499,21 +566,19 @@ bool Common::isGenuinePerson(QString baseName1, QString baseName2) {
 	} else {
 		return false;
 	}
-
 }
 
 /**
- * @brief Common::convertToMatrix - convert cector of vector to matrix
- * @param src
- * @param dst
+ * @brief Convert vector of vector to matrix
+ * @param src Source vector
+ * @param dst Destination matrix
  */
 void Common::convertToMatrix(QVector<QVector<float> > &src, cv::Mat &dst) {
-
 	dst = cv::Mat(src.size(), src.first().size(), CV_32F);
 
 	for(int i=0; i<dst.rows; i++)
 		 for(int j=0; j<dst.cols; j++)
 			  dst.at<float>(i, j) = src.at(i).at(j);
-
-
 }
+
+

@@ -1,0 +1,680 @@
+\hypertarget{class_mesh}{\section{Mesh Class Reference}
+\label{class_mesh}\index{Mesh@{Mesh}}
+}
+
+
+Class for represent 3\+D model of face.  
+
+
+
+
+{\ttfamily \#include $<$mesh.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_mesh_a6fbf5a0481dcee54f0ea44363c7de2b7}{typedef cv\+::\+Vec3i {\bfseries Triangle}}\label{class_mesh_a6fbf5a0481dcee54f0ea44363c7de2b7}
+
+\item 
+\hypertarget{class_mesh_a4449aba0563ba3e8985ae1a96dbb7f06}{typedef cv\+::\+Vec3b {\bfseries Color}}\label{class_mesh_a4449aba0563ba3e8985ae1a96dbb7f06}
+
+\item 
+\hypertarget{class_mesh_ac5052738062f59eef6517606d748f804}{typedef Q\+Vector$<$ Triangle $>$ {\bfseries Triangles}}\label{class_mesh_ac5052738062f59eef6517606d748f804}
+
+\item 
+\hypertarget{class_mesh_a41a96d934a45bf52f091f33c099fbd0d}{typedef Q\+Vector$<$ Color $>$ {\bfseries Colors}}\label{class_mesh_a41a96d934a45bf52f091f33c099fbd0d}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_mesh_a2af137f1571af89172b9c102302c416b}{\hyperlink{class_mesh_a2af137f1571af89172b9c102302c416b}{Mesh} ()}\label{class_mesh_a2af137f1571af89172b9c102302c416b}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_mesh_a364ba4b2fd09e26795e68f9aa9c46d7d}{Mesh} (const \hyperlink{class_mesh}{Mesh} \&src)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_mesh_a4b17a8a6b16ef6751e30d7efab345ebf}{Mesh} (const Q\+String path, bool centralize\+Loaded\+Mesh=false)
+\begin{DoxyCompactList}\small\item\em Constructor. Create mesh from 3d model stored in file. \end{DoxyCompactList}\item 
+\hypertarget{class_mesh_a38a2694f262d993b4b50f53e20599031}{void \hyperlink{class_mesh_a38a2694f262d993b4b50f53e20599031}{print\+Stats} ()}\label{class_mesh_a38a2694f262d993b4b50f53e20599031}
+
+\begin{DoxyCompactList}\small\item\em Print stats of mesh. \end{DoxyCompactList}\item 
+\hypertarget{class_mesh_aa34d69f670ed6e1ebc101062dee17ad4}{void \hyperlink{class_mesh_aa34d69f670ed6e1ebc101062dee17ad4}{centralize} ()}\label{class_mesh_aa34d69f670ed6e1ebc101062dee17ad4}
+
+\begin{DoxyCompactList}\small\item\em Translate centroid of mesh to point (0,0,0) \end{DoxyCompactList}\item 
+void \hyperlink{class_mesh_aae3c2893ee25abbff8feea44d724ddb4}{translate} (cv\+::\+Point3d translation\+Vector)
+\begin{DoxyCompactList}\small\item\em Translate mesh. \end{DoxyCompactList}\item 
+void \hyperlink{class_mesh_a8f1702ee51f0c3d0bd980c665b5d6952}{transform} (Matrix \&m)
+\begin{DoxyCompactList}\small\item\em Transform mesh. \end{DoxyCompactList}\item 
+void \hyperlink{class_mesh_a89e4e340939aa89534978c60ca690466}{rotate} (double x, double y, double z)
+\begin{DoxyCompactList}\small\item\em Rotate mesh. \end{DoxyCompactList}\item 
+\hyperlink{class_mesh}{Mesh} \hyperlink{class_mesh_a0b6bce98a99444eb3daf42d213ba89ab}{crop} (cv\+::\+Point3d center, int delta\+P\+X, int delta\+M\+X, int delta\+P\+Y, int delta\+M\+Y)
+\begin{DoxyCompactList}\small\item\em Crop mesh by distances from center point. \end{DoxyCompactList}\item 
+\hyperlink{class_mesh}{Mesh} \hyperlink{class_mesh_a1ebf5c007fa538e183d06cb021c6fac4}{crop} (cv\+::\+Point3d top\+Left, cv\+::\+Point3d bottom\+Right)
+\begin{DoxyCompactList}\small\item\em Crop mesh by points. \end{DoxyCompactList}\item 
+void \hyperlink{class_mesh_ab7eda900a4a92c5eee9eeb7a6c65d09a}{crop\+Me} (cv\+::\+Point2d top\+Left, cv\+::\+Point2d bottom\+Right)
+\begin{DoxyCompactList}\small\item\em Crop mesh by points. \end{DoxyCompactList}\item 
+\hyperlink{class_mesh}{Mesh} \hyperlink{class_mesh_a10b3d6d6b111a68eb380e7e125a8bfd2}{z\+Level\+Select} (double z\+Value)
+\begin{DoxyCompactList}\small\item\em Extract mesh by asix Z. \end{DoxyCompactList}\item 
+\hyperlink{class_mesh}{Mesh} \hyperlink{class_mesh_a549432bc9872781b714f3740dd976086}{radius\+Select} (double radius, cv\+::\+Point3d center=cv\+::\+Point3d(0, 0, 0))
+\begin{DoxyCompactList}\small\item\em Extract mesh by radius. \end{DoxyCompactList}\item 
+void \hyperlink{class_mesh_a822182ddb8a31b9e7c10727a10404ad3}{write\+O\+B\+J} (const Q\+String \&path, char decimal\+Point)
+\begin{DoxyCompactList}\small\item\em Save mesh as O\+B\+J 3d model. \end{DoxyCompactList}\item 
+void \hyperlink{class_mesh_a017e0441fdff322922dc1090b04d3c37}{load\+From\+A\+B\+S} (const Q\+String \&filename, bool centralize\+Loaded\+Mesh=false)
+\begin{DoxyCompactList}\small\item\em Create mesh from A\+B\+S 3d model. \end{DoxyCompactList}\item 
+void \hyperlink{class_mesh_a803901209c07edc0b7c3904eccac40bc}{load\+From\+O\+B\+J} (const Q\+String \&filename, bool centralize\+Loaded\+Mesh=false)
+\begin{DoxyCompactList}\small\item\em Create depthmap from O\+B\+J 3d model. \end{DoxyCompactList}\item 
+void \hyperlink{class_mesh_a87dc88824cf6604b494e774b54a7f0b1}{load\+From\+Pointcloud} (Vector\+Of\+Points \&pointcloud, bool centralize\+Loaded\+Mesh=false, bool \hyperlink{class_mesh_ad69edfbb7cde40edb166831358e0e5ac}{calculate\+Triangles}=true)
+\begin{DoxyCompactList}\small\item\em Create mesh from point cloud. \end{DoxyCompactList}\item 
+\hyperlink{class_mesh}{Mesh} \hyperlink{class_mesh_a2b8b2a62e220de4cc9e3e19c0a0a6071}{get\+Extract2d\+Grid} (\hyperlink{class_mesh}{Mesh} \&grid)
+\begin{DoxyCompactList}\small\item\em Extract part of mesh. \end{DoxyCompactList}\item 
+void \hyperlink{class_mesh_ad9fb7ec4fe3cd1f5a511654739029c33}{get\+Extract2d\+Grid} (\hyperlink{class_mesh}{Mesh} \&grid, \hyperlink{class_mesh}{Mesh} \&dst)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_mesh_a2b8b2a62e220de4cc9e3e19c0a0a6071}{Mesh\+::get\+Extract2d\+Grid} -\/ extract grid from face, use only x,y coords. \end{DoxyCompactList}\item 
+void \hyperlink{class_mesh_aa39be434d3573cd6b3e9de6d2f36502a}{get\+Extract2d\+Grid\+\_\+2} (\hyperlink{class_mesh}{Mesh} \&grid, \hyperlink{class_mesh}{Mesh} \&dst)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_mesh_a2b8b2a62e220de4cc9e3e19c0a0a6071}{Mesh\+::get\+Extract2d\+Grid} Extract grid from face, used only x,y coords. if distance of closed point is higher then max\+Distance, skip it. \end{DoxyCompactList}\item 
+\hyperlink{class_mesh}{Mesh} \hyperlink{class_mesh_a0752d96a941240e508b605281a3bb5f0}{get\+Closed\+Points} (\hyperlink{class_mesh}{Mesh} \&input\+Mesh, cv\+::flann\+::\+Index \&index, float $\ast$distance)
+\begin{DoxyCompactList}\small\item\em Search nearest point for each point int mesh. \end{DoxyCompactList}\item 
+\hypertarget{class_mesh_adb5c20ded833a9c01773acb2de4304d9}{float {\bfseries get\+Closed\+Distance} (cv\+::flann\+::\+Index \&index)}\label{class_mesh_adb5c20ded833a9c01773acb2de4304d9}
+
+\item 
+int \hyperlink{class_mesh_a2e91d8acdb1737e0eaf94576d8406a6e}{get\+Closed2d\+Point} (cv\+::\+Point2d point)
+\begin{DoxyCompactList}\small\item\em Search closed point from mesh. \end{DoxyCompactList}\item 
+cv\+::\+Point3d \hyperlink{class_mesh_a3a9fb77fbb9b1ff5b7a33ee5ab783b93}{get\+Mean\+Point} ()
+\begin{DoxyCompactList}\small\item\em Compute mean point of mesh. \end{DoxyCompactList}\item 
+Q\+Vector$<$ cv\+::\+Point3d $>$ $\ast$ \hyperlink{class_mesh_ae18bb93929f87c35f50122e7725e097e}{get\+Vector\+Of\+Point3d} ()
+\begin{DoxyCompactList}\small\item\em Convert mesh to vector of point. \end{DoxyCompactList}\item 
+\hypertarget{class_mesh_ad69edfbb7cde40edb166831358e0e5ac}{void \hyperlink{class_mesh_ad69edfbb7cde40edb166831358e0e5ac}{calculate\+Triangles} ()}\label{class_mesh_ad69edfbb7cde40edb166831358e0e5ac}
+
+\begin{DoxyCompactList}\small\item\em Connect points to triangles. \end{DoxyCompactList}\item 
+\hypertarget{class_mesh_a06ac6e1eb7bd66f5c85c0aab3e805500}{void \hyperlink{class_mesh_a06ac6e1eb7bd66f5c85c0aab3e805500}{recalculate\+Min\+Max} ()}\label{class_mesh_a06ac6e1eb7bd66f5c85c0aab3e805500}
+
+\begin{DoxyCompactList}\small\item\em Recalculate minimum and maximum for each axis. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_mesh}{Mesh} \hyperlink{class_mesh_a76fdd1e644b1154f5b0d37e8631cef94}{from\+A\+B\+S} (const Q\+String \&filename, bool centralize\+Loaded\+Mesh=false)
+\begin{DoxyCompactList}\small\item\em Create mesh from A\+B\+S 3d model. \end{DoxyCompactList}\item 
+static \hyperlink{class_mesh}{Mesh} \hyperlink{class_mesh_aebd86dfd1696005226e3d7672942e54f}{from\+O\+B\+J} (const Q\+String \&filename, bool centralize\+Loaded\+Mesh=false)
+\begin{DoxyCompactList}\small\item\em Create depthmap from O\+B\+J 3d model. \end{DoxyCompactList}\item 
+static \hyperlink{class_mesh}{Mesh} \hyperlink{class_mesh_a406020ec939773954b3be638041573cc}{from\+Pointcloud} (Vector\+Of\+Points \&pointcloud, bool centralize\+Loaded\+Mesh=false, bool \hyperlink{class_mesh_ad69edfbb7cde40edb166831358e0e5ac}{calculate\+Triangles}=true)
+\begin{DoxyCompactList}\small\item\em Create mesh from point cloud. \end{DoxyCompactList}\item 
+static \hyperlink{class_mesh}{Mesh} \hyperlink{class_mesh_a07d0c4f5d683e4adda0e93c8578eb285}{create2d\+Grid} (cv\+::\+Point3d top\+Left, cv\+::\+Point3d bottom\+Right, int step\+X, int step\+Y)
+\begin{DoxyCompactList}\small\item\em Creaete 3\+D grid. \end{DoxyCompactList}\item 
+static void \hyperlink{class_mesh_a7644d8304dc1cac1e0ca30b75459610a}{average\+Mesh} (\hyperlink{class_mesh}{Mesh} \&src, \hyperlink{class_mesh}{Mesh} \&dst, int dst\+Weight)
+\begin{DoxyCompactList}\small\item\em Compute average mesh. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_mesh_a26329b548fe51fc74fd771dec1d0268e}{Matrix {\bfseries points\+Mat}}\label{class_mesh_a26329b548fe51fc74fd771dec1d0268e}
+
+\item 
+\hypertarget{class_mesh_a4037422a7f812f087cb969b16552a9b4}{Vector\+Of\+Triangles {\bfseries triangles}}\label{class_mesh_a4037422a7f812f087cb969b16552a9b4}
+
+\item 
+\hypertarget{class_mesh_a5177375a503f9e6bd33852b6c661af32}{double {\bfseries minx}}\label{class_mesh_a5177375a503f9e6bd33852b6c661af32}
+
+\item 
+\hypertarget{class_mesh_ac23e3af8b76181163896ae085d868407}{double {\bfseries maxx}}\label{class_mesh_ac23e3af8b76181163896ae085d868407}
+
+\item 
+\hypertarget{class_mesh_a926fde7d276e87dde8fdcb1737ec2d3a}{double {\bfseries miny}}\label{class_mesh_a926fde7d276e87dde8fdcb1737ec2d3a}
+
+\item 
+\hypertarget{class_mesh_a303314f01fe21f60f7aa8320a0584c9d}{double {\bfseries maxy}}\label{class_mesh_a303314f01fe21f60f7aa8320a0584c9d}
+
+\item 
+\hypertarget{class_mesh_acac8b325e61d38e2b93fa449d2cb3d0e}{double {\bfseries minz}}\label{class_mesh_acac8b325e61d38e2b93fa449d2cb3d0e}
+
+\item 
+\hypertarget{class_mesh_af4f13ea01c80e9257ece8cc485503563}{double {\bfseries maxz}}\label{class_mesh_af4f13ea01c80e9257ece8cc485503563}
+
+\item 
+\hypertarget{class_mesh_a7d5ba3130fd61ba924b9956aedab6fc8}{Q\+Color {\bfseries \+\_\+color}}\label{class_mesh_a7d5ba3130fd61ba924b9956aedab6fc8}
+
+\item 
+\hypertarget{class_mesh_a260e1666474b12fce4b6397549a29925}{Q\+String {\bfseries name}}\label{class_mesh_a260e1666474b12fce4b6397549a29925}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for represent 3\+D model of face. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_mesh_a364ba4b2fd09e26795e68f9aa9c46d7d}{\index{Mesh@{Mesh}!Mesh@{Mesh}}
+\index{Mesh@{Mesh}!Mesh@{Mesh}}
+\subsubsection[{Mesh}]{\setlength{\rightskip}{0pt plus 5cm}Mesh\+::\+Mesh (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh} \&}]{src}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a364ba4b2fd09e26795e68f9aa9c46d7d}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Source mesh \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_a4b17a8a6b16ef6751e30d7efab345ebf}{\index{Mesh@{Mesh}!Mesh@{Mesh}}
+\index{Mesh@{Mesh}!Mesh@{Mesh}}
+\subsubsection[{Mesh}]{\setlength{\rightskip}{0pt plus 5cm}Mesh\+::\+Mesh (
+\begin{DoxyParamCaption}
+\item[{const Q\+String}]{path, }
+\item[{bool}]{centralize\+Loaded\+Mesh = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a4b17a8a6b16ef6751e30d7efab345ebf}
+
+
+Constructor. Create mesh from 3d model stored in file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & 3\+D model. \\
+\hline
+{\em centralize\+Loaded\+Mesh} & Centroid of face to point (0,0,0) \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_mesh_a7644d8304dc1cac1e0ca30b75459610a}{\index{Mesh@{Mesh}!average\+Mesh@{average\+Mesh}}
+\index{average\+Mesh@{average\+Mesh}!Mesh@{Mesh}}
+\subsubsection[{average\+Mesh}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::average\+Mesh (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{src, }
+\item[{{\bf Mesh} \&}]{dst, }
+\item[{int}]{dst\+Weight}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_mesh_a7644d8304dc1cac1e0ca30b75459610a}
+
+
+Compute average mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & \hyperlink{class_mesh}{Mesh} 1 \\
+\hline
+{\em dst} & \hyperlink{class_mesh}{Mesh} 2 \\
+\hline
+{\em dst\+Weight} & Weight of \hyperlink{class_mesh}{Mesh} 2 \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_a07d0c4f5d683e4adda0e93c8578eb285}{\index{Mesh@{Mesh}!create2d\+Grid@{create2d\+Grid}}
+\index{create2d\+Grid@{create2d\+Grid}!Mesh@{Mesh}}
+\subsubsection[{create2d\+Grid}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh} Mesh\+::create2d\+Grid (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Point3d}]{top\+Left, }
+\item[{cv\+::\+Point3d}]{bottom\+Right, }
+\item[{int}]{step\+X, }
+\item[{int}]{step\+Y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_mesh_a07d0c4f5d683e4adda0e93c8578eb285}
+
+
+Creaete 3\+D grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em top\+Left} & Top left point of grid \\
+\hline
+{\em bottom\+Right} & Bottom right point of grid \\
+\hline
+{\em step\+X} & Distance between points in axis X \\
+\hline
+{\em step\+Y} & Distance between points in axis Y \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Created grid 
+\end{DoxyReturn}
+\hypertarget{class_mesh_a0b6bce98a99444eb3daf42d213ba89ab}{\index{Mesh@{Mesh}!crop@{crop}}
+\index{crop@{crop}!Mesh@{Mesh}}
+\subsubsection[{crop}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh} Mesh\+::crop (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Point3d}]{center, }
+\item[{int}]{delta\+P\+X, }
+\item[{int}]{delta\+M\+X, }
+\item[{int}]{delta\+P\+Y, }
+\item[{int}]{delta\+M\+Y}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a0b6bce98a99444eb3daf42d213ba89ab}
+
+
+Crop mesh by distances from center point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em center} & Center point of selected area \\
+\hline
+{\em delta\+P\+X} & Half width of selected area \\
+\hline
+{\em delta\+M\+X} & Half width of selected area \\
+\hline
+{\em delta\+P\+Y} & Half height of selected area \\
+\hline
+{\em delta\+M\+Y} & Half height of selected area \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Extracted area. 
+\end{DoxyReturn}
+\hypertarget{class_mesh_a1ebf5c007fa538e183d06cb021c6fac4}{\index{Mesh@{Mesh}!crop@{crop}}
+\index{crop@{crop}!Mesh@{Mesh}}
+\subsubsection[{crop}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh} Mesh\+::crop (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Point3d}]{top\+Left, }
+\item[{cv\+::\+Point3d}]{bottom\+Right}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a1ebf5c007fa538e183d06cb021c6fac4}
+
+
+Crop mesh by points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em top\+Left} & Top Left point of croped area \\
+\hline
+{\em bottom\+Right} & Bottom right point of croped area \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Extracted mesh 
+\end{DoxyReturn}
+\hypertarget{class_mesh_ab7eda900a4a92c5eee9eeb7a6c65d09a}{\index{Mesh@{Mesh}!crop\+Me@{crop\+Me}}
+\index{crop\+Me@{crop\+Me}!Mesh@{Mesh}}
+\subsubsection[{crop\+Me}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::crop\+Me (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Point2d}]{top\+Left, }
+\item[{cv\+::\+Point2d}]{bottom\+Right}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_ab7eda900a4a92c5eee9eeb7a6c65d09a}
+
+
+Crop mesh by points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em top\+Left} & Top Left point of croped area \\
+\hline
+{\em bottom\+Right} & Bottom right point of croped area \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_a76fdd1e644b1154f5b0d37e8631cef94}{\index{Mesh@{Mesh}!from\+A\+B\+S@{from\+A\+B\+S}}
+\index{from\+A\+B\+S@{from\+A\+B\+S}!Mesh@{Mesh}}
+\subsubsection[{from\+A\+B\+S}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh} Mesh\+::from\+A\+B\+S (
+\begin{DoxyParamCaption}
+\item[{const Q\+String \&}]{filename, }
+\item[{bool}]{centralize\+Loaded\+Mesh = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_mesh_a76fdd1e644b1154f5b0d37e8631cef94}
+
+
+Create mesh from A\+B\+S 3d model. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & File of 3d model \\
+\hline
+{\em centralize\+Loaded\+Mesh} & Centroid of face to point (0,0,0) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Created mesh 
+\end{DoxyReturn}
+\hypertarget{class_mesh_aebd86dfd1696005226e3d7672942e54f}{\index{Mesh@{Mesh}!from\+O\+B\+J@{from\+O\+B\+J}}
+\index{from\+O\+B\+J@{from\+O\+B\+J}!Mesh@{Mesh}}
+\subsubsection[{from\+O\+B\+J}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh} Mesh\+::from\+O\+B\+J (
+\begin{DoxyParamCaption}
+\item[{const Q\+String \&}]{filename, }
+\item[{bool}]{centralize\+Loaded\+Mesh = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_mesh_aebd86dfd1696005226e3d7672942e54f}
+
+
+Create depthmap from O\+B\+J 3d model. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & File of 3d model \\
+\hline
+{\em centralize\+Loaded\+Mesh} & Centroid of face to point (0,0,0) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Created mesh 
+\end{DoxyReturn}
+\hypertarget{class_mesh_a406020ec939773954b3be638041573cc}{\index{Mesh@{Mesh}!from\+Pointcloud@{from\+Pointcloud}}
+\index{from\+Pointcloud@{from\+Pointcloud}!Mesh@{Mesh}}
+\subsubsection[{from\+Pointcloud}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh} Mesh\+::from\+Pointcloud (
+\begin{DoxyParamCaption}
+\item[{Vector\+Of\+Points \&}]{pointcloud, }
+\item[{bool}]{centralize\+Loaded\+Mesh = {\ttfamily false}, }
+\item[{bool}]{calculate\+Triangles = {\ttfamily true}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_mesh_a406020ec939773954b3be638041573cc}
+
+
+Create mesh from point cloud. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pointcloud} & Vector of points \\
+\hline
+{\em centralize\+Loaded\+Mesh} & Centroid of face to point (0,0,0) \\
+\hline
+{\em calculate\+Triangles} & Calculate Triangles \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Created mesh 
+\end{DoxyReturn}
+\hypertarget{class_mesh_a2e91d8acdb1737e0eaf94576d8406a6e}{\index{Mesh@{Mesh}!get\+Closed2d\+Point@{get\+Closed2d\+Point}}
+\index{get\+Closed2d\+Point@{get\+Closed2d\+Point}!Mesh@{Mesh}}
+\subsubsection[{get\+Closed2d\+Point}]{\setlength{\rightskip}{0pt plus 5cm}int Mesh\+::get\+Closed2d\+Point (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Point2d}]{point}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a2e91d8acdb1737e0eaf94576d8406a6e}
+
+
+Search closed point from mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & Point to search \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Index of closed point 
+\end{DoxyReturn}
+\hypertarget{class_mesh_a0752d96a941240e508b605281a3bb5f0}{\index{Mesh@{Mesh}!get\+Closed\+Points@{get\+Closed\+Points}}
+\index{get\+Closed\+Points@{get\+Closed\+Points}!Mesh@{Mesh}}
+\subsubsection[{get\+Closed\+Points}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh} Mesh\+::get\+Closed\+Points (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{input\+Mesh, }
+\item[{cv\+::flann\+::\+Index \&}]{index, }
+\item[{float $\ast$}]{distance}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a0752d96a941240e508b605281a3bb5f0}
+
+
+Search nearest point for each point int mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input\+Mesh} & \hyperlink{class_mesh}{Mesh} of points \\
+\hline
+{\em index} & indexed to search up \\
+\hline
+{\em distance} & Distance to nearest point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\hypertarget{class_mesh_a2b8b2a62e220de4cc9e3e19c0a0a6071}{\index{Mesh@{Mesh}!get\+Extract2d\+Grid@{get\+Extract2d\+Grid}}
+\index{get\+Extract2d\+Grid@{get\+Extract2d\+Grid}!Mesh@{Mesh}}
+\subsubsection[{get\+Extract2d\+Grid}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh} Mesh\+::get\+Extract2d\+Grid (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{grid}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a2b8b2a62e220de4cc9e3e19c0a0a6071}
+
+
+Extract part of mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em grid} & Part of mesh to be extracted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Extracted mesh 
+\end{DoxyReturn}
+\hypertarget{class_mesh_ad9fb7ec4fe3cd1f5a511654739029c33}{\index{Mesh@{Mesh}!get\+Extract2d\+Grid@{get\+Extract2d\+Grid}}
+\index{get\+Extract2d\+Grid@{get\+Extract2d\+Grid}!Mesh@{Mesh}}
+\subsubsection[{get\+Extract2d\+Grid}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::get\+Extract2d\+Grid (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{grid, }
+\item[{{\bf Mesh} \&}]{dst}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_ad9fb7ec4fe3cd1f5a511654739029c33}
+
+
+\hyperlink{class_mesh_a2b8b2a62e220de4cc9e3e19c0a0a6071}{Mesh\+::get\+Extract2d\+Grid} -\/ extract grid from face, use only x,y coords. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em grid} & \\
+\hline
+{\em dst} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_aa39be434d3573cd6b3e9de6d2f36502a}{\index{Mesh@{Mesh}!get\+Extract2d\+Grid\+\_\+2@{get\+Extract2d\+Grid\+\_\+2}}
+\index{get\+Extract2d\+Grid\+\_\+2@{get\+Extract2d\+Grid\+\_\+2}!Mesh@{Mesh}}
+\subsubsection[{get\+Extract2d\+Grid\+\_\+2}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::get\+Extract2d\+Grid\+\_\+2 (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{grid, }
+\item[{{\bf Mesh} \&}]{dst}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_aa39be434d3573cd6b3e9de6d2f36502a}
+
+
+\hyperlink{class_mesh_a2b8b2a62e220de4cc9e3e19c0a0a6071}{Mesh\+::get\+Extract2d\+Grid} Extract grid from face, used only x,y coords. if distance of closed point is higher then max\+Distance, skip it. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em grid} & Extracted area \\
+\hline
+{\em dst} & Extreacted mesh \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_a3a9fb77fbb9b1ff5b7a33ee5ab783b93}{\index{Mesh@{Mesh}!get\+Mean\+Point@{get\+Mean\+Point}}
+\index{get\+Mean\+Point@{get\+Mean\+Point}!Mesh@{Mesh}}
+\subsubsection[{get\+Mean\+Point}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+Point3d Mesh\+::get\+Mean\+Point (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a3a9fb77fbb9b1ff5b7a33ee5ab783b93}
+
+
+Compute mean point of mesh. 
+
+\begin{DoxyReturn}{Returns}
+Mean Point 
+\end{DoxyReturn}
+\hypertarget{class_mesh_ae18bb93929f87c35f50122e7725e097e}{\index{Mesh@{Mesh}!get\+Vector\+Of\+Point3d@{get\+Vector\+Of\+Point3d}}
+\index{get\+Vector\+Of\+Point3d@{get\+Vector\+Of\+Point3d}!Mesh@{Mesh}}
+\subsubsection[{get\+Vector\+Of\+Point3d}]{\setlength{\rightskip}{0pt plus 5cm}Q\+Vector$<$ cv\+::\+Point3d $>$ $\ast$ Mesh\+::get\+Vector\+Of\+Point3d (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_ae18bb93929f87c35f50122e7725e097e}
+
+
+Convert mesh to vector of point. 
+
+\begin{DoxyReturn}{Returns}
+Vector of point 
+\end{DoxyReturn}
+\hypertarget{class_mesh_a017e0441fdff322922dc1090b04d3c37}{\index{Mesh@{Mesh}!load\+From\+A\+B\+S@{load\+From\+A\+B\+S}}
+\index{load\+From\+A\+B\+S@{load\+From\+A\+B\+S}!Mesh@{Mesh}}
+\subsubsection[{load\+From\+A\+B\+S}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::load\+From\+A\+B\+S (
+\begin{DoxyParamCaption}
+\item[{const Q\+String \&}]{filename, }
+\item[{bool}]{centralize\+Loaded\+Mesh = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a017e0441fdff322922dc1090b04d3c37}
+
+
+Create mesh from A\+B\+S 3d model. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & File of 3d model \\
+\hline
+{\em centralize\+Loaded\+Mesh} & Centroid of face to point (0,0,0) \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_a803901209c07edc0b7c3904eccac40bc}{\index{Mesh@{Mesh}!load\+From\+O\+B\+J@{load\+From\+O\+B\+J}}
+\index{load\+From\+O\+B\+J@{load\+From\+O\+B\+J}!Mesh@{Mesh}}
+\subsubsection[{load\+From\+O\+B\+J}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::load\+From\+O\+B\+J (
+\begin{DoxyParamCaption}
+\item[{const Q\+String \&}]{filename, }
+\item[{bool}]{centralize\+Loaded\+Mesh = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a803901209c07edc0b7c3904eccac40bc}
+
+
+Create depthmap from O\+B\+J 3d model. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & File of 3d model \\
+\hline
+{\em centralize\+Loaded\+Mesh} & Centroid of face to point (0,0,0) \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_a87dc88824cf6604b494e774b54a7f0b1}{\index{Mesh@{Mesh}!load\+From\+Pointcloud@{load\+From\+Pointcloud}}
+\index{load\+From\+Pointcloud@{load\+From\+Pointcloud}!Mesh@{Mesh}}
+\subsubsection[{load\+From\+Pointcloud}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::load\+From\+Pointcloud (
+\begin{DoxyParamCaption}
+\item[{Vector\+Of\+Points \&}]{pointcloud, }
+\item[{bool}]{centralize\+Loaded\+Mesh = {\ttfamily false}, }
+\item[{bool}]{calculate\+Triangles = {\ttfamily true}}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a87dc88824cf6604b494e774b54a7f0b1}
+
+
+Create mesh from point cloud. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pointcloud} & Vector of points \\
+\hline
+{\em centralize\+Loaded\+Mesh} & Centroid of face to point (0,0,0) \\
+\hline
+{\em calculate\+Triangles} & Calculate Triangles \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_a549432bc9872781b714f3740dd976086}{\index{Mesh@{Mesh}!radius\+Select@{radius\+Select}}
+\index{radius\+Select@{radius\+Select}!Mesh@{Mesh}}
+\subsubsection[{radius\+Select}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh} Mesh\+::radius\+Select (
+\begin{DoxyParamCaption}
+\item[{double}]{radius, }
+\item[{cv\+::\+Point3d}]{center = {\ttfamily cv\+:\+:Point3d(0,0,0)}}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a549432bc9872781b714f3740dd976086}
+
+
+Extract mesh by radius. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em radius} & Radius of selected area \\
+\hline
+{\em center} & Center of selected area \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Extracted mesh 
+\end{DoxyReturn}
+\hypertarget{class_mesh_a89e4e340939aa89534978c60ca690466}{\index{Mesh@{Mesh}!rotate@{rotate}}
+\index{rotate@{rotate}!Mesh@{Mesh}}
+\subsubsection[{rotate}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::rotate (
+\begin{DoxyParamCaption}
+\item[{double}]{x, }
+\item[{double}]{y, }
+\item[{double}]{z}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a89e4e340939aa89534978c60ca690466}
+
+
+Rotate mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Parameter of rotation \\
+\hline
+{\em y} & Parameter of rotation \\
+\hline
+{\em z} & Parameter of rotation \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_a8f1702ee51f0c3d0bd980c665b5d6952}{\index{Mesh@{Mesh}!transform@{transform}}
+\index{transform@{transform}!Mesh@{Mesh}}
+\subsubsection[{transform}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::transform (
+\begin{DoxyParamCaption}
+\item[{Matrix \&}]{m}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a8f1702ee51f0c3d0bd980c665b5d6952}
+
+
+Transform mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Transformation} & matrix 3x3 \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_aae3c2893ee25abbff8feea44d724ddb4}{\index{Mesh@{Mesh}!translate@{translate}}
+\index{translate@{translate}!Mesh@{Mesh}}
+\subsubsection[{translate}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::translate (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Point3d}]{translation\+Vector}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_aae3c2893ee25abbff8feea44d724ddb4}
+
+
+Translate mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em translation\+Vector} & Values of translation \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_a822182ddb8a31b9e7c10727a10404ad3}{\index{Mesh@{Mesh}!write\+O\+B\+J@{write\+O\+B\+J}}
+\index{write\+O\+B\+J@{write\+O\+B\+J}!Mesh@{Mesh}}
+\subsubsection[{write\+O\+B\+J}]{\setlength{\rightskip}{0pt plus 5cm}void Mesh\+::write\+O\+B\+J (
+\begin{DoxyParamCaption}
+\item[{const Q\+String \&}]{path, }
+\item[{char}]{decimal\+Point}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a822182ddb8a31b9e7c10727a10404ad3}
+
+
+Save mesh as O\+B\+J 3d model. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & File to save \\
+\hline
+{\em decimal\+Point} & Char between integer and flaot part of number \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_mesh_a10b3d6d6b111a68eb380e7e125a8bfd2}{\index{Mesh@{Mesh}!z\+Level\+Select@{z\+Level\+Select}}
+\index{z\+Level\+Select@{z\+Level\+Select}!Mesh@{Mesh}}
+\subsubsection[{z\+Level\+Select}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh} Mesh\+::z\+Level\+Select (
+\begin{DoxyParamCaption}
+\item[{double}]{z\+Value}
+\end{DoxyParamCaption}
+)}}\label{class_mesh_a10b3d6d6b111a68eb380e7e125a8bfd2}
+
+
+Extract mesh by asix Z. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em z\+Value} & Value of axis Z \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Extracted mesh 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+mesh.\+h\item 
+mesh.\+cpp\end{DoxyCompactItemize}

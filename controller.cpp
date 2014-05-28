@@ -4,6 +4,12 @@ Controller::Controller(){
 
 }
 
+/**
+ * @brief Compute average landmarks position
+ * @param faces Vector of faces
+ * @param labels Labels of faces
+ * @param avgLandmarks Computed average landmarks
+ */
 void Controller::averageLandmarks(QVector<cv::Mat> &faces, QStringList &labels, Landmarks &avgLandmarks) {
 
 	VectorOfLandmarks landmarkVector = avgLandmarks.getLandmarks();
@@ -32,7 +38,6 @@ void Controller::averageLandmarks(QVector<cv::Mat> &faces, QStringList &labels, 
 		} else {
 			qDebug() << labels.at(i) << "skipped";
 		}
-		//Common::delay(1000);
 	}
 
 	//compute average value
@@ -44,6 +49,13 @@ void Controller::averageLandmarks(QVector<cv::Mat> &faces, QStringList &labels, 
 	avgLandmarks = Landmarks(landmarkVector);
 }
 
+/**
+ * @brief Create PCA subspaces from sets of faces
+ * @param faces Vector of faces
+ * @param avgLandmarks Average landmarks
+ * @param eigenface Created PCA subspaces
+ * @param method Method to divide
+ */
 void Controller::createPcaSubspaces(QVector<cv::Mat> &faces, Landmarks &avgLandmarks, EigenFace &eigenface, FaceDivider::DivideMethod method) {
 
 	VectorOfDivideFaces areasVector;
@@ -76,10 +88,10 @@ void Controller::createPcaSubspaces(QVector<cv::Mat> &faces, Landmarks &avgLandm
 }
 
 /**
- * @brief Controller::detectLandmarks - detect landmarks of particular depthmap
- * @param depthmap
- * @param landmarks
- * @return true - process of detection finish successful, else return false
+ * @brief Detect landmarks of depthmap
+ * @param depthmap Depthmap
+ * @param landmarks Detected landmarks
+ * @return True if process of detection finish successful, otherwise false
  */
 bool Controller::detectLandmarks(cv::Mat const &depthmap, Landmarks &landmarks) {
 	LandmarkDetector detector(depthmap);
@@ -87,6 +99,17 @@ bool Controller::detectLandmarks(cv::Mat const &depthmap, Landmarks &landmarks) 
 	return result;
 }
 
+/**
+ * @brief Detect landmarks, divide depthmap and project areas to PCA subspaces.
+ * @param depthmap Input depthmap
+ * @param label Label of depthmap
+ * @param averageLandmarks Average landmarks
+ * @param result Set to true if process succesful
+ * @param method Divide method
+ * @param subspaces PCA subspaces to project
+ * @param featuresVector Vector of features
+ * @param showBackProjections If True, back projection is show
+ */
 void Controller::processFace(cv::Mat &depthmap,
 							 QString label,
 							 Landmarks &averageLandmarks,
@@ -120,26 +143,12 @@ void Controller::processFace(cv::Mat &depthmap,
 		return;
 	}
 
-	//qDebug() << "noseTip value: " << depthmap.at<float>(landmarks.pos(Landmarks::NoseTip).y, landmarks.pos(Landmarks::NoseTip).x);
-
-
-		//qDebug() << "depthmap: " << depthmap.rows << "x" << depthmap.cols;
-
-
 	//divide
 	tFaceAreas areas;
 	FaceDivider faceDivider(depthmap, landmarks, averageLandmarks);
 
 	faceDivider.setResizeParam(Common::faceWidth);
 	faceDivider.divide(method,areas);
-
-
-	/*
-	for(int i =0; i < areas.size(); i++) {
-		qDebug() << i << areas[i].rows << "x" << areas[i].cols;
-		//cv::imshow(std::to_string(i), Common::norm_0_255(areas.at(i)));
-	}
-	*/
 
 
 	//project to pca subspace
@@ -170,6 +179,15 @@ void Controller::processFace(cv::Mat &depthmap,
 	result = true;
 }
 
+/**
+ * @brief Detect landmarks and  divide depthmap
+ * @param depthmap Input depthmap
+ * @param label Label of depthmap
+ * @param averageLandmarks  Average landmarks
+ * @param result Set to true if process succesful
+ * @param method Divide method
+ * @param featuresVector Vector of face areas
+ */
 void Controller::procesFaceArena(cv::Mat &depthmap,
 								 QString label,
 								 Landmarks &averageLandmarks,
@@ -201,12 +219,7 @@ void Controller::procesFaceArena(cv::Mat &depthmap,
 	for(int i=0; i < areas.size(); i++) {
 		cv::Mat projection;
 		cv::Mat src = areas.at(i);
-		//qDebug() << "area " << i << ":" << areas.at(i).rows << "x" <<  areas.at(i).cols;
-
 		EigenFace::toRowMatrix(src,projection,depthmap.type());
-
-		//qDebug() << "projection " << i << ":" << projection.rows << "x" <<  projection.cols;
-
 		featuresVector.append(projection);
 
 		//reshape
@@ -218,7 +231,14 @@ void Controller::procesFaceArena(cv::Mat &depthmap,
 	result = true;
 }
 
-
+/**
+ * @brief Align face and create depthmap
+ * @param face Input mesh
+ * @param modelFace Average face model
+ * @param depthmap Created depthmap
+ * @param distance Distance between align face and average face model
+ * @param iterations Count of iterations to align face
+ */
 void Controller::createDepthmap(Mesh &face, Mesh &modelFace, cv::Mat &depthmap, double &distance, int &iterations) {
 
 	//normalize

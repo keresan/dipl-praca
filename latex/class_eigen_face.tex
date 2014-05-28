@@ -1,0 +1,220 @@
+\hypertarget{class_eigen_face}{\section{Eigen\+Face Class Reference}
+\label{class_eigen_face}\index{Eigen\+Face@{Eigen\+Face}}
+}
+
+
+Class for Eigenface method.  
+
+
+
+
+{\ttfamily \#include $<$eigenface.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_eigen_face_a11b9853a6f6406ad967bff2cea9c25d3}{train} (Vector\+Of\+Divide\+Areas \&vector, int number\+Of\+Components=0)
+\begin{DoxyCompactList}\small\item\em Create P\+C\+A subspaces for each face are. \end{DoxyCompactList}\item 
+void \hyperlink{class_eigen_face_a202e85c56b51ffd4d239eb39a3933985}{save\+Subspaces} (Q\+String file\+Name, Q\+String save\+Path=Common\+::path\+To\+Subspaces\+Dir)
+\begin{DoxyCompactList}\small\item\em Save P\+C\+A subspaces to file. \end{DoxyCompactList}\item 
+void \hyperlink{class_eigen_face_a3b755baac3a15247fe20541e2baee864}{load\+Subspaces} (Q\+String file\+Name, Q\+String load\+Path=Common\+::path\+To\+Subspaces\+Dir)
+\begin{DoxyCompactList}\small\item\em Load P\+C\+A subspaces from file. \end{DoxyCompactList}\item 
+\hypertarget{class_eigen_face_ad3fd8ed994fc0ed3f94d641dd2f10bb2}{void \hyperlink{class_eigen_face_ad3fd8ed994fc0ed3f94d641dd2f10bb2}{show\+Means} ()}\label{class_eigen_face_ad3fd8ed994fc0ed3f94d641dd2f10bb2}
+
+\begin{DoxyCompactList}\small\item\em Show mean vector for each face area. \end{DoxyCompactList}\item 
+void \hyperlink{class_eigen_face_ae42a4ca20bb01beff27d1f1e4ade0986}{project} (Vector\+Of\+Divide\+Faces \&faces, Q\+Vector$<$ cv\+::\+Mat $>$ \&results)
+\begin{DoxyCompactList}\small\item\em Project vector of face areas to P\+C\+A subspaces. \end{DoxyCompactList}\item 
+void \hyperlink{class_eigen_face_aa901e0cba6a6946fb30cda548c8078bd}{project} (t\+Face\+Areas \&areas, t\+Features \&features)
+\begin{DoxyCompactList}\small\item\em Project one face to pca subspace. \end{DoxyCompactList}\item 
+void \hyperlink{class_eigen_face_ad8bb6d36582b3d599fd50d9d568d50ff}{back\+Project} (t\+Features \&features, Q\+Vector$<$ cv\+::\+Mat $>$ \&result)
+\begin{DoxyCompactList}\small\item\em Back projection from P\+C\+A subspace. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static cv\+::\+Mat \hyperlink{class_eigen_face_afa5849a05f841161e7dc126a77b7a46f}{to\+Row\+Matrix} (Q\+Vector$<$ cv\+::\+Mat $>$ \&src, int rtype, double alpha=1, double beta=0)
+\begin{DoxyCompactList}\small\item\em Convert vector of matrix to one mat by rows. \end{DoxyCompactList}\item 
+static void \hyperlink{class_eigen_face_a448782b661039c41b44ac8d509d51923}{to\+Row\+Matrix} (cv\+::\+Mat \&src, cv\+::\+Mat \&dst, int rtype, double alpha=1, double beta=0)
+\begin{DoxyCompactList}\small\item\em Reshape matrix to row. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for Eigenface method. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_eigen_face_ad8bb6d36582b3d599fd50d9d568d50ff}{\index{Eigen\+Face@{Eigen\+Face}!back\+Project@{back\+Project}}
+\index{back\+Project@{back\+Project}!Eigen\+Face@{Eigen\+Face}}
+\subsubsection[{back\+Project}]{\setlength{\rightskip}{0pt plus 5cm}void Eigen\+Face\+::back\+Project (
+\begin{DoxyParamCaption}
+\item[{t\+Features \&}]{features, }
+\item[{Q\+Vector$<$ cv\+::\+Mat $>$ \&}]{result}
+\end{DoxyParamCaption}
+)}}\label{class_eigen_face_ad8bb6d36582b3d599fd50d9d568d50ff}
+
+
+Back projection from P\+C\+A subspace. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em features} & Vector of features \\
+\hline
+{\em result} & Back projection \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_eigen_face_a3b755baac3a15247fe20541e2baee864}{\index{Eigen\+Face@{Eigen\+Face}!load\+Subspaces@{load\+Subspaces}}
+\index{load\+Subspaces@{load\+Subspaces}!Eigen\+Face@{Eigen\+Face}}
+\subsubsection[{load\+Subspaces}]{\setlength{\rightskip}{0pt plus 5cm}void Eigen\+Face\+::load\+Subspaces (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{load\+Path = {\ttfamily Common\+:\+:pathToSubspacesDir}}
+\end{DoxyParamCaption}
+)}}\label{class_eigen_face_a3b755baac3a15247fe20541e2baee864}
+
+
+Load P\+C\+A subspaces from file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File to load \\
+\hline
+{\em load\+Path} & Directory with file \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_eigen_face_ae42a4ca20bb01beff27d1f1e4ade0986}{\index{Eigen\+Face@{Eigen\+Face}!project@{project}}
+\index{project@{project}!Eigen\+Face@{Eigen\+Face}}
+\subsubsection[{project}]{\setlength{\rightskip}{0pt plus 5cm}void Eigen\+Face\+::project (
+\begin{DoxyParamCaption}
+\item[{Vector\+Of\+Divide\+Faces \&}]{faces, }
+\item[{Q\+Vector$<$ cv\+::\+Mat $>$ \&}]{results}
+\end{DoxyParamCaption}
+)}}\label{class_eigen_face_ae42a4ca20bb01beff27d1f1e4ade0986}
+
+
+Project vector of face areas to P\+C\+A subspaces. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em faces} & Face areas to project \\
+\hline
+{\em results} & Vector of features \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_eigen_face_aa901e0cba6a6946fb30cda548c8078bd}{\index{Eigen\+Face@{Eigen\+Face}!project@{project}}
+\index{project@{project}!Eigen\+Face@{Eigen\+Face}}
+\subsubsection[{project}]{\setlength{\rightskip}{0pt plus 5cm}void Eigen\+Face\+::project (
+\begin{DoxyParamCaption}
+\item[{t\+Face\+Areas \&}]{areas, }
+\item[{t\+Features \&}]{features}
+\end{DoxyParamCaption}
+)}}\label{class_eigen_face_aa901e0cba6a6946fb30cda548c8078bd}
+
+
+Project one face to pca subspace. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em areas} & Face areas to convert \\
+\hline
+{\em features} & Vector of features \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_eigen_face_a202e85c56b51ffd4d239eb39a3933985}{\index{Eigen\+Face@{Eigen\+Face}!save\+Subspaces@{save\+Subspaces}}
+\index{save\+Subspaces@{save\+Subspaces}!Eigen\+Face@{Eigen\+Face}}
+\subsubsection[{save\+Subspaces}]{\setlength{\rightskip}{0pt plus 5cm}void Eigen\+Face\+::save\+Subspaces (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{save\+Path = {\ttfamily Common\+:\+:pathToSubspacesDir}}
+\end{DoxyParamCaption}
+)}}\label{class_eigen_face_a202e85c56b51ffd4d239eb39a3933985}
+
+
+Save P\+C\+A subspaces to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File to save \\
+\hline
+{\em save\+Path} & Directory with file \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_eigen_face_afa5849a05f841161e7dc126a77b7a46f}{\index{Eigen\+Face@{Eigen\+Face}!to\+Row\+Matrix@{to\+Row\+Matrix}}
+\index{to\+Row\+Matrix@{to\+Row\+Matrix}!Eigen\+Face@{Eigen\+Face}}
+\subsubsection[{to\+Row\+Matrix}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+Mat Eigen\+Face\+::to\+Row\+Matrix (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ cv\+::\+Mat $>$ \&}]{src, }
+\item[{int}]{rtype, }
+\item[{double}]{alpha = {\ttfamily 1}, }
+\item[{double}]{beta = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_eigen_face_afa5849a05f841161e7dc126a77b7a46f}
+
+
+Convert vector of matrix to one mat by rows. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Vector of matrices \\
+\hline
+{\em rtype} & Type of converted matrix \\
+\hline
+{\em alpha} & Alpha \\
+\hline
+{\em beta} & Beta \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Converted matrix 
+\end{DoxyReturn}
+\hypertarget{class_eigen_face_a448782b661039c41b44ac8d509d51923}{\index{Eigen\+Face@{Eigen\+Face}!to\+Row\+Matrix@{to\+Row\+Matrix}}
+\index{to\+Row\+Matrix@{to\+Row\+Matrix}!Eigen\+Face@{Eigen\+Face}}
+\subsubsection[{to\+Row\+Matrix}]{\setlength{\rightskip}{0pt plus 5cm}void Eigen\+Face\+::to\+Row\+Matrix (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{src, }
+\item[{cv\+::\+Mat \&}]{dst, }
+\item[{int}]{rtype, }
+\item[{double}]{alpha = {\ttfamily 1}, }
+\item[{double}]{beta = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_eigen_face_a448782b661039c41b44ac8d509d51923}
+
+
+Reshape matrix to row. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Source matrix \\
+\hline
+{\em rtype} & Type of converted matrix \\
+\hline
+{\em alpha} & Alpha \\
+\hline
+{\em beta} & Beta \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Converted matrix 
+\end{DoxyReturn}
+\hypertarget{class_eigen_face_a11b9853a6f6406ad967bff2cea9c25d3}{\index{Eigen\+Face@{Eigen\+Face}!train@{train}}
+\index{train@{train}!Eigen\+Face@{Eigen\+Face}}
+\subsubsection[{train}]{\setlength{\rightskip}{0pt plus 5cm}void Eigen\+Face\+::train (
+\begin{DoxyParamCaption}
+\item[{Vector\+Of\+Divide\+Areas \&}]{vector, }
+\item[{int}]{number\+Of\+Components = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}\label{class_eigen_face_a11b9853a6f6406ad967bff2cea9c25d3}
+
+
+Create P\+C\+A subspaces for each face are. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & Vector of face areas \\
+\hline
+{\em number\+Of\+Components} & Number of component to create P\+C\+A subspace \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+eigenface.\+h\item 
+eigenface.\+cpp\end{DoxyCompactItemize}

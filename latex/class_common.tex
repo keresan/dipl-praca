@@ -1,0 +1,807 @@
+\hypertarget{class_common}{\section{Common Class Reference}
+\label{class_common}\index{Common@{Common}}
+}
+
+
+This class containt static method who are used in entire project. There are constants settings for face recognition process too.  
+
+
+
+
+{\ttfamily \#include $<$common.\+h$>$}
+
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Q\+Vector$<$ cv\+::\+Vec3i $>$ \hyperlink{class_common_aa62fca6495c60bbf8a4f621fbe163371}{delaunay\+Triangulation} (Q\+Vector$<$ cv\+::\+Point2d $>$ \&points)
+\begin{DoxyCompactList}\small\item\em Delaunay triangulation. Compute triangles from cloud points. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_ab7b94808d6510e9772663360ad40907b}{print\+Matrix} (const Matrix \&m)
+\begin{DoxyCompactList}\small\item\em Print matrix row by row using q\+Debug(). \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_acecc1d26e7275d493ca296328faacad8}{delay} (int msec)
+\begin{DoxyCompactList}\small\item\em Delay application for some time. \end{DoxyCompactList}\item 
+static cv\+::\+Mat \hyperlink{class_common_a09e3bdf2b3e4fc337a439a5028d648d2}{norm\+\_\+0\+\_\+255} (cv\+::\+Input\+Array \+\_\+src)
+\begin{DoxyCompactList}\small\item\em Normalize input image to range 0 -\/ 255. Important for showing image using opencv. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_aca3ae19fd0b26aca24a4fde7d503df37}{load\+Files\+Path\+From\+Dir} (Q\+String path\+To\+Dir, Q\+String\+List \&list, const Q\+String\+List \&filters=Q\+String\+List(\char`\"{}$\ast$xml\char`\"{}))
+\begin{DoxyCompactList}\small\item\em Load files names from directory and concat it with ther absolute path. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_a64a7495b0b24a83e20616d93466d4ee4}{load\+Depthmap} (Q\+String file\+Name, Q\+String dir\+Path, cv\+::\+Mat \&depthmap, double \&distance, int \&iterations)
+\begin{DoxyCompactList}\small\item\em Load depthmap from xml file. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_adcc451f04f86fef2678c6b2a43721459}{load\+Depthmap\+Process} (Q\+String file\+Name, Q\+String dir\+Path, cv\+::\+Mat \&depthmap, cv\+::\+Mat \&average\+Face, double \&distance, int \&iterations)
+\begin{DoxyCompactList}\small\item\em Load depthmap from xml file and process it. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_afd21f637aeada98fd144b0c069580219}{save\+Depthmap} (Q\+String file\+Name, Q\+String dir\+Path, cv\+::\+Mat \&depthmap, double distance, int iterations)
+\begin{DoxyCompactList}\small\item\em Save depthmap to xml file. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_a32e84e2c267fc1d9c01b85ae10a3dba8}{save\+Cmp\+Result} (cv\+::\+Mat \&result\+Matrix, Q\+String file\+Name, Q\+String dir\+Path=Common\+::path\+To\+Com\+Result\+Dir)
+\begin{DoxyCompactList}\small\item\em Save results of face comparation. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_a147ec8d7fe31ae85bbbca82c27a8a1cd}{load\+Cmp\+Result} (cv\+::\+Mat \&result\+Matrix, Q\+String file\+Name, Q\+String dir\+Path=Common\+::path\+To\+Com\+Result\+Dir)
+\begin{DoxyCompactList}\small\item\em Load result of camparation from file. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_a727cc9c60725b5046f391aba449f1a9f}{process\+Loaded\+Map} (cv\+::\+Mat \&depthmap, cv\+::\+Mat \&average\+Face)
+\begin{DoxyCompactList}\small\item\em Crop, blur and replece unitialized pixels with pixels from depthmap. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_ac71621f469fc1407b59c1ffcaf81effd}{replace\+Init\+Values} (cv\+::\+Mat \&depthmap, cv\+::\+Mat \&src)
+\begin{DoxyCompactList}\small\item\em Replace unknown values of point in depthamp with values from src. \end{DoxyCompactList}\item 
+static bool \hyperlink{class_common_af615d006ad3fb214dc4112dfe0a02e91}{is\+Genuine\+Person} (Q\+String base\+Name1, Q\+String base\+Name2)
+\begin{DoxyCompactList}\small\item\em Decide if base names belong to same person or not. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_a6c2e62255d1d745c880d42c49e5b80e5}{convert\+To\+Matrix} (Q\+Vector$<$ Q\+Vector$<$ float $>$ $>$ \&src, cv\+::\+Mat \&dst)
+\begin{DoxyCompactList}\small\item\em Convert vector of vector to matrix. \end{DoxyCompactList}\item 
+static void \hyperlink{class_common_a3379a84b4d4cd4e9706d5e21ff678742}{set\+Dir\+Struct} (Q\+String root\+Dir, Q\+String face\+Model\+Dir)
+\begin{DoxyCompactList}\small\item\em Set and create structure of directories. One of face\+Model\+Dir or created\+Depthmap\+Dir must not be empty. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_common_a126b28f6f665f60bc0c1f15e6865b40b}{static Q\+String {\bfseries path\+To\+Warehouse}}\label{class_common_a126b28f6f665f60bc0c1f15e6865b40b}
+
+\item 
+\hypertarget{class_common_a17490b41b174d27b74c97be7b9f2c2c1}{static Q\+String {\bfseries path\+To3\+D\+Models}}\label{class_common_a17490b41b174d27b74c97be7b9f2c2c1}
+
+\item 
+\hypertarget{class_common_aeb301bd4a539a4a15b6548097a0e0810}{static Q\+String {\bfseries path\+To\+Created\+Depthmaps}}\label{class_common_aeb301bd4a539a4a15b6548097a0e0810}
+
+\item 
+\hypertarget{class_common_ab4044707670e3de50abc14fbd30e0b1c}{static Q\+String {\bfseries path\+To\+Subspaces\+Dir}}\label{class_common_ab4044707670e3de50abc14fbd30e0b1c}
+
+\item 
+\hypertarget{class_common_a1fb67c0e95b467f14842270e578663fd}{static Q\+String {\bfseries path\+To\+Com\+Result\+Dir}}\label{class_common_a1fb67c0e95b467f14842270e578663fd}
+
+\item 
+\hypertarget{class_common_a713604d8a658e98fa63c4604c6e63823}{static Q\+String {\bfseries path\+To\+Average\+Model}}\label{class_common_a713604d8a658e98fa63c4604c6e63823}
+
+\item 
+\hypertarget{class_common_a00f003ac02c700a9ac2c21463498ff0f}{static Q\+String {\bfseries path\+To\+Average\+Model\+Normalize}}\label{class_common_a00f003ac02c700a9ac2c21463498ff0f}
+
+\item 
+\hypertarget{class_common_a202fba2acf940a741d1135f9745a45fc}{static Q\+String {\bfseries path\+To\+Average\+Depthmap}}\label{class_common_a202fba2acf940a741d1135f9745a45fc}
+
+\item 
+\hypertarget{class_common_aaced08da82d7b5d2d68b1c16bce71b23}{static Q\+String {\bfseries path\+To\+Average\+Lm}}\label{class_common_aaced08da82d7b5d2d68b1c16bce71b23}
+
+\item 
+\hypertarget{class_common_a3002bdce8d117d2102f2a0408c81c04a}{static Q\+String {\bfseries path\+To\+Scn\+Data}}\label{class_common_a3002bdce8d117d2102f2a0408c81c04a}
+
+\item 
+\hypertarget{class_common_af5b0c933e067ce6c3eea79a0e7b50884}{static Q\+String {\bfseries path\+To\+Average\+Face\+Dir}}\label{class_common_af5b0c933e067ce6c3eea79a0e7b50884}
+
+\item 
+\hypertarget{class_common_a322e3c62ca4ee7ac7cfca0b3a0d18423}{static Q\+String {\bfseries path\+To\+Landmark\+Dir}}\label{class_common_a322e3c62ca4ee7ac7cfca0b3a0d18423}
+
+\item 
+\hypertarget{class_common_a7515c2903df61c7eb49936cbaebfe1d5}{static const cv\+::\+Point3d {\bfseries average\+Face\+T\+L} = cv\+::\+Point3d(-\/50,70,0)}\label{class_common_a7515c2903df61c7eb49936cbaebfe1d5}
+
+\item 
+\hypertarget{class_common_af53bee5a1714a036c45a48fe7e8206dd}{static const cv\+::\+Point3d {\bfseries average\+Face\+B\+R} = cv\+::\+Point3d(50,-\/10,0)}\label{class_common_af53bee5a1714a036c45a48fe7e8206dd}
+
+\item 
+\hypertarget{class_common_a5776d2df753fdb9844e23d1a66609ddf}{static const cv\+::\+Point2d {\bfseries depth\+Map\+T\+L} = cv\+::\+Point2d(-\/80,100)}\label{class_common_a5776d2df753fdb9844e23d1a66609ddf}
+
+\item 
+\hypertarget{class_common_a490dd2af55169d923454ba94aff8cc2e}{static const cv\+::\+Point2d {\bfseries depth\+Map\+B\+R} = cv\+::\+Point2d(80,-\/70)}\label{class_common_a490dd2af55169d923454ba94aff8cc2e}
+
+\item 
+\hypertarget{class_common_a59aaf57daf6194521be228155c775476}{static const int {\bfseries depth\+Map\+Pixels\+X} = 160$\ast$2}\label{class_common_a59aaf57daf6194521be228155c775476}
+
+\item 
+\hypertarget{class_common_a5e40bfe55fdfb7833a1e39424c053a9f}{static const int {\bfseries depth\+Map\+Pixels\+Y} = 170$\ast$2}\label{class_common_a5e40bfe55fdfb7833a1e39424c053a9f}
+
+\item 
+\hypertarget{class_common_afc96891dabd316bc3a01caf156a3eefd}{static const Q\+String {\bfseries wrong\+Dp\+Suffix\+Label} = \char`\"{}\+\_\+wrong\+\_\+dp\char`\"{}}\label{class_common_afc96891dabd316bc3a01caf156a3eefd}
+
+\item 
+\hypertarget{class_common_a7478dab4f6f889d09fcb4e2c8583e83d}{static const Q\+String {\bfseries wrong\+Lm\+Suffix\+Label} = \char`\"{}\+\_\+wrong\+\_\+lm\char`\"{}}\label{class_common_a7478dab4f6f889d09fcb4e2c8583e83d}
+
+\item 
+\hypertarget{class_common_a498498e6a4d416d4efced0104ea940fc}{static const Q\+String {\bfseries vector\+Size\+Label} = \char`\"{}array-\/size\char`\"{}}\label{class_common_a498498e6a4d416d4efced0104ea940fc}
+
+\item 
+\hypertarget{class_common_a38b6aef5c0c207a1e58bdbc667e83a10}{static const Q\+String {\bfseries sub\+Vector\+Size\+Label} = \char`\"{}sub-\/vector-\/size\char`\"{}}\label{class_common_a38b6aef5c0c207a1e58bdbc667e83a10}
+
+\item 
+\hypertarget{class_common_ae48ebebd62ac0f81958423994b31601a}{static const int {\bfseries lm\+Delta\+From\+Avg} = 25}\label{class_common_ae48ebebd62ac0f81958423994b31601a}
+
+\item 
+\hypertarget{class_common_a951f096df9a306a5b0052504660e1963}{static const int {\bfseries aligner\+Find\+Best\+Start\+Half\+Range\+X} = 20}\label{class_common_a951f096df9a306a5b0052504660e1963}
+
+\item 
+\hypertarget{class_common_a6e256128b223d6ee94cdd18973793508}{static const int {\bfseries aligner\+Find\+Best\+Start\+Half\+Range\+Y} = 20}\label{class_common_a6e256128b223d6ee94cdd18973793508}
+
+\item 
+\hypertarget{class_common_a64b0796757d9549f7ad8201022fc9990}{static const int {\bfseries aligner\+Find\+Best\+Start\+Pos\+Step} = 10}\label{class_common_a64b0796757d9549f7ad8201022fc9990}
+
+\item 
+\hypertarget{class_common_affda2d871f10e8df72423f556ff20606}{static const int {\bfseries aligned\+Find\+Best\+Start\+Pos\+Z\+Shift} = 0}\label{class_common_affda2d871f10e8df72423f556ff20606}
+
+\item 
+\hypertarget{class_common_a0eb19b4ea6acabeb22e4ccf715f87143}{static const int {\bfseries aligner\+Convergent\+Treshold} = 10}\label{class_common_a0eb19b4ea6acabeb22e4ccf715f87143}
+
+\item 
+\hypertarget{class_common_a2a5e4133d399107bbfb1156bb2ef1bc6}{static const int {\bfseries aligner\+Max\+Iterations} = 150}\label{class_common_a2a5e4133d399107bbfb1156bb2ef1bc6}
+
+\item 
+\hypertarget{class_common_a3d88cdbe422020b9bf1f9f96b4698100}{static const int {\bfseries aligner\+Distance\+Treshold\+To\+Continue} = 8000}\label{class_common_a3d88cdbe422020b9bf1f9f96b4698100}
+
+\item 
+\hypertarget{class_common_ac8744938a8eafb989172de2d2a3dcd6b}{static const cv\+::\+Rect {\bfseries face\+Crop\+Area} = cv\+::\+Rect(60,50,200,190)}\label{class_common_ac8744938a8eafb989172de2d2a3dcd6b}
+
+\item 
+\hypertarget{class_common_a95755eed531e0e36bfafd1a7414d4bba}{static const int {\bfseries face\+Width} = 100}\label{class_common_a95755eed531e0e36bfafd1a7414d4bba}
+
+\item 
+\hypertarget{class_common_affaf2808228e266e52ccda820ca9c2d6}{static const int {\bfseries detect\+Eye\+Area\+Width} = 60}\label{class_common_affaf2808228e266e52ccda820ca9c2d6}
+
+\item 
+\hypertarget{class_common_aa60e2893d0aa698c80df6e963351261c}{static const int {\bfseries detect\+Eye\+Area\+Half\+Height} = 40}\label{class_common_aa60e2893d0aa698c80df6e963351261c}
+
+\item 
+\hypertarget{class_common_a2ff6f7733812ed4ea6b33a83d05fc65b}{static const int {\bfseries detect\+Nose\+Corners\+Area\+Half\+Width} = 70}\label{class_common_a2ff6f7733812ed4ea6b33a83d05fc65b}
+
+\item 
+\hypertarget{class_common_ae1fae889f579ddc08e82687249821159}{static const int {\bfseries detect\+Nose\+Corners\+Area\+Half\+Height} = 20}\label{class_common_ae1fae889f579ddc08e82687249821159}
+
+\item 
+\hypertarget{class_common_a56738db887f97b1fc5208047da5a1ec0}{static const int {\bfseries detect\+Nose\+Bottom\+Area\+Half\+Width} = 20}\label{class_common_a56738db887f97b1fc5208047da5a1ec0}
+
+\item 
+\hypertarget{class_common_a79fbca043edea7b7733f6b99f65a0a40}{static const int {\bfseries detect\+Nose\+Bottom\+Area\+Height} = 40}\label{class_common_a79fbca043edea7b7733f6b99f65a0a40}
+
+\item 
+\hypertarget{class_common_a7c9c0ba994f8b3fed1d06a43844e89df}{static const int {\bfseries detect\+Nose\+Root\+Area\+Half\+Width} = 30}\label{class_common_a7c9c0ba994f8b3fed1d06a43844e89df}
+
+\item 
+\hypertarget{class_common_a2f4780951ddc0024d81308ddb6c86005}{static const int {\bfseries detect\+Nose\+Root\+Min\+Distance\+From\+Tip} = 50}\label{class_common_a2f4780951ddc0024d81308ddb6c86005}
+
+\item 
+\hypertarget{class_common_a9cb59248a423dc56c8bde860912f30db}{static const int {\bfseries detect\+Nose\+Tip\+Area\+Start\+Y} = 70}\label{class_common_a9cb59248a423dc56c8bde860912f30db}
+
+\item 
+\hypertarget{class_common_aaefc54199f8b6426d0b38f01de1915d2}{static const int {\bfseries detect\+Nose\+Tip\+Area\+Height} = 80}\label{class_common_aaefc54199f8b6426d0b38f01de1915d2}
+
+\item 
+\hypertarget{class_common_a054b047e34163f331007f05c698e4b06}{static const double {\bfseries depthmap\+Init\+Value} = -\/999.\+0}\label{class_common_a054b047e34163f331007f05c698e4b06}
+
+\item 
+\hypertarget{class_common_a15e4b83b39bf46f9e8d12d25e59dbcfa}{static const Q\+String {\bfseries lm\+Avg\+Lm\+Label} = \char`\"{}average-\/landmarks.\+xml\char`\"{}}\label{class_common_a15e4b83b39bf46f9e8d12d25e59dbcfa}
+
+\item 
+\hypertarget{class_common_aecbbdccb6a0a0765e4216661209fae84}{static const Q\+String {\bfseries lm\+Save\+Pos\+Label} = \char`\"{}landmark\char`\"{}}\label{class_common_aecbbdccb6a0a0765e4216661209fae84}
+
+\item 
+\hypertarget{class_common_ac077acad57cef0aa3b43b533ddd6a9c1}{static const Q\+String {\bfseries lm\+Save\+Is\+Label} = \char`\"{}is\+Entered\char`\"{}}\label{class_common_ac077acad57cef0aa3b43b533ddd6a9c1}
+
+\item 
+\hypertarget{class_common_aa3247ca204c94690f4b8e0bc5a8e3010}{static const Q\+String {\bfseries eigen\+Method0\+Label} = \char`\"{}method-\/0\char`\"{}}\label{class_common_aa3247ca204c94690f4b8e0bc5a8e3010}
+
+\item 
+\hypertarget{class_common_a669c14bb2e388d7c994ae101b2ba1133}{static const Q\+String {\bfseries eigen\+Method1\+Label} = \char`\"{}method-\/1\char`\"{}}\label{class_common_a669c14bb2e388d7c994ae101b2ba1133}
+
+\item 
+\hypertarget{class_common_a0285ae319cb4e4da983283bc8c741eae}{static const Q\+String {\bfseries eigen\+Method2\+Label} = \char`\"{}method-\/2\char`\"{}}\label{class_common_a0285ae319cb4e4da983283bc8c741eae}
+
+\item 
+\hypertarget{class_common_ae6fa4d97e5353aa35fc55542ebecc85c}{static const Q\+String {\bfseries eigen\+Method3\+Label} = \char`\"{}method-\/3\char`\"{}}\label{class_common_ae6fa4d97e5353aa35fc55542ebecc85c}
+
+\item 
+\hypertarget{class_common_acd04ec924d1f42b800746d9a0ca25979}{static const Q\+String {\bfseries eigen\+Method1r\+Label} = \char`\"{}method-\/1r\char`\"{}}\label{class_common_acd04ec924d1f42b800746d9a0ca25979}
+
+\item 
+\hypertarget{class_common_a1c5803b985f7876b9be128602871a1c2}{static const Q\+String {\bfseries eigen\+Method2r\+Label} = \char`\"{}method-\/2r\char`\"{}}\label{class_common_a1c5803b985f7876b9be128602871a1c2}
+
+\item 
+\hypertarget{class_common_aab885033b4803b677fd2e9cb3b4c0589}{static const Q\+String {\bfseries eigen\+Method3r\+Label} = \char`\"{}method-\/3r\char`\"{}}\label{class_common_aab885033b4803b677fd2e9cb3b4c0589}
+
+\item 
+\hypertarget{class_common_a85fd4b71fd146e508bd191548214b49c}{static const Q\+String {\bfseries eigen\+Eigenvector\+Label} = \char`\"{}eigenvectors\char`\"{}}\label{class_common_a85fd4b71fd146e508bd191548214b49c}
+
+\item 
+\hypertarget{class_common_abcc134a899f75399ae26b60a2bf4104c}{static const Q\+String {\bfseries eigen\+Eigenvalues\+Label} = \char`\"{}eigenvalues\char`\"{}}\label{class_common_abcc134a899f75399ae26b60a2bf4104c}
+
+\item 
+\hypertarget{class_common_a5558bd04b7e9ac1de60165eaa596b500}{static const Q\+String {\bfseries eigen\+Mean\+Label} = \char`\"{}mean\char`\"{}}\label{class_common_a5558bd04b7e9ac1de60165eaa596b500}
+
+\item 
+\hypertarget{class_common_a86d8764339fb01780df826b4c95d7da2}{static const double {\bfseries detect\+Hight\+Pass\+Filter\+Value} = 4.\+0}\label{class_common_a86d8764339fb01780df826b4c95d7da2}
+
+\item 
+\hypertarget{class_common_a29111ac4af23620b6a17bed5fd99258a}{static const Q\+String {\bfseries depthmap\+Iterations\+Count\+Label} = \char`\"{}iterations\+\_\+to\+\_\+align\char`\"{}}\label{class_common_a29111ac4af23620b6a17bed5fd99258a}
+
+\item 
+\hypertarget{class_common_a6811927964c06e16fcfacab4f77923e7}{static const Q\+String {\bfseries depthmap\+Distance\+From\+Model\+Label} = \char`\"{}distance\+\_\+from\+\_\+model\char`\"{}}\label{class_common_a6811927964c06e16fcfacab4f77923e7}
+
+\item 
+\hypertarget{class_common_a41cc911310e6ec2a344517f3859a11b2}{static const Q\+String {\bfseries depthmap\+Depthmap\+Label} = \char`\"{}depthmap\char`\"{}}\label{class_common_a41cc911310e6ec2a344517f3859a11b2}
+
+\item 
+\hypertarget{class_common_a8b9fa86e6f603b163b8d633f16bf2e83}{static const Q\+String {\bfseries cmp\+Result\+Label} = \char`\"{}result\char`\"{}}\label{class_common_a8b9fa86e6f603b163b8d633f16bf2e83}
+
+\item 
+\hypertarget{class_common_a7816842b8938db53e6671516f989ece3}{static const Q\+String {\bfseries cmp\+Result\+Genuine\+Method0\+Label} = \char`\"{}method0-\/genuine-\/1.xml\char`\"{}}\label{class_common_a7816842b8938db53e6671516f989ece3}
+
+\item 
+\hypertarget{class_common_a0002cd6b25dd52c5006c7405e342118d}{static const Q\+String {\bfseries cmp\+Result\+Imposter\+Method0\+Label} = \char`\"{}method0-\/imposter-\/1.xml\char`\"{}}\label{class_common_a0002cd6b25dd52c5006c7405e342118d}
+
+\item 
+\hypertarget{class_common_aafd0bb9be73c16fc82424b922d57ab34}{static const Q\+String {\bfseries cmp\+Result\+Genuine\+Method1\+Label} = \char`\"{}method1-\/genuine-\/1.xml\char`\"{}}\label{class_common_aafd0bb9be73c16fc82424b922d57ab34}
+
+\item 
+\hypertarget{class_common_a37de792c82732bd3a489a5d516049b96}{static const Q\+String {\bfseries cmp\+Result\+Imposter\+Method1\+Label} = \char`\"{}method1-\/imposter-\/1.xml\char`\"{}}\label{class_common_a37de792c82732bd3a489a5d516049b96}
+
+\item 
+\hypertarget{class_common_ad5cc2a4983c99a6790a272c76bacae5d}{static const Q\+String {\bfseries cmp\+Result\+Genuine\+Method2\+Label} = \char`\"{}method2-\/genuine-\/1.xml\char`\"{}}\label{class_common_ad5cc2a4983c99a6790a272c76bacae5d}
+
+\item 
+\hypertarget{class_common_a14e29a34ebead70eb314a2354ceb1767}{static const Q\+String {\bfseries cmp\+Result\+Imposter\+Method2\+Label} = \char`\"{}method2-\/imposter-\/1.xml\char`\"{}}\label{class_common_a14e29a34ebead70eb314a2354ceb1767}
+
+\item 
+\hypertarget{class_common_ac828a49eb752aa6e35539cfc9f6e18c3}{static const Q\+String {\bfseries cmp\+Result\+Genuine\+Method3\+Label} = \char`\"{}method3-\/genuine-\/1.xml\char`\"{}}\label{class_common_ac828a49eb752aa6e35539cfc9f6e18c3}
+
+\item 
+\hypertarget{class_common_a5894c40a0edcd2419021cea19ccf8eb3}{static const Q\+String {\bfseries cmp\+Result\+Imposter\+Method3\+Label} = \char`\"{}method3-\/imposter-\/1.xml\char`\"{}}\label{class_common_a5894c40a0edcd2419021cea19ccf8eb3}
+
+\item 
+\hypertarget{class_common_a8b005149dc0ebe38354f5ce8d48188ad}{static const Q\+String {\bfseries cmp\+Result\+Genuine\+Method1r\+Label} = \char`\"{}method1r-\/genuine-\/1.xml\char`\"{}}\label{class_common_a8b005149dc0ebe38354f5ce8d48188ad}
+
+\item 
+\hypertarget{class_common_ab324a547cd09aff66d135c388425516d}{static const Q\+String {\bfseries cmp\+Result\+Imposter\+Method1r\+Label} = \char`\"{}method1r-\/imposter-\/1.xml\char`\"{}}\label{class_common_ab324a547cd09aff66d135c388425516d}
+
+\item 
+\hypertarget{class_common_ab62e2e57445402fdf35cb4cfbf4a4101}{static const Q\+String {\bfseries cmp\+Result\+Genuine\+Method2r\+Label} = \char`\"{}method2r-\/genuine-\/1.xml\char`\"{}}\label{class_common_ab62e2e57445402fdf35cb4cfbf4a4101}
+
+\item 
+\hypertarget{class_common_a8ce3cbdbb687b9e84a722a661f153711}{static const Q\+String {\bfseries cmp\+Result\+Imposter\+Method2r\+Label} = \char`\"{}method2r-\/imposter-\/1.xml\char`\"{}}\label{class_common_a8ce3cbdbb687b9e84a722a661f153711}
+
+\item 
+\hypertarget{class_common_a856891acac57f889dbe597a87278c879}{static const Q\+String {\bfseries cmp\+Result\+Genuine\+Method3r\+Label} = \char`\"{}method3r-\/genuine-\/1.xml\char`\"{}}\label{class_common_a856891acac57f889dbe597a87278c879}
+
+\item 
+\hypertarget{class_common_aaf78625cfb0be6b5e515498ad3fced94}{static const Q\+String {\bfseries cmp\+Result\+Imposter\+Method3r\+Label} = \char`\"{}method3r-\/imposter-\/1.xml\char`\"{}}\label{class_common_aaf78625cfb0be6b5e515498ad3fced94}
+
+\item 
+\hypertarget{class_common_ab369067e5c4c3b2414ce2baeed44f745}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Genuine\+Method0\+Label} = \char`\"{}method0-\/arena-\/genuine-\/1.xml\char`\"{}}\label{class_common_ab369067e5c4c3b2414ce2baeed44f745}
+
+\item 
+\hypertarget{class_common_aabd0f0d3065de618f747577b34da1a18}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Imposter\+Method0\+Label} = \char`\"{}method0-\/arena-\/imposter-\/1.xml\char`\"{}}\label{class_common_aabd0f0d3065de618f747577b34da1a18}
+
+\item 
+\hypertarget{class_common_a42aa9f14c40e3ceef78864375c9e0cd5}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Genuine\+Method1\+Label} = \char`\"{}method1-\/arena-\/genuine-\/1.xml\char`\"{}}\label{class_common_a42aa9f14c40e3ceef78864375c9e0cd5}
+
+\item 
+\hypertarget{class_common_aa8bf3b464836cbdcbd2ea6eda1ec02cd}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Imposter\+Method1\+Label} = \char`\"{}method1-\/arena-\/imposter-\/1.xml\char`\"{}}\label{class_common_aa8bf3b464836cbdcbd2ea6eda1ec02cd}
+
+\item 
+\hypertarget{class_common_a96b8dd134cfb1b6372f208d39242d4d6}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Genuine\+Method2\+Label} = \char`\"{}method2-\/arena-\/genuine-\/1.xml\char`\"{}}\label{class_common_a96b8dd134cfb1b6372f208d39242d4d6}
+
+\item 
+\hypertarget{class_common_a960d8c60d4ab6645e22b54005ac1b067}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Imposter\+Method2\+Label} = \char`\"{}method2-\/arena-\/imposter-\/1.xml\char`\"{}}\label{class_common_a960d8c60d4ab6645e22b54005ac1b067}
+
+\item 
+\hypertarget{class_common_aa95a604ffbd5e7faf4bc732e4d02f136}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Genuine\+Method3\+Label} = \char`\"{}method3-\/arena-\/genuine-\/1.xml\char`\"{}}\label{class_common_aa95a604ffbd5e7faf4bc732e4d02f136}
+
+\item 
+\hypertarget{class_common_a18a9334d43639685e57fffc495e95eb4}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Imposter\+Method3\+Label} = \char`\"{}method3-\/arena-\/imposter-\/1.xml\char`\"{}}\label{class_common_a18a9334d43639685e57fffc495e95eb4}
+
+\item 
+\hypertarget{class_common_a4db686ec49ce1d693a377c09f136a644}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Genuine\+Method1r\+Label} = \char`\"{}method1r-\/arena-\/genuine-\/1.xml\char`\"{}}\label{class_common_a4db686ec49ce1d693a377c09f136a644}
+
+\item 
+\hypertarget{class_common_a181c2e26856e131e22bf1466510e55ac}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Imposter\+Method1r\+Label} = \char`\"{}method1r-\/arena-\/imposter-\/1.xml\char`\"{}}\label{class_common_a181c2e26856e131e22bf1466510e55ac}
+
+\item 
+\hypertarget{class_common_a09462116d43df55b6e0c23d0d028b1c5}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Genuine\+Method2r\+Label} = \char`\"{}method2r-\/arena-\/genuine-\/1.xml\char`\"{}}\label{class_common_a09462116d43df55b6e0c23d0d028b1c5}
+
+\item 
+\hypertarget{class_common_a14b60e26261ff93cef8e6b31aa92b364}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Imposter\+Method2r\+Label} = \char`\"{}method2r-\/arena-\/imposter-\/1.xml\char`\"{}}\label{class_common_a14b60e26261ff93cef8e6b31aa92b364}
+
+\item 
+\hypertarget{class_common_ad5b639e453d7b371cc86f8d9169b5ad1}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Genuine\+Method3r\+Label} = \char`\"{}method3r-\/arena-\/genuine-\/1.xml\char`\"{}}\label{class_common_ad5b639e453d7b371cc86f8d9169b5ad1}
+
+\item 
+\hypertarget{class_common_a86b4e632df8b7c1cb2fdb9009ee4fa29}{static const Q\+String {\bfseries cmp\+Result\+Arena\+Imposter\+Method3r\+Label} = \char`\"{}method3r-\/arena-\/imposter-\/1.xml\char`\"{}}\label{class_common_a86b4e632df8b7c1cb2fdb9009ee4fa29}
+
+\item 
+\hypertarget{class_common_ab45f2bcacfc00d46d2e5d22bc557deea}{static const Q\+String {\bfseries cmp\+Result\+Both\+Genuine\+Method0\+Label} = \char`\"{}method0-\/both-\/genuine-\/1.xml\char`\"{}}\label{class_common_ab45f2bcacfc00d46d2e5d22bc557deea}
+
+\item 
+\hypertarget{class_common_a872e59fbd3cd00f157e26d14305fdafd}{static const Q\+String {\bfseries cmp\+Result\+Both\+Imposter\+Method0\+Label} = \char`\"{}method0-\/both-\/imposter-\/1.xml\char`\"{}}\label{class_common_a872e59fbd3cd00f157e26d14305fdafd}
+
+\item 
+\hypertarget{class_common_a90abcc64167c0143a8a3992417bfa026}{static const Q\+String {\bfseries cmp\+Result\+Both\+Genuine\+Method1\+Label} = \char`\"{}method1-\/both-\/genuine-\/1.xml\char`\"{}}\label{class_common_a90abcc64167c0143a8a3992417bfa026}
+
+\item 
+\hypertarget{class_common_a6b9e866906495248066c232eb9431496}{static const Q\+String {\bfseries cmp\+Result\+Both\+Imposter\+Method1\+Label} = \char`\"{}method1-\/both-\/imposter-\/1.xml\char`\"{}}\label{class_common_a6b9e866906495248066c232eb9431496}
+
+\item 
+\hypertarget{class_common_ab51c211c70e4d21cc66a85bad3af682c}{static const Q\+String {\bfseries cmp\+Result\+Both\+Genuine\+Method2\+Label} = \char`\"{}method2-\/both-\/genuine-\/1.xml\char`\"{}}\label{class_common_ab51c211c70e4d21cc66a85bad3af682c}
+
+\item 
+\hypertarget{class_common_ab6d3b3213c5d7c990be46e250cdded34}{static const Q\+String {\bfseries cmp\+Result\+Both\+Imposter\+Method2\+Label} = \char`\"{}method2-\/both-\/imposter-\/1.xml\char`\"{}}\label{class_common_ab6d3b3213c5d7c990be46e250cdded34}
+
+\item 
+\hypertarget{class_common_a475ea9f252b8b5251a3e4e7a00c88990}{static const Q\+String {\bfseries cmp\+Result\+Both\+Genuine\+Method3\+Label} = \char`\"{}method3-\/both-\/genuine-\/1.xml\char`\"{}}\label{class_common_a475ea9f252b8b5251a3e4e7a00c88990}
+
+\item 
+\hypertarget{class_common_a6402665e6b40ad1d3878f0ed6ca697e0}{static const Q\+String {\bfseries cmp\+Result\+Both\+Imposter\+Method3\+Label} = \char`\"{}method3-\/both-\/imposter-\/1.xml\char`\"{}}\label{class_common_a6402665e6b40ad1d3878f0ed6ca697e0}
+
+\item 
+\hypertarget{class_common_a0dd89f0e1ee7b69d3531319f05ef23b4}{static const Q\+String {\bfseries cmp\+Result\+Both\+Genuine\+Method1r\+Label} = \char`\"{}method1r-\/both-\/genuine-\/1.xml\char`\"{}}\label{class_common_a0dd89f0e1ee7b69d3531319f05ef23b4}
+
+\item 
+\hypertarget{class_common_a838627241477ffd9d29d4f563ab10d8b}{static const Q\+String {\bfseries cmp\+Result\+Both\+Imposter\+Method1r\+Label} = \char`\"{}method1r-\/both-\/imposter-\/1.xml\char`\"{}}\label{class_common_a838627241477ffd9d29d4f563ab10d8b}
+
+\item 
+\hypertarget{class_common_a0478163eae6a0c5c9d4b2a59a4100e3e}{static const Q\+String {\bfseries cmp\+Result\+Both\+Genuine\+Method2r\+Label} = \char`\"{}method2r-\/both-\/genuine-\/1.xml\char`\"{}}\label{class_common_a0478163eae6a0c5c9d4b2a59a4100e3e}
+
+\item 
+\hypertarget{class_common_a437aeadc4c88f363bd6b2f1931d71e3a}{static const Q\+String {\bfseries cmp\+Result\+Both\+Imposter\+Method2r\+Label} = \char`\"{}method2r-\/both-\/imposter-\/1.xml\char`\"{}}\label{class_common_a437aeadc4c88f363bd6b2f1931d71e3a}
+
+\item 
+\hypertarget{class_common_a488f07c56ae2c29c813e193d480e8a8d}{static const Q\+String {\bfseries cmp\+Result\+Both\+Genuine\+Method3r\+Label} = \char`\"{}method3r-\/both-\/genuine-\/1.xml\char`\"{}}\label{class_common_a488f07c56ae2c29c813e193d480e8a8d}
+
+\item 
+\hypertarget{class_common_ad50febb9b7d66f8cfbcb7200f0f77722}{static const Q\+String {\bfseries cmp\+Result\+Both\+Imposter\+Method3r\+Label} = \char`\"{}method3r-\/both-\/imposter-\/1.xml\char`\"{}}\label{class_common_ad50febb9b7d66f8cfbcb7200f0f77722}
+
+\item 
+\hypertarget{class_common_a555dd981c82ac687566fde47a049ffca}{static const Q\+String {\bfseries scn\+Array\+Label} = \char`\"{}array\char`\"{}}\label{class_common_a555dd981c82ac687566fde47a049ffca}
+
+\item 
+\hypertarget{class_common_aee5d4bf35da4f1f37c619fda2fff572f}{static const Q\+String {\bfseries scn\+Column\+Label} = \char`\"{}column\char`\"{}}\label{class_common_aee5d4bf35da4f1f37c619fda2fff572f}
+
+\item 
+\hypertarget{class_common_a6b425ab74fcdac165c93bdb13df0f908}{static const Q\+String {\bfseries scn\+Mean\+Label} = \char`\"{}arithmetic-\/mean\char`\"{}}\label{class_common_a6b425ab74fcdac165c93bdb13df0f908}
+
+\item 
+\hypertarget{class_common_a94b63c940a115d145060cc43510b22aa}{static const Q\+String {\bfseries scn\+Std\+Dev\+Label} = \char`\"{}standard-\/deviation\char`\"{}}\label{class_common_a94b63c940a115d145060cc43510b22aa}
+
+\item 
+\hypertarget{class_common_a6fd604b4cec3bdd208fc6ab04c7ab71d}{static const Q\+String {\bfseries scn\+Min\+Label} = \char`\"{}min-\/value\char`\"{}}\label{class_common_a6fd604b4cec3bdd208fc6ab04c7ab71d}
+
+\item 
+\hypertarget{class_common_a745ed089afe7aa8aec9f0c57d6212b29}{static const Q\+String {\bfseries scn\+Max\+Label} = \char`\"{}max-\/value\char`\"{}}\label{class_common_a745ed089afe7aa8aec9f0c57d6212b29}
+
+\item 
+\hypertarget{class_common_abfed8861463bdce7db8c4858fa7b6b14}{static const Q\+String {\bfseries scn\+Stat\+Method0\+Label} = \char`\"{}method0-\/scn.\+xml\char`\"{}}\label{class_common_abfed8861463bdce7db8c4858fa7b6b14}
+
+\item 
+\hypertarget{class_common_a21df8353ab6d88fb9f56a7bdcf79b47c}{static const Q\+String {\bfseries scn\+Stat\+Method1\+Label} = \char`\"{}method1-\/scn.\+xml\char`\"{}}\label{class_common_a21df8353ab6d88fb9f56a7bdcf79b47c}
+
+\item 
+\hypertarget{class_common_a03231c3e417c07ca60f40bea4dbb4efd}{static const Q\+String {\bfseries scn\+Stat\+Method2\+Label} = \char`\"{}method2-\/scn.\+xml\char`\"{}}\label{class_common_a03231c3e417c07ca60f40bea4dbb4efd}
+
+\item 
+\hypertarget{class_common_a9637fe414c9c7b197f085eb465ae7334}{static const Q\+String {\bfseries scn\+Stat\+Method3\+Label} = \char`\"{}method3-\/scn.\+xml\char`\"{}}\label{class_common_a9637fe414c9c7b197f085eb465ae7334}
+
+\item 
+\hypertarget{class_common_a5c09ec6d9b3430e77c576f2892fc5cec}{static const Q\+String {\bfseries scn\+Stat\+Method1r\+Label} = \char`\"{}method1r-\/scn.\+xml\char`\"{}}\label{class_common_a5c09ec6d9b3430e77c576f2892fc5cec}
+
+\item 
+\hypertarget{class_common_a9c19fffef937dbdd3662b98f1790b8dc}{static const Q\+String {\bfseries scn\+Stat\+Method2r\+Label} = \char`\"{}method2r-\/scn.\+xml\char`\"{}}\label{class_common_a9c19fffef937dbdd3662b98f1790b8dc}
+
+\item 
+\hypertarget{class_common_aa0ae2d6d2d9f0d626355f049acf1c28f}{static const Q\+String {\bfseries scn\+Stat\+Method3r\+Label} = \char`\"{}method3r-\/scn.\+xml\char`\"{}}\label{class_common_aa0ae2d6d2d9f0d626355f049acf1c28f}
+
+\item 
+\hypertarget{class_common_afb0abcc0a974b8c0ec97e2a4779c5bdf}{static const Q\+String {\bfseries scn\+Stat\+Arena\+Method0\+Label} = \char`\"{}method0-\/scn-\/arena.\+xml\char`\"{}}\label{class_common_afb0abcc0a974b8c0ec97e2a4779c5bdf}
+
+\item 
+\hypertarget{class_common_ac71eb13e0617cf42ba4582ade2241089}{static const Q\+String {\bfseries scn\+Stat\+Arena\+Method1\+Label} = \char`\"{}method1-\/scn-\/arena.\+xml\char`\"{}}\label{class_common_ac71eb13e0617cf42ba4582ade2241089}
+
+\item 
+\hypertarget{class_common_a778c1baf600ca4f7d94664545435316c}{static const Q\+String {\bfseries scn\+Stat\+Arena\+Method2\+Label} = \char`\"{}method2-\/scn-\/arena.\+xml\char`\"{}}\label{class_common_a778c1baf600ca4f7d94664545435316c}
+
+\item 
+\hypertarget{class_common_a2deadd2e4be4c271a3eb6991858158af}{static const Q\+String {\bfseries scn\+Stat\+Arena\+Method3\+Label} = \char`\"{}method3-\/scn-\/arena.\+xml\char`\"{}}\label{class_common_a2deadd2e4be4c271a3eb6991858158af}
+
+\item 
+\hypertarget{class_common_a27c3e97ec2e36bf419b9f8fc96f1431b}{static const Q\+String {\bfseries scn\+Stat\+Arena\+Method1r\+Label} = \char`\"{}method1r-\/scn-\/arena.\+xml\char`\"{}}\label{class_common_a27c3e97ec2e36bf419b9f8fc96f1431b}
+
+\item 
+\hypertarget{class_common_a837933b85649272717cbc36531f83ceb}{static const Q\+String {\bfseries scn\+Stat\+Arena\+Method2r\+Label} = \char`\"{}method2r-\/scn-\/arena.\+xml\char`\"{}}\label{class_common_a837933b85649272717cbc36531f83ceb}
+
+\item 
+\hypertarget{class_common_ad339aadce5135547832ee2983df5c3c4}{static const Q\+String {\bfseries scn\+Stat\+Arena\+Method3r\+Label} = \char`\"{}method3r-\/scn-\/arena.\+xml\char`\"{}}\label{class_common_ad339aadce5135547832ee2983df5c3c4}
+
+\item 
+\hypertarget{class_common_afd14b773324fe258d54b58ecaef2e69e}{static const Q\+String {\bfseries stat\+Err\+Label} = \char`\"{}equal-\/error-\/rate\char`\"{}}\label{class_common_afd14b773324fe258d54b58ecaef2e69e}
+
+\item 
+\hypertarget{class_common_aca6929f4bf648ae1e7fc5dfb6833ccf8}{static const Q\+String {\bfseries stat\+Hist\+Genuine\+Label} = \char`\"{}hist-\/genuine\char`\"{}}\label{class_common_aca6929f4bf648ae1e7fc5dfb6833ccf8}
+
+\item 
+\hypertarget{class_common_ac11cdb361710a15b652afbff5efff012}{static const Q\+String {\bfseries stat\+Hist\+Imposter\+Label} = \char`\"{}hist-\/imposter\char`\"{}}\label{class_common_ac11cdb361710a15b652afbff5efff012}
+
+\item 
+\hypertarget{class_common_a104773b87000251dd949cc227e8d2988}{static const Q\+String {\bfseries stat\+Eer\+Method0\+Label} = \char`\"{}method0-\/eer.\+xml\char`\"{}}\label{class_common_a104773b87000251dd949cc227e8d2988}
+
+\item 
+\hypertarget{class_common_a42bb0f031e99ee5506be9c2bda92f6dd}{static const Q\+String {\bfseries stat\+Eer\+Method1\+Label} = \char`\"{}method1-\/eer.\+xml\char`\"{}}\label{class_common_a42bb0f031e99ee5506be9c2bda92f6dd}
+
+\item 
+\hypertarget{class_common_a5ae048b62e9d43cff84325deb7bc5324}{static const Q\+String {\bfseries stat\+Eer\+Method2\+Label} = \char`\"{}method2-\/eer.\+xml\char`\"{}}\label{class_common_a5ae048b62e9d43cff84325deb7bc5324}
+
+\item 
+\hypertarget{class_common_a17de4b1c52e03f706c100f14dfe3a7a4}{static const Q\+String {\bfseries stat\+Eer\+Method3\+Label} = \char`\"{}method3-\/eer.\+xml\char`\"{}}\label{class_common_a17de4b1c52e03f706c100f14dfe3a7a4}
+
+\item 
+\hypertarget{class_common_a3eac3c5de7408e5da2ddb85a5930a778}{static const Q\+String {\bfseries stat\+Eer\+Method1r\+Label} = \char`\"{}method1r-\/eer.\+xml\char`\"{}}\label{class_common_a3eac3c5de7408e5da2ddb85a5930a778}
+
+\item 
+\hypertarget{class_common_ac32371227113bdb3830da279236f5e0b}{static const Q\+String {\bfseries stat\+Eer\+Method2r\+Label} = \char`\"{}method2r-\/eer.\+xml\char`\"{}}\label{class_common_ac32371227113bdb3830da279236f5e0b}
+
+\item 
+\hypertarget{class_common_a8abc2bf6d72a1dc7bc0825d5b806fab2}{static const Q\+String {\bfseries stat\+Eer\+Method3r\+Label} = \char`\"{}method3r-\/eer.\+xml\char`\"{}}\label{class_common_a8abc2bf6d72a1dc7bc0825d5b806fab2}
+
+\item 
+\hypertarget{class_common_a92b37d221f86a5cf87ce319c6e0b7901}{static const Q\+String {\bfseries stat\+Eer\+Arena\+Method0\+Label} = \char`\"{}method0-\/eer-\/arena.\+xml\char`\"{}}\label{class_common_a92b37d221f86a5cf87ce319c6e0b7901}
+
+\item 
+\hypertarget{class_common_a1ad41f255a1dab8e3bd3c6fc6c41c0ee}{static const Q\+String {\bfseries stat\+Eer\+Arena\+Method1\+Label} = \char`\"{}method1-\/eer-\/arena.\+xml\char`\"{}}\label{class_common_a1ad41f255a1dab8e3bd3c6fc6c41c0ee}
+
+\item 
+\hypertarget{class_common_ab0d9cd643e49a01a0b8e80bc40bdc04a}{static const Q\+String {\bfseries stat\+Eer\+Arena\+Method2\+Label} = \char`\"{}method2-\/eer-\/arena.\+xml\char`\"{}}\label{class_common_ab0d9cd643e49a01a0b8e80bc40bdc04a}
+
+\item 
+\hypertarget{class_common_ac5e8169c141420e5e093a6aedfdac642}{static const Q\+String {\bfseries stat\+Eer\+Arena\+Method3\+Label} = \char`\"{}method3-\/eer-\/arena.\+xml\char`\"{}}\label{class_common_ac5e8169c141420e5e093a6aedfdac642}
+
+\item 
+\hypertarget{class_common_a3cd91cbccd8585b907b5d3d5039baa9c}{static const Q\+String {\bfseries stat\+Eer\+Arena\+Method1r\+Label} = \char`\"{}method1r-\/eer-\/arena.\+xml\char`\"{}}\label{class_common_a3cd91cbccd8585b907b5d3d5039baa9c}
+
+\item 
+\hypertarget{class_common_a8a75d03c45efab8ddaf88fd3d3968936}{static const Q\+String {\bfseries stat\+Eer\+Arena\+Method2r\+Label} = \char`\"{}method2r-\/eer-\/arena.\+xml\char`\"{}}\label{class_common_a8a75d03c45efab8ddaf88fd3d3968936}
+
+\item 
+\hypertarget{class_common_adab64aa5a61d0153675b07d27806217f}{static const Q\+String {\bfseries stat\+Eer\+Arena\+Method3r\+Label} = \char`\"{}method3r-\/eer-\/arena.\+xml\char`\"{}}\label{class_common_adab64aa5a61d0153675b07d27806217f}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class containt static method who are used in entire project. There are constants settings for face recognition process too. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_common_a6c2e62255d1d745c880d42c49e5b80e5}{\index{Common@{Common}!convert\+To\+Matrix@{convert\+To\+Matrix}}
+\index{convert\+To\+Matrix@{convert\+To\+Matrix}!Common@{Common}}
+\subsubsection[{convert\+To\+Matrix}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::convert\+To\+Matrix (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ Q\+Vector$<$ float $>$ $>$ \&}]{src, }
+\item[{cv\+::\+Mat \&}]{dst}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_a6c2e62255d1d745c880d42c49e5b80e5}
+
+
+Convert vector of vector to matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Source vector \\
+\hline
+{\em dst} & Destination matrix \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_common_aa62fca6495c60bbf8a4f621fbe163371}{\index{Common@{Common}!delaunay\+Triangulation@{delaunay\+Triangulation}}
+\index{delaunay\+Triangulation@{delaunay\+Triangulation}!Common@{Common}}
+\subsubsection[{delaunay\+Triangulation}]{\setlength{\rightskip}{0pt plus 5cm}Q\+Vector$<$ cv\+::\+Vec3i $>$ Common\+::delaunay\+Triangulation (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ cv\+::\+Point2d $>$ \&}]{points}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_aa62fca6495c60bbf8a4f621fbe163371}
+
+
+Delaunay triangulation. Compute triangles from cloud points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em points} & Vector of 2\+D points \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Vector of triangles 
+\end{DoxyReturn}
+\hypertarget{class_common_acecc1d26e7275d493ca296328faacad8}{\index{Common@{Common}!delay@{delay}}
+\index{delay@{delay}!Common@{Common}}
+\subsubsection[{delay}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::delay (
+\begin{DoxyParamCaption}
+\item[{int}]{msec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_acecc1d26e7275d493ca296328faacad8}
+
+
+Delay application for some time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msec} & Time to delay \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_common_af615d006ad3fb214dc4112dfe0a02e91}{\index{Common@{Common}!is\+Genuine\+Person@{is\+Genuine\+Person}}
+\index{is\+Genuine\+Person@{is\+Genuine\+Person}!Common@{Common}}
+\subsubsection[{is\+Genuine\+Person}]{\setlength{\rightskip}{0pt plus 5cm}bool Common\+::is\+Genuine\+Person (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{base\+Name1, }
+\item[{Q\+String}]{base\+Name2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_af615d006ad3fb214dc4112dfe0a02e91}
+
+
+Decide if base names belong to same person or not. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base\+Name1} & -\/ label of person 1 \\
+\hline
+{\em base\+Name2} & -\/ label of person 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if base names belong to same person, otherwise false 
+\end{DoxyReturn}
+\hypertarget{class_common_a147ec8d7fe31ae85bbbca82c27a8a1cd}{\index{Common@{Common}!load\+Cmp\+Result@{load\+Cmp\+Result}}
+\index{load\+Cmp\+Result@{load\+Cmp\+Result}!Common@{Common}}
+\subsubsection[{load\+Cmp\+Result}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::load\+Cmp\+Result (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{result\+Matrix, }
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{dir\+Path = {\ttfamily Common\+:\+:pathToComResultDir}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_a147ec8d7fe31ae85bbbca82c27a8a1cd}
+
+
+Load result of camparation from file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em result\+Matrix} & Matrix of loaded results \\
+\hline
+{\em file\+Name} & Name of file with results \\
+\hline
+{\em dir\+Path} & Direcotry path to load file \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_common_a64a7495b0b24a83e20616d93466d4ee4}{\index{Common@{Common}!load\+Depthmap@{load\+Depthmap}}
+\index{load\+Depthmap@{load\+Depthmap}!Common@{Common}}
+\subsubsection[{load\+Depthmap}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::load\+Depthmap (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{dir\+Path, }
+\item[{cv\+::\+Mat \&}]{depthmap, }
+\item[{double \&}]{distance, }
+\item[{int \&}]{iterations}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_a64a7495b0b24a83e20616d93466d4ee4}
+
+
+Load depthmap from xml file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Name of depthmap to load \\
+\hline
+{\em dir\+Path} & Path to directory in which depthmap is \\
+\hline
+{\em depthmap} & Loaded depthmap \\
+\hline
+{\em distance} & Loaded distance from map \\
+\hline
+{\em iterations} & Loaded iterations \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_common_adcc451f04f86fef2678c6b2a43721459}{\index{Common@{Common}!load\+Depthmap\+Process@{load\+Depthmap\+Process}}
+\index{load\+Depthmap\+Process@{load\+Depthmap\+Process}!Common@{Common}}
+\subsubsection[{load\+Depthmap\+Process}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::load\+Depthmap\+Process (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{dir\+Path, }
+\item[{cv\+::\+Mat \&}]{depthmap, }
+\item[{cv\+::\+Mat \&}]{average\+Face, }
+\item[{double \&}]{distance, }
+\item[{int \&}]{iterations}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_adcc451f04f86fef2678c6b2a43721459}
+
+
+Load depthmap from xml file and process it. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Name of depthmap to load \\
+\hline
+{\em dir\+Path} & Path to directory in which depthmap is \\
+\hline
+{\em depthmap} & Loaded depthmap \\
+\hline
+{\em average\+Face} & Depthmap of average face, need to be there for face proccesing \\
+\hline
+{\em distance} & Loaded distance from map \\
+\hline
+{\em iterations} & Loaded iterations \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_common_a727cc9c60725b5046f391aba449f1a9f}{process\+Loaded\+Map} 
+\end{DoxySeeAlso}
+\hypertarget{class_common_aca3ae19fd0b26aca24a4fde7d503df37}{\index{Common@{Common}!load\+Files\+Path\+From\+Dir@{load\+Files\+Path\+From\+Dir}}
+\index{load\+Files\+Path\+From\+Dir@{load\+Files\+Path\+From\+Dir}!Common@{Common}}
+\subsubsection[{load\+Files\+Path\+From\+Dir}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::load\+Files\+Path\+From\+Dir (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{path\+To\+Dir, }
+\item[{Q\+String\+List \&}]{list, }
+\item[{const Q\+String\+List \&}]{filters = {\ttfamily QStringList(\char`\"{}$\ast$xml\char`\"{})}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_aca3ae19fd0b26aca24a4fde7d503df37}
+
+
+Load files names from directory and concat it with ther absolute path. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path\+To\+Dir} & Path of directory for file search \\
+\hline
+{\em list} & Result \\
+\hline
+{\em filters} & Filter of file name or file type \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_common_a09e3bdf2b3e4fc337a439a5028d648d2}{\index{Common@{Common}!norm\+\_\+0\+\_\+255@{norm\+\_\+0\+\_\+255}}
+\index{norm\+\_\+0\+\_\+255@{norm\+\_\+0\+\_\+255}!Common@{Common}}
+\subsubsection[{norm\+\_\+0\+\_\+255}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+Mat Common\+::norm\+\_\+0\+\_\+255 (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Input\+Array}]{\+\_\+src}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_a09e3bdf2b3e4fc337a439a5028d648d2}
+
+
+Normalize input image to range 0 -\/ 255. Important for showing image using opencv. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+src} & Vector of input images \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\hypertarget{class_common_ab7b94808d6510e9772663360ad40907b}{\index{Common@{Common}!print\+Matrix@{print\+Matrix}}
+\index{print\+Matrix@{print\+Matrix}!Common@{Common}}
+\subsubsection[{print\+Matrix}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::print\+Matrix (
+\begin{DoxyParamCaption}
+\item[{const Matrix \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_ab7b94808d6510e9772663360ad40907b}
+
+
+Print matrix row by row using q\+Debug(). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Matrix to print \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_common_a727cc9c60725b5046f391aba449f1a9f}{\index{Common@{Common}!process\+Loaded\+Map@{process\+Loaded\+Map}}
+\index{process\+Loaded\+Map@{process\+Loaded\+Map}!Common@{Common}}
+\subsubsection[{process\+Loaded\+Map}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::process\+Loaded\+Map (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{depthmap, }
+\item[{cv\+::\+Mat \&}]{average\+Face}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_a727cc9c60725b5046f391aba449f1a9f}
+
+
+Crop, blur and replece unitialized pixels with pixels from depthmap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depthmap} & \\
+\hline
+{\em average\+Face} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_common_ac71621f469fc1407b59c1ffcaf81effd}{replace\+Init\+Values} 
+\end{DoxySeeAlso}
+\hypertarget{class_common_ac71621f469fc1407b59c1ffcaf81effd}{\index{Common@{Common}!replace\+Init\+Values@{replace\+Init\+Values}}
+\index{replace\+Init\+Values@{replace\+Init\+Values}!Common@{Common}}
+\subsubsection[{replace\+Init\+Values}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::replace\+Init\+Values (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{depthmap, }
+\item[{cv\+::\+Mat \&}]{src}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_ac71621f469fc1407b59c1ffcaf81effd}
+
+
+Replace unknown values of point in depthamp with values from src. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depthmap} & \\
+\hline
+{\em src} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_common_a32e84e2c267fc1d9c01b85ae10a3dba8}{\index{Common@{Common}!save\+Cmp\+Result@{save\+Cmp\+Result}}
+\index{save\+Cmp\+Result@{save\+Cmp\+Result}!Common@{Common}}
+\subsubsection[{save\+Cmp\+Result}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::save\+Cmp\+Result (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{result\+Matrix, }
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{dir\+Path = {\ttfamily Common\+:\+:pathToComResultDir}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_a32e84e2c267fc1d9c01b85ae10a3dba8}
+
+
+Save results of face comparation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em result\+Matrix} & Result of comparation \\
+\hline
+{\em file\+Name} & Name of file to save \\
+\hline
+{\em dir\+Path} & Directory path to save file \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_common_afd21f637aeada98fd144b0c069580219}{\index{Common@{Common}!save\+Depthmap@{save\+Depthmap}}
+\index{save\+Depthmap@{save\+Depthmap}!Common@{Common}}
+\subsubsection[{save\+Depthmap}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::save\+Depthmap (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{dir\+Path, }
+\item[{cv\+::\+Mat \&}]{depthmap, }
+\item[{double}]{distance, }
+\item[{int}]{iterations}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_afd21f637aeada98fd144b0c069580219}
+
+
+Save depthmap to xml file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Name of file to save depthmap \\
+\hline
+{\em dir\+Path} & Direcotry path to save \\
+\hline
+{\em depthmap} & Depthmap to save \\
+\hline
+{\em distance} & Distance to save \\
+\hline
+{\em iterations} & Iterations to save \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_common_a3379a84b4d4cd4e9706d5e21ff678742}{\index{Common@{Common}!set\+Dir\+Struct@{set\+Dir\+Struct}}
+\index{set\+Dir\+Struct@{set\+Dir\+Struct}!Common@{Common}}
+\subsubsection[{set\+Dir\+Struct}]{\setlength{\rightskip}{0pt plus 5cm}void Common\+::set\+Dir\+Struct (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{root\+Dir, }
+\item[{Q\+String}]{face\+Model\+Dir}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_common_a3379a84b4d4cd4e9706d5e21ff678742}
+
+
+Set and create structure of directories. One of face\+Model\+Dir or created\+Depthmap\+Dir must not be empty. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root\+Dir} & Path to root directory \\
+\hline
+{\em face\+Model\+Dir} & Path to directory with 3\+D models. If depthmaps are already computed, can be empty. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+common.\+h\item 
+common.\+cpp\end{DoxyCompactItemize}

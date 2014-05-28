@@ -1,0 +1,241 @@
+\hypertarget{class_landmarks}{\section{Landmarks Class Reference}
+\label{class_landmarks}\index{Landmarks@{Landmarks}}
+}
+
+
+Class for store landmarks position.  
+
+
+
+
+{\ttfamily \#include $<$landmarks.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_landmarks_a69362bef3ef2209cb2304ff7ea2ce91e}{enum \hyperlink{class_landmarks_a69362bef3ef2209cb2304ff7ea2ce91e}{Landmark\+Names} \{ \\*
+{\bfseries Nose\+Tip} = 0, 
+{\bfseries Nose\+Corner\+Left} = 1, 
+{\bfseries Nose\+Corner\+Right} = 2, 
+{\bfseries Nose\+Bottom} = 3, 
+\\*
+{\bfseries Nose\+Root} = 4, 
+{\bfseries Eye\+Inner\+Corner\+Left} = 5, 
+{\bfseries Eye\+Inner\+Corner\+Right} = 6
+ \}}\label{class_landmarks_a69362bef3ef2209cb2304ff7ea2ce91e}
+
+\begin{DoxyCompactList}\small\item\em Types of landmark. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_landmarks_ad97ffa895a71e45b208ab4eb2fbd96ae}{Landmarks} (Vector\+Of\+Landmarks \+\_\+landmarks)
+\begin{DoxyCompactList}\small\item\em Constructor. Initialize by vector of landmarks. \end{DoxyCompactList}\item 
+\hyperlink{class_landmarks_a2d070b7086463daaa617c946c4576ae8}{Landmarks} (Q\+String file\+Name, Q\+String load\+Path=Common\+::path\+To\+Landmark\+Dir)
+\begin{DoxyCompactList}\small\item\em Constructor. Initialized by values from file. \end{DoxyCompactList}\item 
+cv\+::\+Point \hyperlink{class_landmarks_a24e9344ab527627e7aa9077ed1f39509}{pos} (\hyperlink{class_landmarks_a69362bef3ef2209cb2304ff7ea2ce91e}{Landmarks\+::\+Landmark\+Names} name)
+\begin{DoxyCompactList}\small\item\em Get position of landmark. \end{DoxyCompactList}\item 
+bool \hyperlink{class_landmarks_ad3d8c6a24f384016eaba29d078921350}{is} (\hyperlink{class_landmarks_a69362bef3ef2209cb2304ff7ea2ce91e}{Landmarks\+::\+Landmark\+Names} name)
+\begin{DoxyCompactList}\small\item\em Check if landmarh has been set. \end{DoxyCompactList}\item 
+void \hyperlink{class_landmarks_af52da543b2d0ece5bb17dbf7cbe6b6e9}{set} (\hyperlink{class_landmarks_a69362bef3ef2209cb2304ff7ea2ce91e}{Landmarks\+::\+Landmark\+Names} name, cv\+::\+Point \hyperlink{class_landmarks_a24e9344ab527627e7aa9077ed1f39509}{pos})
+\begin{DoxyCompactList}\small\item\em Set position of landmark. \end{DoxyCompactList}\item 
+void \hyperlink{class_landmarks_ae64ebc983fa10e85ab63768936c1a0ba}{discard} (\hyperlink{class_landmarks_a69362bef3ef2209cb2304ff7ea2ce91e}{Landmarks\+::\+Landmark\+Names} name)
+\begin{DoxyCompactList}\small\item\em Unset landmark position. \end{DoxyCompactList}\item 
+void \hyperlink{class_landmarks_a7a83b5a94c23acefe755ca2d9cad7a7d}{save} (Q\+String file\+Name, Q\+String save\+Path=Common\+::path\+To\+Landmark\+Dir)
+\begin{DoxyCompactList}\small\item\em Save landmarks to file. \end{DoxyCompactList}\item 
+void \hyperlink{class_landmarks_ac0d7586eae8bcc28ce1783667df6a415}{load} (Q\+String file\+Name, Q\+String load\+Path=Common\+::path\+To\+Landmark\+Dir)
+\begin{DoxyCompactList}\small\item\em Load landmarks to file. \end{DoxyCompactList}\item 
+Vector\+Of\+Landmarks \hyperlink{class_landmarks_a2b30a752fa58794414e338b3fc7a2fe9}{get\+Landmarks} ()
+\begin{DoxyCompactList}\small\item\em Get vector of landmarks. \end{DoxyCompactList}\item 
+void \hyperlink{class_landmarks_ac6c4346445e2441a212d839de99ecdca}{scale} (float scale\+Factor)
+\begin{DoxyCompactList}\small\item\em Multiple landmarks position by value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for store landmarks position. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_landmarks_ad97ffa895a71e45b208ab4eb2fbd96ae}{\index{Landmarks@{Landmarks}!Landmarks@{Landmarks}}
+\index{Landmarks@{Landmarks}!Landmarks@{Landmarks}}
+\subsubsection[{Landmarks}]{\setlength{\rightskip}{0pt plus 5cm}Landmarks\+::\+Landmarks (
+\begin{DoxyParamCaption}
+\item[{Vector\+Of\+Landmarks}]{landmarks}
+\end{DoxyParamCaption}
+)}}\label{class_landmarks_ad97ffa895a71e45b208ab4eb2fbd96ae}
+
+
+Constructor. Initialize by vector of landmarks. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em landmarks} & Vector of landmarks \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_landmarks_a2d070b7086463daaa617c946c4576ae8}{\index{Landmarks@{Landmarks}!Landmarks@{Landmarks}}
+\index{Landmarks@{Landmarks}!Landmarks@{Landmarks}}
+\subsubsection[{Landmarks}]{\setlength{\rightskip}{0pt plus 5cm}Landmarks\+::\+Landmarks (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{load\+Path = {\ttfamily Common\+:\+:pathToLandmarkDir}}
+\end{DoxyParamCaption}
+)}}\label{class_landmarks_a2d070b7086463daaa617c946c4576ae8}
+
+
+Constructor. Initialized by values from file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File with Vector of landmarks. \\
+\hline
+{\em load\+Path} & Directory with file. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_landmarks_ae64ebc983fa10e85ab63768936c1a0ba}{\index{Landmarks@{Landmarks}!discard@{discard}}
+\index{discard@{discard}!Landmarks@{Landmarks}}
+\subsubsection[{discard}]{\setlength{\rightskip}{0pt plus 5cm}void Landmarks\+::discard (
+\begin{DoxyParamCaption}
+\item[{{\bf Landmarks\+::\+Landmark\+Names}}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_landmarks_ae64ebc983fa10e85ab63768936c1a0ba}
+
+
+Unset landmark position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Landmark name \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_landmarks_a2b30a752fa58794414e338b3fc7a2fe9}{\index{Landmarks@{Landmarks}!get\+Landmarks@{get\+Landmarks}}
+\index{get\+Landmarks@{get\+Landmarks}!Landmarks@{Landmarks}}
+\subsubsection[{get\+Landmarks}]{\setlength{\rightskip}{0pt plus 5cm}Vector\+Of\+Landmarks Landmarks\+::get\+Landmarks (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_landmarks_a2b30a752fa58794414e338b3fc7a2fe9}
+
+
+Get vector of landmarks. 
+
+\begin{DoxyReturn}{Returns}
+Vector of landmarks 
+\end{DoxyReturn}
+\hypertarget{class_landmarks_ad3d8c6a24f384016eaba29d078921350}{\index{Landmarks@{Landmarks}!is@{is}}
+\index{is@{is}!Landmarks@{Landmarks}}
+\subsubsection[{is}]{\setlength{\rightskip}{0pt plus 5cm}bool Landmarks\+::is (
+\begin{DoxyParamCaption}
+\item[{{\bf Landmarks\+::\+Landmark\+Names}}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_landmarks_ad3d8c6a24f384016eaba29d078921350}
+
+
+Check if landmarh has been set. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Landmark name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Dicision 
+\end{DoxyReturn}
+\hypertarget{class_landmarks_ac0d7586eae8bcc28ce1783667df6a415}{\index{Landmarks@{Landmarks}!load@{load}}
+\index{load@{load}!Landmarks@{Landmarks}}
+\subsubsection[{load}]{\setlength{\rightskip}{0pt plus 5cm}void Landmarks\+::load (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{load\+Path = {\ttfamily Common\+:\+:pathToLandmarkDir}}
+\end{DoxyParamCaption}
+)}}\label{class_landmarks_ac0d7586eae8bcc28ce1783667df6a415}
+
+
+Load landmarks to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File to load \\
+\hline
+{\em load\+Path} & Directory with file \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_landmarks_a24e9344ab527627e7aa9077ed1f39509}{\index{Landmarks@{Landmarks}!pos@{pos}}
+\index{pos@{pos}!Landmarks@{Landmarks}}
+\subsubsection[{pos}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+Point Landmarks\+::pos (
+\begin{DoxyParamCaption}
+\item[{{\bf Landmarks\+::\+Landmark\+Names}}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_landmarks_a24e9344ab527627e7aa9077ed1f39509}
+
+
+Get position of landmark. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Landmark name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Position 
+\end{DoxyReturn}
+\hypertarget{class_landmarks_a7a83b5a94c23acefe755ca2d9cad7a7d}{\index{Landmarks@{Landmarks}!save@{save}}
+\index{save@{save}!Landmarks@{Landmarks}}
+\subsubsection[{save}]{\setlength{\rightskip}{0pt plus 5cm}void Landmarks\+::save (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{file\+Name, }
+\item[{Q\+String}]{save\+Path = {\ttfamily Common\+:\+:pathToLandmarkDir}}
+\end{DoxyParamCaption}
+)}}\label{class_landmarks_a7a83b5a94c23acefe755ca2d9cad7a7d}
+
+
+Save landmarks to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & File to save \\
+\hline
+{\em save\+Path} & Directory with file \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_landmarks_ac6c4346445e2441a212d839de99ecdca}{\index{Landmarks@{Landmarks}!scale@{scale}}
+\index{scale@{scale}!Landmarks@{Landmarks}}
+\subsubsection[{scale}]{\setlength{\rightskip}{0pt plus 5cm}void Landmarks\+::scale (
+\begin{DoxyParamCaption}
+\item[{float}]{scale\+Factor}
+\end{DoxyParamCaption}
+)}}\label{class_landmarks_ac6c4346445e2441a212d839de99ecdca}
+
+
+Multiple landmarks position by value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em scale\+Factor} & Value to mulitple \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_landmarks_af52da543b2d0ece5bb17dbf7cbe6b6e9}{\index{Landmarks@{Landmarks}!set@{set}}
+\index{set@{set}!Landmarks@{Landmarks}}
+\subsubsection[{set}]{\setlength{\rightskip}{0pt plus 5cm}void Landmarks\+::set (
+\begin{DoxyParamCaption}
+\item[{{\bf Landmarks\+::\+Landmark\+Names}}]{name, }
+\item[{cv\+::\+Point}]{pos}
+\end{DoxyParamCaption}
+)}}\label{class_landmarks_af52da543b2d0ece5bb17dbf7cbe6b6e9}
+
+
+Set position of landmark. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Landmark name \\
+\hline
+{\em pos} & Landmark position \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+landmarks.\+h\item 
+landmarks.\+cpp\end{DoxyCompactItemize}

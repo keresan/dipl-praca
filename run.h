@@ -18,68 +18,78 @@
 
 
 /**
- * @brief The Run class - run batch of process
+ * @brief Class for running batch of process.
  */
 class Run {
 public:
-    Run(QMainWindow *parent = 0);
+	Run(QString rootDir, QString faceModelDir, QMainWindow *parent = 0);
 
-	void test_eigen();
     void test_selectGrid();
 
     void test_show();
-	void alignFace();
+	void test_alignFace();
 	void test_alignFace2();
 
 	void test_crop();
 
-    void test_depth();
-	void depthMapMapping();
+	void test_depthMapMapping();
 
-	void showDepthMap();
+	void test_showDepthMap();
 
-	void createDepthMaps();
+	void createDepthmaps();
 
 	void test_depth_select();
 
-	void createAverageFace();
+	void createAverageFace(QString pathToMarkedFaces, QString pathToFirstFace);
 	void normalizeAverageFace();
 
 	void detectWrongDepthmaps();
 
-	void detectWrongLandmarks();
+	void test_loadDeptmap();
 
-	//void eigenface();
-	//void eigenface_pca();
-
-	void loadDeptmap();
-
-	void showLandmarks();
-
-	void divideFace();
-
-
+	void test_showLandmarks();
+	void test_divideFace();
 	void compareFaces();
 	void compareFacesInit();
 
-	void init();
+	void initPCA();
+	void test_processFace();
+	void showResults();
 
-	void processFace();
-
-	void histogram();
-
+	void compareTwoFaces(QString model1, QString model2);
 
     GLWidget *window;
     QMainWindow *parent;
 
+
 private:
+	/**
+	 * @brief Eigenface method using in app
+	 */
 	EigenFace _eigenfaceMethod0;
+
+	/**
+	 * @brief Divide method using in app
+	 */
 	FaceDivider::DivideMethod _divideMethod;
 
+	/**
+	 * @brief Compare method using in app
+	 */
 	Comparator::CompareMethod _compareMethod;
 
+	/**
+	 * @brief If true, ARENA will be used
+	 */
 	bool _isArena;
+	/**
+	 * @brief If true, eigenface will be used
+	 */
 	bool _isEigenface;
+
+	/**
+	 * @brief If true, score will be normalized
+	 */
 	bool _isNormalize;
 };
 

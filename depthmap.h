@@ -6,6 +6,9 @@
 #include "landmarks.h"
 #include <QVarLengthArray>
 
+/**
+ * @brief Class for create depthmap
+ */
 class DepthMap {
 public:
 	DepthMap(Mesh &face, cv::Point2d topLeft = Common::depthMapTL,
@@ -14,8 +17,6 @@ public:
 			 int piselxY = Common::depthMapPixelsY);
 
     cv::Mat depthMap;
-
-
 
 	bool mapPointToIndecies(cv::Point2d p, int &row, int &col);
 	bool mapIndeciesToPoint(int row, int col, cv::Point2f &p);
@@ -36,9 +37,11 @@ private:
 	float weightedArtMean(float x, float y, float x0,float y0,float z0,float x1,float y1,float z1,float x2,float y2, float z2);
 	float linearInterpolation(float x, float y, float x0,float y0,float z0,float x1,float y1,float z1,float x2,float y2,float z2);
 
-	void policing(float min = -250, float max = 200, bool shiftToZero = true);
-	void computeMinMax();
 
+	/**
+	 * @brief Compute maximum of 3 values
+	 * @return
+	 */
 	inline float max(float a, float b, float c) {
 		if(a>b) {
 			if(a>c) {
@@ -55,6 +58,10 @@ private:
 		}
 	}
 
+	/**
+	 * @brief Compute minimum of 3 values
+	 * @return
+	 */
 	inline float min(float a, float b, float c) {
 		if(a<b) {
 			if(a<c) {

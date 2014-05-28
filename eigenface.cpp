@@ -4,82 +4,15 @@ EigenFace::EigenFace() {
 
 }
 
-void EigenFace::pcaTransformation(QVector<cv::Mat> &images, QStringList &labels) {
 
-	QVector<cv::Mat> testVector;
-	testVector.append(images[images.size() - 1]);
-	cv::Mat testImage = toRowMatrix(testVector, CV_32FC1);
-	images.pop_back();
-
-	cv::Mat data = toRowMatrix(images, CV_32FC1);
-	cv::PCA pca(data, cv::noArray(), CV_PCA_DATA_AS_ROW);
-
-	//cv::Mat meanFromPca = pca.mean.clone();
-	//cv::Mat eigenvectors = pca.eigenvectors.clone();
-
-	cv::imshow("original", Common::norm_0_255(testImage.reshape(1, images[0].rows)));
-	cv::Mat components,backProjection;
-	components = pca.project(testImage);
-
-	backProjection = pca.backProject(components);
-
-	cv::imshow("back projection", Common::norm_0_255(backProjection.reshape(1, images[0].rows)));
-
-	/*
-	cv::imshow("meanFromPca", Common::norm_0_255(meanFromPca.reshape(1, images[0].rows)));
-
-	for(int i = 0; i < images.count(); i++) {
-		cv::Mat grayscale = Common::norm_0_255(eigenvectors.row(i).reshape(1, images[0].rows));
-		imshow(labels.at(i).toStdString(), grayscale);
-	}
-	*/
-
-	//compute distance
-	/*
-	qDebug() << "max distance: " << cv::norm(eigenvectors.row(0), eigenvectors.row(1), cv::NORM_INF);
-	qDebug() << "manhattan distance: " << cv::norm(eigenvectors.row(0), eigenvectors.row(1), cv::NORM_L1);
-	qDebug() << "euclidian distance: " << cv::norm(eigenvectors.row(0), eigenvectors.row(1), cv::NORM_L2);
-
-	qDebug() << "L2:" << cv::norm(eigenvectors.row(0), cv::NORM_L2);
-	qDebug() << "L2:" << cv::norm(eigenvectors.row(1), cv::NORM_L2);
-	*/
-
-}
-
-void EigenFace::pcaTransformation_eigen(QVector<cv::Mat> &images, QStringList &labels) {
-	std::vector<cv::Mat> imagesVector;
-	std::vector<int> labelsVector;
-
-	for(int i=0; i < images.count(); i++) {
-		imagesVector.push_back(images[i]);
-		QString editPath(labels[i]);
-		editPath.chop(4); //remove .abs
-		labelsVector.push_back(editPath.right(3).toInt());
-	}
-
-	cv::Ptr<cv::FaceRecognizer> model = cv::createEigenFaceRecognizer();
-	model->train(imagesVector, labelsVector);
-
-	cv::Mat eigenvectors = model->getMat("eigenvectors");
-	cv::Mat mean = model->getMat("mean");
-
-	cv::imshow("mean",  Common::norm_0_255(mean.reshape(1, imagesVector[0].rows)));
-
-	for(int i = 0; i < eigenvectors.cols; i++) {
-		cv::Mat ev = eigenvectors.col(i).clone();
-		// Reshape to original size & normalize to [0...255] for imshow.
-		cv::Mat grayscale = Common::norm_0_255(ev.reshape(1, imagesVector[0].rows));
-
-		cv::imshow(cv::format("%d",labelsVector[i]),grayscale);
-
-	   // cv::waitKey(0);
-	}
-
-}
-
-
-
-
+/**
+ * @brief Convert vector of matrix to one mat by rows
+ * @param src Vector of matrices
+ * @param rtype Type of converted matrix
+ * @param alpha Alpha
+ * @param beta Beta
+ * @return Converted matrix
+ */
 cv::Mat EigenFace::toRowMatrix(QVector<cv::Mat> &src, int rtype, double alpha, double beta) {
 
 	int n = src.count();
@@ -115,6 +48,14 @@ cv::Mat EigenFace::toRowMatrix(QVector<cv::Mat> &src, int rtype, double alpha, d
 	return data;
 }
 
+/**
+ * @brief Reshape matrix to row
+ * @param src Source matrix
+ * @param rtype Type of converted matrix
+ * @param alpha Alpha
+ * @param beta Beta
+ * @return Converted matrix
+ */
 void EigenFace::toRowMatrix(cv::Mat &src, cv::Mat &dst, int rtype, double alpha, double beta) {
 
 	if(src.isContinuous()) {
@@ -122,10 +63,13 @@ void EigenFace::toRowMatrix(cv::Mat &src, cv::Mat &dst, int rtype, double alpha,
 	} else {
 		src.clone().reshape(1,1).convertTo(dst,rtype,alpha,beta);
 	}
-
-	//src.reshape(1,1).convertTo(dst,rtype,alpha,beta);
 }
 
+/**
+ * @brief Create PCA subspaces for each face are
+ * @param vector Vector of face areas
+ * @param numberOfComponents Number of component to create PCA subspace
+ */
 void EigenFace::train(VectorOfDivideAreas &vector, int numberOfComponents) {
 
 	VectorOfDivideAreas vectorOfAreas;
@@ -137,20 +81,14 @@ void EigenFace::train(VectorOfDivideAreas &vector, int numberOfComponents) {
 
 			cv::PCA pca(matrix, cv::noArray(),CV_PCA_DATA_AS_ROW, numberOfComponents);
 			_pcaSubspaces.append(pca);
-
-			//show mean face
-			//cv::Mat meanFromPca = _pcaSubspaces.at(i).mean.clone();
-			//cv::Mat meanFromPca = _pcaSubspaces.at(i).eigenvectors.row(0);
-			//cv::Mat meanFromPca = matrix.row(9);
-
-			//qDebug() << meanFromPca.rows << "x" << meanFromPca.cols;
-			//imshow(QString::number(i).toStdString(), Common::norm_0_255(meanFromPca.reshape(1, vectorOfAreas[i][0].rows)));
 	}
-
-	//qDebug() << "pcaArray size:" << _pcaArray.size();
-
 }
 
+/**
+ * @brief Convert from vector of areas of face to vector of divide areas of face
+ * @param src Source vector
+ * @param dst Destination vector
+ */
 void EigenFace::convertToVectorOfAreas(VectorOfDivideFaces &src, VectorOfDivideAreas &dst) {
 
 	dst.fill(QVector<cv::Mat>(),src.first().size());
@@ -161,9 +99,14 @@ void EigenFace::convertToVectorOfAreas(VectorOfDivideFaces &src, VectorOfDivideA
 			dst[j].append(src.at(i)[j]);
 		}
 	}
-	qDebug() << "dst size: " << dst.size() << "x" << dst.first().size();
+	//qDebug() << "dst size: " << dst.size() << "x" << dst.first().size();
 }
 
+/**
+ * @brief Convert from vector of divide areas of face to vector of areas of face
+ * @param src Source vector
+ * @param dst Destination vector
+ */
 void EigenFace::convertToVectorOfFaces(VectorOfDivideAreas &src, VectorOfDivideFaces &dst) {
 
 	dst.fill(QVector<cv::Mat>(),src.first().size());
@@ -175,7 +118,11 @@ void EigenFace::convertToVectorOfFaces(VectorOfDivideAreas &src, VectorOfDivideF
 	}
 }
 
-
+/**
+ * @brief Save PCA subspaces to file
+ * @param fileName File to save
+ * @param savePath Directory with file
+ */
 void EigenFace::saveSubspaces(QString fileName, QString savePath) {
 	QDir dir(savePath);
 	QString path = dir.absoluteFilePath(fileName);
@@ -192,6 +139,11 @@ void EigenFace::saveSubspaces(QString fileName, QString savePath) {
 	storage.release();
 }
 
+/**
+ * @brief Load PCA subspaces from file
+ * @param fileName File to load
+ * @param loadPath Directory with file
+ */
 void EigenFace::loadSubspaces(QString fileName, QString loadPath) {
 	QDir dir(loadPath);
 	QString path = dir.absoluteFilePath(fileName);
@@ -218,6 +170,9 @@ void EigenFace::loadSubspaces(QString fileName, QString loadPath) {
 	}
 }
 
+/**
+ * @brief Show mean vector for each face area.
+ */
 void EigenFace::showMeans() {
 	for(unsigned int i = 0; i < 2; i++) {
 		cv::Mat meanFromPca = _pcaSubspaces.at(i).mean.clone();
@@ -225,6 +180,11 @@ void EigenFace::showMeans() {
 	}
 }
 
+/**
+ * @brief Project vector of face areas to PCA subspaces
+ * @param faces Face areas to project
+ * @param results Vector of features
+ */
 void EigenFace::project(VectorOfDivideFaces &faces, QVector<cv::Mat> &results) {
 	VectorOfDivideAreas vectorOfAreas;
 
@@ -242,9 +202,9 @@ void EigenFace::project(VectorOfDivideFaces &faces, QVector<cv::Mat> &results) {
 }
 
 /**
- * @brief EigenFace::project project one face to pca subspace - each face are is projected to particular pca subspace
- * @param areas
- * @param features
+ * @brief Project one face to pca subspace
+ * @param areas Face areas to convert
+ * @param features Vector of features
  */
 void EigenFace::project(tFaceAreas &areas, tFeatures &features) {
 
@@ -260,17 +220,18 @@ void EigenFace::project(tFaceAreas &areas, tFeatures &features) {
 		toRowMatrix(areas[i],src,CV_32F);
 
 		//project vector of face are to vector of subspaces
-		// 1x3600 -> 1x300 (300 is number of faces in pca subspaces)
 		cv::Mat projection;
 		_pcaSubspaces.at(i).project(src, projection);
-
-		//qDebug() << "src:" << src.rows << "x" << src.cols;
-		//qDebug() << "projection:" << projection.rows << "x" << projection.cols;
 
 		features.push_back(projection);
 	}
 }
 
+/**
+ * @brief Back projection from PCA subspace
+ * @param features Vector of features
+ * @param result Back projection
+ */
 void EigenFace::backProject(tFeatures &features, QVector<cv::Mat> &result) {
 	assert(_pcaSubspaces.size() == features.rows);
 
@@ -284,55 +245,3 @@ void EigenFace::backProject(tFeatures &features, QVector<cv::Mat> &result) {
 	}
 }
 
-
-void EigenFace::test() {
-	QVector<QVector<double> > src;
-	QVector<QVector<double> > dst;
-
-	QVector<double> tmp1;
-	tmp1.append(1.1);
-	tmp1.append(1.2);
-	tmp1.append(1.3);
-	tmp1.append(1.4);
-
-	QVector<double> tmp2;
-	tmp2.append(2.1);
-	tmp2.append(2.2);
-	tmp2.append(2.3);
-	tmp2.append(2.4);
-
-	QVector<double> tmp3;
-	tmp3.append(3.1);
-	tmp3.append(3.2);
-	tmp3.append(3.3);
-	tmp3.append(3.4);
-
-	src.append(tmp1);
-	src.append(tmp2);
-	src.append(tmp3);
-
-	for(int i = 0; i < src.size(); i++) {
-		for(int j = 0; j < src.first().size(); j++) {
-			qDebug() << src[i][j];
-		}
-	}
-
-	qDebug() << "++";
-	dst.fill(QVector<double>(),src.first().size());
-
-
-	for(int i = 0; i < src.size(); i++) {
-
-		for(int j = 0; j < src.first().size(); j++) {
-			dst[j].append(src.at(i)[j]);
-		}
-	}
-
-	qDebug() << "dst size: " << dst.size() << "x" << dst.first().size();
-
-	for(int i = 0; i < dst.size(); i++) {
-		for(int j = 0; j < dst.first().size(); j++) {
-			qDebug() << dst[i][j];
-		}
-	}
-}

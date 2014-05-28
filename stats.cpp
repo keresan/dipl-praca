@@ -1,5 +1,10 @@
 #include "stats.h"
 
+/**
+ * @brief Constructor
+ * @param imposterResult Results of imposter users comparation
+ * @param genuineResult Results of genuine users comparation
+ */
 Stats::Stats(cv::Mat imposterResult, cv::Mat genuineResult) {
 
 	if(imposterResult.cols != genuineResult.cols) {
@@ -15,6 +20,9 @@ Stats::Stats(cv::Mat imposterResult, cv::Mat genuineResult) {
 
 }
 
+/**
+ * @brief Compute minimum, maximu and average value for each face area.
+ */
 void Stats::computeMinMaxAvg() {
 
 	for(int i = 0; i < statValuesVector.size(); i++) {
@@ -29,16 +37,20 @@ void Stats::computeMinMaxAvg() {
 		statValuesVector[i].max = max;
 		statValuesVector[i].min = min;
 
-		qDebug() << min << max;
+		//qDebug() << min << max;
 		//statValuesVector[i].mean = mean;
 	}
 }
 
+/**
+ * @brief Compute min and max value to set range for histogram. This method is overloaded.
+ * @param col Id of face area for what compute histogram
+ * @param normAsPercentage Normalize values in histogram as percenage of all
+ */
 void Stats::computeHist(int col, bool normAsPercentage) {
 
 	float min = statValuesVector.at(col).min;
 	float max = statValuesVector.at(col).max;
-
 
 
 	if(min < 0) {
@@ -53,10 +65,16 @@ void Stats::computeHist(int col, bool normAsPercentage) {
 		max = qCeil(max);
 	}
 
-	qDebug() << "range: " << min << max;
 	computeHist(col,min,max,normAsPercentage);
 }
 
+/**
+ * @brief Compute histogram. This method is overloaded.
+ * @param col Id of face area for what compute histogram
+ * @param min Lower value of histogramr ange
+ * @param max Upper value of histogram range
+ * @param normAsPercentage
+ */
 void Stats::computeHist(int col,float min, float max,bool normAsPercentage) {
 
 	if(col <0 || col >= statValuesVector.size()) {
@@ -86,12 +104,15 @@ void Stats::computeHist(int col,float min, float max,bool normAsPercentage) {
 
 }
 
+/**
+ * @brief Print histogram values for genuine and imposter users
+ * @param col Id of face area for what print histogram
+ */
 void Stats::printHist(int col) {
 
 	if(col <0 || col >= statValuesVector.size()) {
 		throw std::runtime_error("printHist(): col out-of-range");
 	}
-
 
 	qDebug() << "rows:" << statValuesVector.at(col).histGenuine.rows;
 	for(int r = 0; r < statValuesVector.at(col).histGenuine.rows; r++) {
@@ -106,14 +127,21 @@ void Stats::printHist(int col) {
 	}
 }
 
+/**
+ * @brief Convert decimal dot do decimal comma.
+ * @param number Number to convert
+ * @param strNumber Output converted number
+ * @param precision Precision of converted number
+ */
 void Stats::convertDotInNumber(float number, QString &strNumber, int precision) {
 
 	strNumber = QString::number(number,'f',precision);
 	strNumber.replace(".",",");
-
 }
 
-
+/**
+ * @brief Compute equal error rate for each face area.
+ */
 void Stats::computeEer() {
 
 	for(int i = 0; i < statValuesVector.size(); i++) {
@@ -122,7 +150,7 @@ void Stats::computeEer() {
 		float step = qAbs(statValuesVector.at(i).max - statValuesVector.at(i).min) / 2000;
 
 		//qDebug() << "min max:" << statValuesVector.at(i).min << statValuesVector.at(i).max;
-		//qDebug() << "step:" << statValuesVector.at(i).min << statValuesVector.at(i).max;
+		//qDebug() << "step:" << step;
 		for(float threshold = statValuesVector.at(i).min; threshold < statValuesVector.at(i).max; threshold += step) {
 
 			float fmr, fnmr;
@@ -134,12 +162,19 @@ void Stats::computeEer() {
 				minDistance = actualDistance;
 				statValuesVector[i].eer = (fmr+fnmr)/2;
 
-				qDebug() << threshold << fmr << fnmr << actualDistance;
+				//qDebug() << threshold << fmr << fnmr << actualDistance;
 			}
 		}
 	}
 }
 
+/**
+ * @brief Compute FMR and FNMR for particular treshold
+ * @param col Dd of face area
+ * @param fmr Output FMR
+ * @param fnmr Output FNMR
+ * @param threshold Treshold
+ */
 void Stats::computeFmrFnrm(int col, float &fmr, float &fnmr, float threshold) {
 
 	if(col <0 || col >= statValuesVector.size()) {
@@ -167,26 +202,35 @@ void Stats::computeFmrFnrm(int col, float &fmr, float &fnmr, float threshold) {
 	fnmr = fnmrCount / (float)_genResult.rows;
 }
 
-void Stats::computeGraphFmrFnmr(int col, float thresholdStart, float thresholdStop, float step) {
+/**
+ * @brief Print values of FMR and FNMR for tresholds
+ * @param col Id of face area for what print FMR and FNMR
+ * @param thresholdStart Compute stats from this number
+ * @param thresholdStop End computing stats from this number
+ * @param step Step of computed stats
+ */
+void Stats::printGraphFmrFnmr(int col, float thresholdStart, float thresholdStop, float step) {
 
 	for(float t = thresholdStart; t <= thresholdStop; t += step) {
 		float fmr, fnmr;
 		computeFmrFnrm(col,fmr,fnmr,t);
 
-		//qDebug() << statValuesVector[i].eer << fmr << fnmr << actualDistance;
 
-		/*
 		QString fmrStr, fnmrStr,tStr;
 		convertDotInNumber(fmr,fmrStr);
 		convertDotInNumber(fnmr,fnmrStr);
 		convertDotInNumber(t,tStr);
 
 		qDebug("%s\t%s\t%s",tStr.toStdString().c_str() ,fmrStr.toStdString().c_str(), fnmrStr.toStdString().c_str());
-		*/
-	}
 
+	}
 }
 
+/**
+ * @brief Save EER to file
+ * @param fileName File name to save
+ * @param dirPath Directory to save
+ */
 void Stats::saveEer(QString fileName, QString dirPath) {
 	QDir dir(dirPath);
 	QString path = dir.absoluteFilePath(fileName);
@@ -211,6 +255,13 @@ void Stats::saveEer(QString fileName, QString dirPath) {
 
 	storage.release();
 }
+
+/**
+ * @brief Load EER from file.
+ * @param errVector Vector of loaded err.
+ * @param fileName File name to load.
+ * @param dirPath Directory in witch file is.
+ */
 void Stats::loadEer(QVector<float> &errVector, QString fileName, QString dirPath) {
 
 	QDir dir(dirPath);

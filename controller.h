@@ -15,6 +15,9 @@
 #include "comparator.h"
 #include "mesh.h"
 
+/**
+ * @brief Class for running batch of process.
+ */
 class Controller {
 public:
 	Controller();
@@ -45,6 +48,10 @@ public:
 						 QVector<cv::Mat> &featuresVector);
 
 
+
+
 };
+
+
 
 #endif // CONTROLLER_H

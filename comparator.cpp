@@ -1,10 +1,15 @@
 #include "comparator.h"
 
-Comparator::Comparator() {
+Comparator::Comparator() {}
 
-}
-
-
+/**
+ * @brief Comparator::compare
+ * Compare two matrix of features.
+ * @param features1 Features 1
+ * @param features2 Features 2
+ * @param result Result of comparation
+ * @param method Comparation method
+ */
 void Comparator::compare(tFeatures &features1, tFeatures &features2, QVector<float> &result, Comparator::CompareMethod method) {
 
 	if(features1.rows != features2.rows) {
@@ -22,6 +27,14 @@ void Comparator::compare(tFeatures &features1, tFeatures &features2, QVector<flo
 	}
 }
 
+/**
+ * @brief Comparator::compare
+ * Compare two vector of matrices of features.
+ * @param features1 Features 1
+ * @param features2 Features 2
+ * @param result Result of comparation
+ * @param method Comparation method
+ */
 void Comparator::compare(QVector<cv::Mat> &features1, QVector<cv::Mat> &features2, QVector<float> &result, Comparator::CompareMethod method) {
 
 	if(features1.size() != features2.size()) {
@@ -44,6 +57,14 @@ void Comparator::compare(QVector<cv::Mat> &features1, QVector<cv::Mat> &features
 	}
 }
 
+/**
+ * @brief Comparator::compareFeature
+ * Compare two features. Call compare funciton by compare metod.
+ * @param feature1 Feature
+ * @param feature2 Feature
+ * @param method Comparation method
+ * @return Result of comparation
+ */
 double Comparator::compareFeature(cv::Mat &feature1, cv::Mat &feature2, Comparator::CompareMethod method) {
 	assert(feature1.rows == feature2.rows);
 	assert(feature1.rows == 1);
@@ -67,21 +88,29 @@ double Comparator::compareFeature(cv::Mat &feature1, cv::Mat &feature2, Comparat
 	}
 }
 
-
+/**
+ * @brief Comparator::correlationDistance
+ * Compute correlation distance btween to feature vectors
+ * @param feature1 Features
+ * @param feature2 Features
+ * @return Correlation
+ */
 double Comparator::correlationDistance(cv::Mat &feature1, cv::Mat &feature2) {
 
 	return 1.0 - correlationMetric(feature1, feature2);
 }
 
 
+/**
+ * @brief Comparator::correlationMetric
+ * Compute correlation distance btween to feature vectors
+ * @param feature1 Feature
+ * @param feature2 Feature
+ * @return Correlation
+ */
 double Comparator::correlationMetric(cv::Mat &feature1, cv::Mat &feature2) {
 
 	cv::Scalar mean1, mean2, std1, std2;
-	//double mean1 = cv::mean(feature1);
-	//double mean2 = cv::mean(feature2);
-	//double std1 =  cv::meanStdDev(feature1,mean,std);
-	//double std2 = cv::meanStdDev(feature2);
-
 	cv::meanStdDev(feature1,mean1,std1);
 	cv::meanStdDev(feature2,mean2,std2);
 

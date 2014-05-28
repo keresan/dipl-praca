@@ -1,5 +1,13 @@
 #include "depthmap.h"
 
+/**
+ * @brief Constructor. Initialize area for computing depthmap.
+ * @param face Model of face
+ * @param topLeft Top Left point of interested area
+ * @param bottomRight Bottom right point of interested area
+ * @param pixelsX Pixels resolution in axis X
+ * @param piselxY Pixels resolution in axis Y
+ */
 DepthMap::DepthMap(Mesh &face, cv::Point2d topLeft, cv::Point2d bottomRight, int pixelsX, int piselxY) {
 
 	depthMap = cv::Mat(piselxY,pixelsX,CV_32F, cv::Scalar(Common::depthmapInitValue));
@@ -7,21 +15,14 @@ DepthMap::DepthMap(Mesh &face, cv::Point2d topLeft, cv::Point2d bottomRight, int
 	this->bottomRight = bottomRight;
 
 	createDepthMap(face);
-
-	//computeMinMax();
-	//qDebug() << _min << _max;
-
-	//policing(_min,_max);
-
 }
 
 /**
- * @brief DepthMap::selectFromDepthMap - vyberie body z depthmapy, ktore lezia medzi topLeft a bottomRight,
- * pripadne prislusu cast bodov, ktore lezia v oblasti vytvaranej hlbkovej mapy
- * @param tl
- * @param br
- * @param vector
- * @return
+ * @brief Choose point from depthmap, who are between topLeft and Bottom right
+ * @param tl Top left point
+ * @param br Bottom Right point
+ * @param vector Vector of points who are in interested area
+ * @return Number of picked up points
  */
 int DepthMap::selectFromDepthMap(cv::Point2d tl, cv::Point2d br, QVector<cv::Point2f> &vector) {
 
@@ -66,7 +67,6 @@ int DepthMap::selectFromDepthMap(cv::Point2d tl, cv::Point2d br, QVector<cv::Poi
 
 
 	//iterate row by row and pick up points
-
 	int counter = 0;
 	for(int r = tlR; r <= brR; r++) {
 		for(int c = tlC; c <= brC; c++) {
@@ -84,6 +84,13 @@ int DepthMap::selectFromDepthMap(cv::Point2d tl, cv::Point2d br, QVector<cv::Poi
 	return counter;
 }
 
+/**
+ * @brief Map row and col indecies to point in depthmap.
+ * @param row Index of row
+ * @param col Index of col
+ * @param p Point to map
+ * @return True if point is mapped correctly
+ */
 bool DepthMap::mapIndeciesToPoint(int row, int col, cv::Point2f &p) {
 
 	//check
@@ -105,7 +112,13 @@ bool DepthMap::mapIndeciesToPoint(int row, int col, cv::Point2f &p) {
 }
 
 
-
+/**
+ * @brief Map point position to row and col indecies.
+ * @param p Point to map
+ * @param row Index of row
+ * @param col Index of col
+ * @return True if indecies are mapped correctly
+ */
 bool DepthMap::mapPointToIndecies(cv::Point2d p, int &row, int &col) {
 
 	//check
@@ -116,29 +129,16 @@ bool DepthMap::mapPointToIndecies(cv::Point2d p, int &row, int &col) {
 		return FALSE;
 	}
 
-	/*
-	qDebug("====[%8.2f;%8.2f]",p.x,p.y);
-	qDebug() << "size: " << qAbs(topLeft.x - bottomRight.x) <<  " x " <<qAbs(topLeft.y - bottomRight.y);
-	qDebug() << "dephMap RxC: " << depthMap.rows << depthMap.cols;
-	float stepX = qAbs(topLeft.x - bottomRight.x) / (float)(depthMap.cols-1);
-	float stepY = qAbs(topLeft.y - bottomRight.y) / (float)(depthMap.rows-1);
-	qDebug("step: %5.2f;%5.2f",stepX,stepY);
-
-	qDebug() << "rozdiel od tl.x:" << p.x - topLeft.x;
-	qDebug() << "rozdiel od tl.y:" << p.y - topLeft.y;
-	*/
-
-
+	//map
 	col = abs(qRound((p.x - topLeft.x) /( qAbs(topLeft.x - bottomRight.x)/(float)(depthMap.cols-1))));
 	row = abs(qRound((p.y - topLeft.y) /( qAbs(topLeft.y - bottomRight.y)/(float)(depthMap.rows-1))));
 
-
-	//qDebug() << "RxS:" << row << col;
-
 	return TRUE;
-
 }
 
+/**
+ * @brief Print points of depthmap
+ */
 void DepthMap::printPoints() {
 	for(int r = 0; r < depthMap.rows ; r++) {
 		 for(int c = 0; c < depthMap.cols; c++) {
@@ -149,26 +149,25 @@ void DepthMap::printPoints() {
 			 } else {
 				 printf("= = = = = =");
 			 }
-
 		 }
 		 printf("\n");
 	}
 }
 
 /**
- * @brief DepthMap::weightedArtMean - weighted aritmetic mean
- * @param x
- * @param y
- * @param x0
- * @param y0
- * @param z0
- * @param x1
- * @param y1
- * @param z1
- * @param x2
- * @param y2
- * @param z2
- * @return
+ * @brief Compute depth of point using weighted aritmetic mean
+ * @param x X coord of point with unknown depth
+ * @param y Y coord of point with unknown depth
+ * @param x0 Point 0
+ * @param y0 Point 0
+ * @param z0 Point 0
+ * @param x1 Point 1
+ * @param y1 Point 1
+ * @param z1 Point 1
+ * @param x2 Point 2
+ * @param y2 Point 2
+ * @param z2 Point 2
+ * @return Computed depth value
  */
 float DepthMap::weightedArtMean(float x, float y, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2) {
 
@@ -181,6 +180,21 @@ float DepthMap::weightedArtMean(float x, float y, float x0, float y0, float z0, 
 	return z;
 }
 
+/**
+ * @brief Compute depth of point using linear interpolation
+ * @param x X coord of point with unknown depth
+ * @param y Y coord of point with unknown depth
+ * @param x0 Point 0
+ * @param y0 Point 0
+ * @param z0 Point 0
+ * @param x1 Point 1
+ * @param y1 Point 1
+ * @param z1 Point 1
+ * @param x2 Point 2
+ * @param y2 Point 2
+ * @param z2 Point 2
+ * @return Computed depth value
+ */
 float DepthMap::linearInterpolation(float x, float y, float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2) {
 	if (x0 == x1 && y0 == y1 && x0 == x2 && y0 == y2) {
 		return (z0+z1+z2)/3;
@@ -201,14 +215,12 @@ float DepthMap::linearInterpolation(float x, float y, float x0, float y0, float 
 
 
 /**
- * @brief DepthMap::createDepthMap
- * @param face
+ * @brief Create depthmap from model of face.
+ * @param face Model of face
  */
 void DepthMap::createDepthMap(Mesh &face) {
 
-	//qDebug() << "depthmap triangles:" << face.triangles.count();
-
-	//dopredu alokovany priestor, zrychluje vypocet o cca 10 ms
+	//allocated space in advace, speed up computing about 10 ms
 	QVector<cv::Point2f> vector(100);
 
 	for(int i = 0; i < face.triangles.count(); i++) {
@@ -247,12 +259,13 @@ void DepthMap::createDepthMap(Mesh &face) {
 
 			if(result >= 0) {
 
-				//vazeny priemer vs linearna interpolacia: vysledky sa lisia v stotinach
+				//depth by linear inerpolation
 				float z = linearInterpolation(vector.at(j).x, vector.at(j).y,
 										   p0x, p0y, face.pointsMat(ind0,2),
 										   p1x, p1y, face.pointsMat(ind1,2),
 										   p2x, p2y, face.pointsMat(ind2,2));
-				 //vazeny priemer, ale cim mensia vzdialenost, tym vacsia vaha !!
+
+				//depth by weighted mean
 				/*
 				float z = weightedArtMean(vector.at(j).x, vector.at(j).y,
 											p0x, p0y, face.pointsMat(ind0,2),
@@ -261,8 +274,6 @@ void DepthMap::createDepthMap(Mesh &face) {
 				*/
 				 int col, row;
 				 if(mapPointToIndecies(vector.at(j),row,col)) {
-					 //qDebug() << row << col;
-					 //qDebug() << depthMap.at<float>(row, col);
 					 if (z > depthMap.at<float>(row, col)) {
 						 depthMap.at<float>(row, col) = z;
 
@@ -271,72 +282,15 @@ void DepthMap::createDepthMap(Mesh &face) {
 			 }
 		 }
 	 }
-
-	//Common::printMatrix(depthMap);
 }
 
-
-void DepthMap::policing(float min, float max, bool shiftToZero) {
-
-	for (int r = 0; r < depthMap.rows; r++) {
-		for (int c = 0; c < depthMap.cols; c++) {
-			float z = depthMap.at<float>(r, c);
-
-			if(z <= min) {
-				z = min;
-
-			} else if(z >= max) {
-				z = max;
-
-				//qDebug() << z;
-			}
-
-			/* nebecpecne !!!! potom tvar od tej istej osoby moze mat ine Z suradnice - zle sa porovna !!
-			if(shiftToZero) {
-				z += qAbs(min) + 1;
-			}
-			*/
-
-			depthMap.at<float>(r, c) = z;
-
-			/*
-			else {
-				depthMap.at<float>(r, c) =  (z+qAbs(min))/255.0;//(qAbs(min)+qAbs(max));
-
-				qDebug() <<r <<c << ":"<< z << "->" << depthMap.at<float>(r, c);
-			}
-			*/
-
-		}
-
-	}
-}
-
-void DepthMap::computeMinMax() {
-
-	//nemoze byt priamo na urcity prvok, pretoze ten moze obsahovat Common::depthmapInitValue
-	_min = 1000;
-	_max = -1000;
-
-
-	for (int r = 0; r < depthMap.rows; r++) {
-		for (int c = 0; c < depthMap.cols; c++) {
-				float z = depthMap.at<float>(r, c);
-
-				if( z > _max) {
-					_max = z;
-				}
-				if(z < _min && z > Common::depthmapInitValue) {
-					_min = z;
-				}
-
-				//if(z > -0.1 && z < 0.1) {
-					//qDebug() << r << c << " -> "<< z;
-				//}
-		}
-	}
-}
-
+/**
+ * @brief Show depthmap with all landmarks.
+ * @param depthMap Depthmap to show
+ * @param landmarks
+ * @param label
+ * @param addTime
+ */
 void DepthMap::showAllLandmarks(const cv::Mat &depthMap, Landmarks &landmarks, QString label, bool addTime) {
 	VectorOfLandmarks landmarksVector = landmarks.getLandmarks();
 

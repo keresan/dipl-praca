@@ -5,9 +5,15 @@
 
 typedef QVector<cv::Mat> tFaceAreas;
 
+/**
+ * @brief Class for divide face to areas
+ */
 class FaceDivider {
 public:
 
+	/**
+	 * @brief Method of divide
+	 */
 	enum DivideMethod {
 		method0,
 		method1,
@@ -38,8 +44,18 @@ public:
 
 
 private:
+	/**
+	 * @brief Face to divide
+	 */
 	cv::Mat _depthmap;
+	/**
+	 * @brief Face will be divided used this landmarks
+	 */
 	Landmarks _landmarks;
+
+	/**
+	 * @brief Need for scale areas
+	 */
 	Landmarks _averageLandmarks;
 
 };

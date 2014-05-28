@@ -3,52 +3,47 @@
 
 MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent) {
 
+	//Users/martin/Documents/[]sklad/frgc_data/created_depthmap/
 
-	Run testToRun(this);
+	QString rootDirectory = "/Users/martin/Documents/[]sklad/frgc_data/POKUS";
+	QString modelDirectory = "/Volumes/data/sklad/FRGC_databaza/Spring2003range";
+
+	Run testToRun(rootDirectory, modelDirectory, this);
 
 	this->setCentralWidget(testToRun.window);
 
-	//testToRun.createAverageFace();
-
-	//testToRun.normalizeAverageFace();
-
-	//testToRun.alignFace();
-
+	//testToRun.test_alignFace();
 	//testToRun.test_alignFace2();
-
 	//testToRun.test_selectGrid();
 	//testToRun.test_crop();
-   //testToRun.test_show();
-
-	//testToRun.depthMapMapping();
-
-	//testToRun.showDepthMap();
-
+	//testToRun.test_show();
+	//testToRun.test_depthMapMapping();
+	//testToRun.test_showDepthMap();
 	//testToRun.test_depth_select();
 
-	//testToRun.createDepthMaps();
-	//testToRun.detectWrongDepthmaps();
+	/*
+	QString pathToMarkedLandmarks = "/Users/martin/Documents/[]sklad/frgc_data/faces_marked";
+	QString pathToFirstFace = pathToMarkedLandmarks+"/02463d550.abs_landmarks.txt";
+	testToRun.createAverageFace(pathToMarkedLandmarks,pathToFirstFace);
 
-	//testToRun.loadDeptmap();
+	testToRun.normalizeAverageFace();
+	*/
 
-	//testToRun.showLandmarks();
-
-	//testToRun.divideFace();
-
-	//testToRun.processFace();
-
-
-
-	//testToRun.init();
-	//testToRun.compareFacesInit();
-	//testToRun.compareFaces();
-	testToRun.histogram();
-
-	//testToRun.eigenface();
-	//testToRun.eigenface_pca();
+	//testToRun.test_loadDeptmap();
+	//testToRun.test_showLandmarks();
 	//testToRun.test_eigen();
+	//testToRun.test_divideFace();
+	//testToRun.test_processFace();
 
+	//testToRun.createDepthmaps();
 
+	testToRun.initPCA();
+
+	testToRun.compareFacesInit();
+
+	testToRun.compareFaces();
+
+	testToRun.showResults();
 
 }
 

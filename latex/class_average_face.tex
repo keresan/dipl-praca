@@ -1,0 +1,396 @@
+\hypertarget{class_average_face}{\section{Average\+Face Class Reference}
+\label{class_average_face}\index{Average\+Face@{Average\+Face}}
+}
+
+
+create average face  
+
+
+
+
+{\ttfamily \#include $<$averageface.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_average_face_a7e54fc51542be2cf483f01119051a1db}{Average\+Face} (Q\+String path\+To\+Landmarks, Q\+String path\+To\+Faces, Q\+String start\+File\+Landmark)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a7e54fc51542be2cf483f01119051a1db}{Average\+Face\+::\+Average\+Face}. \end{DoxyCompactList}\item 
+void \hyperlink{class_average_face_af0676bea368dfb3b9352c3c08f0939a4}{process} (Q\+String result\+File\+Path)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_af0676bea368dfb3b9352c3c08f0939a4}{Average\+Face\+::process} Create average face. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static cv\+::\+Point3d \hyperlink{class_average_face_a66b5338e651aad5d16f127cda65bf800}{get\+Mean\+Point} (Q\+Vector$<$ cv\+::\+Point3d $>$ \&points)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a66b5338e651aad5d16f127cda65bf800}{Average\+Face\+::get\+Mean\+Point} Compute mean point. \end{DoxyCompactList}\item 
+static void \hyperlink{class_average_face_a73089a0a62d090011dca519ac6fd981f}{read\+Vector3d\+Points\+From\+File} (Q\+String path, Q\+Vector$<$ cv\+::\+Point3d $>$ \&v)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a73089a0a62d090011dca519ac6fd981f}{Average\+Face\+::read\+Vector3d\+Points\+From\+File} Read vectror of Point3d, on each line expected format\+: x y z (divide by spaces) \end{DoxyCompactList}\item 
+static Matrix \hyperlink{class_average_face_a9e4a09d51f12ac0b79a2afc6ab0c8f8b}{get\+Optimal\+Rotation} (Q\+Vector$<$ cv\+::\+Point3d $>$ \&from, Q\+Vector$<$ cv\+::\+Point3d $>$ \&to)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a9e4a09d51f12ac0b79a2afc6ab0c8f8b}{Average\+Face\+::get\+Optimal\+Rotation} Compute optimal rotation between two sets of points. \end{DoxyCompactList}\item 
+static Matrix \hyperlink{class_average_face_a1d22969a037f365a609dbe46032b7fa5}{get\+Optimal\+Rotation} (\hyperlink{class_mesh}{Mesh} \&from, \hyperlink{class_mesh}{Mesh} \&to)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a9e4a09d51f12ac0b79a2afc6ab0c8f8b}{Average\+Face\+::get\+Optimal\+Rotation} Compute optimal rotation between two mashes. \end{DoxyCompactList}\item 
+static cv\+::\+Point3d \hyperlink{class_average_face_a6e52724e6f4d6479039256ac5f13585b}{get\+Optimal\+Translation} (Q\+Vector$<$ cv\+::\+Point3d $>$ \&from, Q\+Vector$<$ cv\+::\+Point3d $>$ \&to)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a6e52724e6f4d6479039256ac5f13585b}{Average\+Face\+::get\+Optimal\+Translation} Compute optimal translation between two sets of points. \end{DoxyCompactList}\item 
+static cv\+::\+Point3d \hyperlink{class_average_face_af8d8e3d645cdc9c989977444be9c8f77}{get\+Optimal\+Translation} (\hyperlink{class_mesh}{Mesh} \&from, \hyperlink{class_mesh}{Mesh} \&to)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a6e52724e6f4d6479039256ac5f13585b}{Average\+Face\+::get\+Optimal\+Translation} Compute optimal translation between two mashes. \end{DoxyCompactList}\item 
+static void \hyperlink{class_average_face_a3e9bfa47bfcac91123244f46d5465fa7}{translate} (Q\+Vector$<$ cv\+::\+Point3d $>$ \&v, cv\+::\+Point3d shift)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a3e9bfa47bfcac91123244f46d5465fa7}{Average\+Face\+::translate} Translate each point by adding shift. \end{DoxyCompactList}\item 
+static void \hyperlink{class_average_face_aac1b53959eede49d3e9ad7685eb2546d}{translate} (Matrix \&m, cv\+::\+Point3d shift)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a3e9bfa47bfcac91123244f46d5465fa7}{Average\+Face\+::translate} Translate matrix by adding shift. \end{DoxyCompactList}\item 
+static void \hyperlink{class_average_face_a30a72616982800ec918615a6f63d0afe}{transform} (cv\+::\+Point3d \&p, const Matrix \&m)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a30a72616982800ec918615a6f63d0afe}{Average\+Face\+::transform} Change point position with transform matrix. \end{DoxyCompactList}\item 
+static void \hyperlink{class_average_face_a7f47bcbd3c54ecd296c4775d1a9ad981}{transform} (Q\+Vector$<$ cv\+::\+Point3d $>$ \&points, const Matrix \&m)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a30a72616982800ec918615a6f63d0afe}{Average\+Face\+::transform} Change position of each point in vector with transform matrix. \end{DoxyCompactList}\item 
+static void \hyperlink{class_average_face_a89f22579a333bc0600f59732955f26c9}{transform} (Matrix \&points, const Matrix \&m)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a30a72616982800ec918615a6f63d0afe}{Average\+Face\+::transform} Change each position of matrix with transform matrix. \end{DoxyCompactList}\item 
+static void \hyperlink{class_average_face_a3682002dda9f6965cda4cdb47392d348}{average\+Matrices} (Matrix \&src, Matrix \&dst, int dst\+Weight)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_a3682002dda9f6965cda4cdb47392d348}{Average\+Face\+::average\+Matrices} Compute average face. \end{DoxyCompactList}\item 
+static void \hyperlink{class_average_face_aae9a031c301124801955737081cc17ae}{rotate} (Matrix \&points, double x, double y, double z)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_aae9a031c301124801955737081cc17ae}{Average\+Face\+::rotate} Rotate point by parameters. \end{DoxyCompactList}\item 
+static Matrix \hyperlink{class_average_face_aed229b19ea1c7ee85ecb3dee76518b3d}{get\+Rotate\+Matrix} (double x, double y, double z)
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_average_face_aed229b19ea1c7ee85ecb3dee76518b3d}{Average\+Face\+::get\+Rotate\+Matrix} Transform parameters of rotation to rotate matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+create average face 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_average_face_a7e54fc51542be2cf483f01119051a1db}{\index{Average\+Face@{Average\+Face}!Average\+Face@{Average\+Face}}
+\index{Average\+Face@{Average\+Face}!Average\+Face@{Average\+Face}}
+\subsubsection[{Average\+Face}]{\setlength{\rightskip}{0pt plus 5cm}Average\+Face\+::\+Average\+Face (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{path\+To\+Landmarks, }
+\item[{Q\+String}]{path\+To\+Faces, }
+\item[{Q\+String}]{start\+File\+Landmark}
+\end{DoxyParamCaption}
+)}}\label{class_average_face_a7e54fc51542be2cf483f01119051a1db}
+
+
+\hyperlink{class_average_face_a7e54fc51542be2cf483f01119051a1db}{Average\+Face\+::\+Average\+Face}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path\+To\+Landmarks} & Path to directory with anoted landmarks \\
+\hline
+{\em path\+To\+Faces} & Path to direcotry with F\+R\+G\+C database models \\
+\hline
+{\em start\+File\+Landmark} & Starting face model \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_average_face_a3682002dda9f6965cda4cdb47392d348}{\index{Average\+Face@{Average\+Face}!average\+Matrices@{average\+Matrices}}
+\index{average\+Matrices@{average\+Matrices}!Average\+Face@{Average\+Face}}
+\subsubsection[{average\+Matrices}]{\setlength{\rightskip}{0pt plus 5cm}void Average\+Face\+::average\+Matrices (
+\begin{DoxyParamCaption}
+\item[{Matrix \&}]{src, }
+\item[{Matrix \&}]{dst, }
+\item[{int}]{dst\+Weight}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_a3682002dda9f6965cda4cdb47392d348}
+
+
+\hyperlink{class_average_face_a3682002dda9f6965cda4cdb47392d348}{Average\+Face\+::average\+Matrices} Compute average face. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Source matrix \\
+\hline
+{\em dst} & Source and destination matrix \\
+\hline
+{\em dst\+Weight} & Weight of destination matrix \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_average_face_a66b5338e651aad5d16f127cda65bf800}{\index{Average\+Face@{Average\+Face}!get\+Mean\+Point@{get\+Mean\+Point}}
+\index{get\+Mean\+Point@{get\+Mean\+Point}!Average\+Face@{Average\+Face}}
+\subsubsection[{get\+Mean\+Point}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+Point3d Average\+Face\+::get\+Mean\+Point (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ cv\+::\+Point3d $>$ \&}]{points}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_a66b5338e651aad5d16f127cda65bf800}
+
+
+\hyperlink{class_average_face_a66b5338e651aad5d16f127cda65bf800}{Average\+Face\+::get\+Mean\+Point} Compute mean point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em points} & Vector of 3\+D points \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mean 3\+D point 
+\end{DoxyReturn}
+\hypertarget{class_average_face_a9e4a09d51f12ac0b79a2afc6ab0c8f8b}{\index{Average\+Face@{Average\+Face}!get\+Optimal\+Rotation@{get\+Optimal\+Rotation}}
+\index{get\+Optimal\+Rotation@{get\+Optimal\+Rotation}!Average\+Face@{Average\+Face}}
+\subsubsection[{get\+Optimal\+Rotation}]{\setlength{\rightskip}{0pt plus 5cm}Matrix Average\+Face\+::get\+Optimal\+Rotation (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ cv\+::\+Point3d $>$ \&}]{from, }
+\item[{Q\+Vector$<$ cv\+::\+Point3d $>$ \&}]{to}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_a9e4a09d51f12ac0b79a2afc6ab0c8f8b}
+
+
+\hyperlink{class_average_face_a9e4a09d51f12ac0b79a2afc6ab0c8f8b}{Average\+Face\+::get\+Optimal\+Rotation} Compute optimal rotation between two sets of points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em from} & Vector of points which should be rotating \\
+\hline
+{\em to} & Still vector of points \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Optimal rotation, matrix 3x3 
+\end{DoxyReturn}
+\hypertarget{class_average_face_a1d22969a037f365a609dbe46032b7fa5}{\index{Average\+Face@{Average\+Face}!get\+Optimal\+Rotation@{get\+Optimal\+Rotation}}
+\index{get\+Optimal\+Rotation@{get\+Optimal\+Rotation}!Average\+Face@{Average\+Face}}
+\subsubsection[{get\+Optimal\+Rotation}]{\setlength{\rightskip}{0pt plus 5cm}Matrix Average\+Face\+::get\+Optimal\+Rotation (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{from, }
+\item[{{\bf Mesh} \&}]{to}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_a1d22969a037f365a609dbe46032b7fa5}
+
+
+\hyperlink{class_average_face_a9e4a09d51f12ac0b79a2afc6ab0c8f8b}{Average\+Face\+::get\+Optimal\+Rotation} Compute optimal rotation between two mashes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em from} & \hyperlink{class_mesh}{Mesh} which should be rotating \\
+\hline
+{\em to} & Still mesh \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Optimal rotation, matrix 3x3 
+\end{DoxyReturn}
+\hypertarget{class_average_face_a6e52724e6f4d6479039256ac5f13585b}{\index{Average\+Face@{Average\+Face}!get\+Optimal\+Translation@{get\+Optimal\+Translation}}
+\index{get\+Optimal\+Translation@{get\+Optimal\+Translation}!Average\+Face@{Average\+Face}}
+\subsubsection[{get\+Optimal\+Translation}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+Point3d Average\+Face\+::get\+Optimal\+Translation (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ cv\+::\+Point3d $>$ \&}]{from, }
+\item[{Q\+Vector$<$ cv\+::\+Point3d $>$ \&}]{to}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_a6e52724e6f4d6479039256ac5f13585b}
+
+
+\hyperlink{class_average_face_a6e52724e6f4d6479039256ac5f13585b}{Average\+Face\+::get\+Optimal\+Translation} Compute optimal translation between two sets of points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em from} & Vector of points which should be translatin \\
+\hline
+{\em to} & Still vector of points \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Vector of translation 
+\end{DoxyReturn}
+\hypertarget{class_average_face_af8d8e3d645cdc9c989977444be9c8f77}{\index{Average\+Face@{Average\+Face}!get\+Optimal\+Translation@{get\+Optimal\+Translation}}
+\index{get\+Optimal\+Translation@{get\+Optimal\+Translation}!Average\+Face@{Average\+Face}}
+\subsubsection[{get\+Optimal\+Translation}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+Point3d Average\+Face\+::get\+Optimal\+Translation (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{from, }
+\item[{{\bf Mesh} \&}]{to}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_af8d8e3d645cdc9c989977444be9c8f77}
+
+
+\hyperlink{class_average_face_a6e52724e6f4d6479039256ac5f13585b}{Average\+Face\+::get\+Optimal\+Translation} Compute optimal translation between two mashes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em from} & \hyperlink{class_mesh}{Mesh} which should be translating \\
+\hline
+{\em to} & Still mesh \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Vector of translation 
+\end{DoxyReturn}
+\hypertarget{class_average_face_aed229b19ea1c7ee85ecb3dee76518b3d}{\index{Average\+Face@{Average\+Face}!get\+Rotate\+Matrix@{get\+Rotate\+Matrix}}
+\index{get\+Rotate\+Matrix@{get\+Rotate\+Matrix}!Average\+Face@{Average\+Face}}
+\subsubsection[{get\+Rotate\+Matrix}]{\setlength{\rightskip}{0pt plus 5cm}Matrix Average\+Face\+::get\+Rotate\+Matrix (
+\begin{DoxyParamCaption}
+\item[{double}]{x, }
+\item[{double}]{y, }
+\item[{double}]{z}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_aed229b19ea1c7ee85ecb3dee76518b3d}
+
+
+\hyperlink{class_average_face_aed229b19ea1c7ee85ecb3dee76518b3d}{Average\+Face\+::get\+Rotate\+Matrix} Transform parameters of rotation to rotate matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Rotation in axis X \\
+\hline
+{\em y} & Rotation in axis Y \\
+\hline
+{\em z} & Rotation in axis Z \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Output matrix of rotaion 
+\end{DoxyReturn}
+\hypertarget{class_average_face_af0676bea368dfb3b9352c3c08f0939a4}{\index{Average\+Face@{Average\+Face}!process@{process}}
+\index{process@{process}!Average\+Face@{Average\+Face}}
+\subsubsection[{process}]{\setlength{\rightskip}{0pt plus 5cm}void Average\+Face\+::process (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{result\+File\+Path}
+\end{DoxyParamCaption}
+)}}\label{class_average_face_af0676bea368dfb3b9352c3c08f0939a4}
+
+
+\hyperlink{class_average_face_af0676bea368dfb3b9352c3c08f0939a4}{Average\+Face\+::process} Create average face. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em result\+File\+Path} & Path to save result average face model. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_average_face_a73089a0a62d090011dca519ac6fd981f}{\index{Average\+Face@{Average\+Face}!read\+Vector3d\+Points\+From\+File@{read\+Vector3d\+Points\+From\+File}}
+\index{read\+Vector3d\+Points\+From\+File@{read\+Vector3d\+Points\+From\+File}!Average\+Face@{Average\+Face}}
+\subsubsection[{read\+Vector3d\+Points\+From\+File}]{\setlength{\rightskip}{0pt plus 5cm}void Average\+Face\+::read\+Vector3d\+Points\+From\+File (
+\begin{DoxyParamCaption}
+\item[{Q\+String}]{path, }
+\item[{Q\+Vector$<$ cv\+::\+Point3d $>$ \&}]{v}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_a73089a0a62d090011dca519ac6fd981f}
+
+
+\hyperlink{class_average_face_a73089a0a62d090011dca519ac6fd981f}{Average\+Face\+::read\+Vector3d\+Points\+From\+File} Read vectror of Point3d, on each line expected format\+: x y z (divide by spaces) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Path to file \\
+\hline
+{\em v} & Vector of output points \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_average_face_aae9a031c301124801955737081cc17ae}{\index{Average\+Face@{Average\+Face}!rotate@{rotate}}
+\index{rotate@{rotate}!Average\+Face@{Average\+Face}}
+\subsubsection[{rotate}]{\setlength{\rightskip}{0pt plus 5cm}void Average\+Face\+::rotate (
+\begin{DoxyParamCaption}
+\item[{Matrix \&}]{points, }
+\item[{double}]{x, }
+\item[{double}]{y, }
+\item[{double}]{z}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_aae9a031c301124801955737081cc17ae}
+
+
+\hyperlink{class_average_face_aae9a031c301124801955737081cc17ae}{Average\+Face\+::rotate} Rotate point by parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em points} & Point to rotate \\
+\hline
+{\em x} & Rotation in axis X \\
+\hline
+{\em y} & Rotation in axis Y \\
+\hline
+{\em z} & Rotation in axis Z \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_average_face_a30a72616982800ec918615a6f63d0afe}{\index{Average\+Face@{Average\+Face}!transform@{transform}}
+\index{transform@{transform}!Average\+Face@{Average\+Face}}
+\subsubsection[{transform}]{\setlength{\rightskip}{0pt plus 5cm}void Average\+Face\+::transform (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Point3d \&}]{p, }
+\item[{const Matrix \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_a30a72616982800ec918615a6f63d0afe}
+
+
+\hyperlink{class_average_face_a30a72616982800ec918615a6f63d0afe}{Average\+Face\+::transform} Change point position with transform matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Point to transform \\
+\hline
+{\em m} & Transform matrix \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_average_face_a7f47bcbd3c54ecd296c4775d1a9ad981}{\index{Average\+Face@{Average\+Face}!transform@{transform}}
+\index{transform@{transform}!Average\+Face@{Average\+Face}}
+\subsubsection[{transform}]{\setlength{\rightskip}{0pt plus 5cm}void Average\+Face\+::transform (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ cv\+::\+Point3d $>$ \&}]{points, }
+\item[{const Matrix \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_a7f47bcbd3c54ecd296c4775d1a9ad981}
+
+
+\hyperlink{class_average_face_a30a72616982800ec918615a6f63d0afe}{Average\+Face\+::transform} Change position of each point in vector with transform matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em points} & Vector of points to transform \\
+\hline
+{\em m} & Transform matrix \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_average_face_a89f22579a333bc0600f59732955f26c9}{\index{Average\+Face@{Average\+Face}!transform@{transform}}
+\index{transform@{transform}!Average\+Face@{Average\+Face}}
+\subsubsection[{transform}]{\setlength{\rightskip}{0pt plus 5cm}void Average\+Face\+::transform (
+\begin{DoxyParamCaption}
+\item[{Matrix \&}]{points, }
+\item[{const Matrix \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_a89f22579a333bc0600f59732955f26c9}
+
+
+\hyperlink{class_average_face_a30a72616982800ec918615a6f63d0afe}{Average\+Face\+::transform} Change each position of matrix with transform matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em points} & Matrix of points to transform \\
+\hline
+{\em m} & Transform matrix \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_average_face_a3e9bfa47bfcac91123244f46d5465fa7}{\index{Average\+Face@{Average\+Face}!translate@{translate}}
+\index{translate@{translate}!Average\+Face@{Average\+Face}}
+\subsubsection[{translate}]{\setlength{\rightskip}{0pt plus 5cm}void Average\+Face\+::translate (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ cv\+::\+Point3d $>$ \&}]{v, }
+\item[{cv\+::\+Point3d}]{shift}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_a3e9bfa47bfcac91123244f46d5465fa7}
+
+
+\hyperlink{class_average_face_a3e9bfa47bfcac91123244f46d5465fa7}{Average\+Face\+::translate} Translate each point by adding shift. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Vector of points to translate \\
+\hline
+{\em shift} & Values of translation \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_average_face_aac1b53959eede49d3e9ad7685eb2546d}{\index{Average\+Face@{Average\+Face}!translate@{translate}}
+\index{translate@{translate}!Average\+Face@{Average\+Face}}
+\subsubsection[{translate}]{\setlength{\rightskip}{0pt plus 5cm}void Average\+Face\+::translate (
+\begin{DoxyParamCaption}
+\item[{Matrix \&}]{m, }
+\item[{cv\+::\+Point3d}]{shift}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_average_face_aac1b53959eede49d3e9ad7685eb2546d}
+
+
+\hyperlink{class_average_face_a3e9bfa47bfcac91123244f46d5465fa7}{Average\+Face\+::translate} Translate matrix by adding shift. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Matrix to translate \\
+\hline
+{\em shift} & Values of translation \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+averageface.\+h\item 
+averageface.\+cpp\end{DoxyCompactItemize}

@@ -5,6 +5,9 @@
 #include "landmarks.h"
 #include "eigenface.h"
 
+/**
+ * @brief Class for landmark detection
+ */
 class LandmarkDetector {
 public:
 	LandmarkDetector(cv::Mat depthMap);
@@ -28,16 +31,12 @@ public:
 	cv::Point noseBottom;
 
 private:
-	cv::Mat _depthMap;
 	/**
-	* od pozicie nosa sa urcia dalsie pozicie.
-	*
-	*/
-
+	 * @brief Depthmap to detect landmarks.
+	 */
+	cv::Mat _depthMap;
 
 	void derivateVector(std::vector<float> &src, std::vector<float> &dst);
-	void averageBlur(std::vector<float> &src, std::vector<float> &dst, int ksize);
-
 
 };
 

@@ -1,0 +1,261 @@
+\hypertarget{class_face_divider}{\section{Face\+Divider Class Reference}
+\label{class_face_divider}\index{Face\+Divider@{Face\+Divider}}
+}
+
+
+Class for divide face to areas.  
+
+
+
+
+{\ttfamily \#include $<$facedivider.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_face_divider_afd66ad7d2423aaa67e20a7f6cbabb6ef}{enum \hyperlink{class_face_divider_afd66ad7d2423aaa67e20a7f6cbabb6ef}{Divide\+Method} \{ \\*
+{\bfseries method0}, 
+{\bfseries method1}, 
+{\bfseries method2}, 
+{\bfseries method3}, 
+\\*
+{\bfseries method1rigid}, 
+{\bfseries method2rigid}, 
+{\bfseries method3rigid}
+ \}}\label{class_face_divider_afd66ad7d2423aaa67e20a7f6cbabb6ef}
+
+\begin{DoxyCompactList}\small\item\em Method of divide. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_face_divider_a5974458a52194b1f536a8ec8e54e2434}{Face\+Divider} (cv\+::\+Mat \&depth\+Map, \hyperlink{class_landmarks}{Landmarks} \&landmarks, \hyperlink{class_landmarks}{Landmarks} \&average\+Landmarks)
+\begin{DoxyCompactList}\small\item\em Constructor. Initialize inner structure. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_divider_afebf9eb1c55130c266c85209b2a4ed33}{divide} (\hyperlink{class_face_divider_afd66ad7d2423aaa67e20a7f6cbabb6ef}{Divide\+Method} method, t\+Face\+Areas \&areas)
+\begin{DoxyCompactList}\small\item\em Divide face by particular method. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_divider_a64ffeae0a8d249ac62d059d788b65b11}{divide\+By\+Method0} (t\+Face\+Areas \&areas)
+\begin{DoxyCompactList}\small\item\em Divide method 0. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_divider_a7f586db305c2a80f2032c32c67ab02cf}{divide\+By\+Method1} (t\+Face\+Areas \&areas)
+\begin{DoxyCompactList}\small\item\em Divide method 1. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_divider_ac60c70ab0193b411214863539c9bfccd}{divide\+By\+Method2} (t\+Face\+Areas \&areas)
+\begin{DoxyCompactList}\small\item\em Divide method 2. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_divider_a2c3ce79f023170aadfaffd07cdef970b}{divide\+By\+Method3} (t\+Face\+Areas \&areas)
+\begin{DoxyCompactList}\small\item\em Divide method 3. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_divider_a54d58a729c1fcadab6bcdd028f332b62}{divide\+By\+Method1rigid} (t\+Face\+Areas \&areas)
+\begin{DoxyCompactList}\small\item\em Divide method 1rigid. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_divider_a86b1917a6a5db58f375513c49e6e3c3b}{divide\+By\+Method2rigid} (t\+Face\+Areas \&areas)
+\begin{DoxyCompactList}\small\item\em Divide method 2rigid. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_divider_ab007c75e13c478324072758d93f863d3}{divide\+By\+Method3rigid} (t\+Face\+Areas \&areas)
+\begin{DoxyCompactList}\small\item\em Divide method 3rigid. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_divider_a73bd8f9d5d9135bda041b3576cb120b9}{resize\+Area} (cv\+::\+Mat \&src, cv\+::\+Mat \&dst, int height, int width)
+\begin{DoxyCompactList}\small\item\em Resize area. \end{DoxyCompactList}\item 
+void \hyperlink{class_face_divider_ae0e1c69b583813aced0cd946525f31f5}{set\+Resize\+Param} (int final\+Width)
+\begin{DoxyCompactList}\small\item\em Scale landmarks position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for divide face to areas. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_face_divider_a5974458a52194b1f536a8ec8e54e2434}{\index{Face\+Divider@{Face\+Divider}!Face\+Divider@{Face\+Divider}}
+\index{Face\+Divider@{Face\+Divider}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{Face\+Divider}]{\setlength{\rightskip}{0pt plus 5cm}Face\+Divider\+::\+Face\+Divider (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{depth\+Map, }
+\item[{{\bf Landmarks} \&}]{landmarks, }
+\item[{{\bf Landmarks} \&}]{average\+Landmarks}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_a5974458a52194b1f536a8ec8e54e2434}
+
+
+Constructor. Initialize inner structure. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depth\+Map} & Depthmap to divide \\
+\hline
+{\em landmarks} & \hyperlink{class_landmarks}{Landmarks} for divide \\
+\hline
+{\em average\+Landmarks} & Average landmarks for scale areas \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_face_divider_afebf9eb1c55130c266c85209b2a4ed33}{\index{Face\+Divider@{Face\+Divider}!divide@{divide}}
+\index{divide@{divide}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{divide}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Divider\+::divide (
+\begin{DoxyParamCaption}
+\item[{{\bf Divide\+Method}}]{method, }
+\item[{t\+Face\+Areas \&}]{areas}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_afebf9eb1c55130c266c85209b2a4ed33}
+
+
+Divide face by particular method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em method} & Divide method \\
+\hline
+{\em areas} & Divide areas \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_divider_a64ffeae0a8d249ac62d059d788b65b11}{\index{Face\+Divider@{Face\+Divider}!divide\+By\+Method0@{divide\+By\+Method0}}
+\index{divide\+By\+Method0@{divide\+By\+Method0}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{divide\+By\+Method0}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Divider\+::divide\+By\+Method0 (
+\begin{DoxyParamCaption}
+\item[{t\+Face\+Areas \&}]{areas}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_a64ffeae0a8d249ac62d059d788b65b11}
+
+
+Divide method 0. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em areas} & Divided areas \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_divider_a7f586db305c2a80f2032c32c67ab02cf}{\index{Face\+Divider@{Face\+Divider}!divide\+By\+Method1@{divide\+By\+Method1}}
+\index{divide\+By\+Method1@{divide\+By\+Method1}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{divide\+By\+Method1}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Divider\+::divide\+By\+Method1 (
+\begin{DoxyParamCaption}
+\item[{t\+Face\+Areas \&}]{areas}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_a7f586db305c2a80f2032c32c67ab02cf}
+
+
+Divide method 1. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em areas} & Divided areas \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_divider_a54d58a729c1fcadab6bcdd028f332b62}{\index{Face\+Divider@{Face\+Divider}!divide\+By\+Method1rigid@{divide\+By\+Method1rigid}}
+\index{divide\+By\+Method1rigid@{divide\+By\+Method1rigid}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{divide\+By\+Method1rigid}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Divider\+::divide\+By\+Method1rigid (
+\begin{DoxyParamCaption}
+\item[{t\+Face\+Areas \&}]{areas}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_a54d58a729c1fcadab6bcdd028f332b62}
+
+
+Divide method 1rigid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em areas} & Divided areas \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_divider_ac60c70ab0193b411214863539c9bfccd}{\index{Face\+Divider@{Face\+Divider}!divide\+By\+Method2@{divide\+By\+Method2}}
+\index{divide\+By\+Method2@{divide\+By\+Method2}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{divide\+By\+Method2}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Divider\+::divide\+By\+Method2 (
+\begin{DoxyParamCaption}
+\item[{t\+Face\+Areas \&}]{areas}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_ac60c70ab0193b411214863539c9bfccd}
+
+
+Divide method 2. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em areas} & Divided areas \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_divider_a86b1917a6a5db58f375513c49e6e3c3b}{\index{Face\+Divider@{Face\+Divider}!divide\+By\+Method2rigid@{divide\+By\+Method2rigid}}
+\index{divide\+By\+Method2rigid@{divide\+By\+Method2rigid}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{divide\+By\+Method2rigid}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Divider\+::divide\+By\+Method2rigid (
+\begin{DoxyParamCaption}
+\item[{t\+Face\+Areas \&}]{areas}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_a86b1917a6a5db58f375513c49e6e3c3b}
+
+
+Divide method 2rigid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em areas} & Divided areas \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_divider_a2c3ce79f023170aadfaffd07cdef970b}{\index{Face\+Divider@{Face\+Divider}!divide\+By\+Method3@{divide\+By\+Method3}}
+\index{divide\+By\+Method3@{divide\+By\+Method3}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{divide\+By\+Method3}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Divider\+::divide\+By\+Method3 (
+\begin{DoxyParamCaption}
+\item[{t\+Face\+Areas \&}]{areas}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_a2c3ce79f023170aadfaffd07cdef970b}
+
+
+Divide method 3. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em areas} & Divided areas \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_divider_ab007c75e13c478324072758d93f863d3}{\index{Face\+Divider@{Face\+Divider}!divide\+By\+Method3rigid@{divide\+By\+Method3rigid}}
+\index{divide\+By\+Method3rigid@{divide\+By\+Method3rigid}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{divide\+By\+Method3rigid}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Divider\+::divide\+By\+Method3rigid (
+\begin{DoxyParamCaption}
+\item[{t\+Face\+Areas \&}]{areas}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_ab007c75e13c478324072758d93f863d3}
+
+
+Divide method 3rigid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em areas} & Divided areas \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_divider_a73bd8f9d5d9135bda041b3576cb120b9}{\index{Face\+Divider@{Face\+Divider}!resize\+Area@{resize\+Area}}
+\index{resize\+Area@{resize\+Area}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{resize\+Area}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Divider\+::resize\+Area (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{src, }
+\item[{cv\+::\+Mat \&}]{dst, }
+\item[{int}]{width, }
+\item[{int}]{height}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_a73bd8f9d5d9135bda041b3576cb120b9}
+
+
+Resize area. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & Source matrix \\
+\hline
+{\em dst} & Resized matrix \\
+\hline
+{\em width} & Final width \\
+\hline
+{\em height} & Final height \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_face_divider_ae0e1c69b583813aced0cd946525f31f5}{\index{Face\+Divider@{Face\+Divider}!set\+Resize\+Param@{set\+Resize\+Param}}
+\index{set\+Resize\+Param@{set\+Resize\+Param}!Face\+Divider@{Face\+Divider}}
+\subsubsection[{set\+Resize\+Param}]{\setlength{\rightskip}{0pt plus 5cm}void Face\+Divider\+::set\+Resize\+Param (
+\begin{DoxyParamCaption}
+\item[{int}]{final\+Width}
+\end{DoxyParamCaption}
+)}}\label{class_face_divider_ae0e1c69b583813aced0cd946525f31f5}
+
+
+Scale landmarks position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em final\+Width} & Final width of depthmap \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+facedivider.\+h\item 
+facedivider.\+cpp\end{DoxyCompactItemize}

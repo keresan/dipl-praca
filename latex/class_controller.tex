@@ -1,0 +1,204 @@
+\hypertarget{class_controller}{\section{Controller Class Reference}
+\label{class_controller}\index{Controller@{Controller}}
+}
+
+
+Class for running batch of process.  
+
+
+
+
+{\ttfamily \#include $<$controller.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_controller_aa4582c4f3bdab75cdb2f9eacefba5e02}{average\+Landmarks} (Q\+Vector$<$ cv\+::\+Mat $>$ \&faces, Q\+String\+List \&labels, \hyperlink{class_landmarks}{Landmarks} \&avg\+Landmarks)
+\begin{DoxyCompactList}\small\item\em Compute average landmarks position. \end{DoxyCompactList}\item 
+void \hyperlink{class_controller_a8146448bc74ad8c910ad445e7756e881}{create\+Depthmap} (\hyperlink{class_mesh}{Mesh} \&face, \hyperlink{class_mesh}{Mesh} \&model\+Face, cv\+::\+Mat \&depthmap, double \&distance, int \&iterations)
+\begin{DoxyCompactList}\small\item\em Align face and create depthmap. \end{DoxyCompactList}\item 
+void \hyperlink{class_controller_a7d88f572ad677e2d4a70a5c928c0c323}{create\+Pca\+Subspaces} (Q\+Vector$<$ cv\+::\+Mat $>$ \&faces, \hyperlink{class_landmarks}{Landmarks} \&avg\+Landmarks, \hyperlink{class_eigen_face}{Eigen\+Face} \&eigenface, \hyperlink{class_face_divider_afd66ad7d2423aaa67e20a7f6cbabb6ef}{Face\+Divider\+::\+Divide\+Method} method)
+\begin{DoxyCompactList}\small\item\em Create P\+C\+A subspaces from sets of faces. \end{DoxyCompactList}\item 
+bool \hyperlink{class_controller_af285e4f21427f26328d52737b5d12c01}{detect\+Landmarks} (const cv\+::\+Mat \&depthmap, \hyperlink{class_landmarks}{Landmarks} \&landmarks)
+\begin{DoxyCompactList}\small\item\em Detect landmarks of depthmap. \end{DoxyCompactList}\item 
+void \hyperlink{class_controller_ac9ea7dc4bb53fd4c360405b881ebeef4}{process\+Face} (cv\+::\+Mat \&depthmap, Q\+String label, \hyperlink{class_landmarks}{Landmarks} \&\hyperlink{class_controller_aa4582c4f3bdab75cdb2f9eacefba5e02}{average\+Landmarks}, bool \&result, \hyperlink{class_face_divider_afd66ad7d2423aaa67e20a7f6cbabb6ef}{Face\+Divider\+::\+Divide\+Method} method, \hyperlink{class_eigen_face}{Eigen\+Face} \&subspaces, t\+Features \&features\+Vector, bool show\+Back\+Projections=false)
+\begin{DoxyCompactList}\small\item\em Detect landmarks, divide depthmap and project areas to P\+C\+A subspaces. \end{DoxyCompactList}\item 
+void \hyperlink{class_controller_a89bf452ab9c99fc47b7ac6c2eba0eb15}{proces\+Face\+Arena} (cv\+::\+Mat \&depthmap, Q\+String label, \hyperlink{class_landmarks}{Landmarks} \&\hyperlink{class_controller_aa4582c4f3bdab75cdb2f9eacefba5e02}{average\+Landmarks}, bool \&result, \hyperlink{class_face_divider_afd66ad7d2423aaa67e20a7f6cbabb6ef}{Face\+Divider\+::\+Divide\+Method} method, Q\+Vector$<$ cv\+::\+Mat $>$ \&features\+Vector)
+\begin{DoxyCompactList}\small\item\em Detect landmarks and divide depthmap. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for running batch of process. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_controller_aa4582c4f3bdab75cdb2f9eacefba5e02}{\index{Controller@{Controller}!average\+Landmarks@{average\+Landmarks}}
+\index{average\+Landmarks@{average\+Landmarks}!Controller@{Controller}}
+\subsubsection[{average\+Landmarks}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::average\+Landmarks (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ cv\+::\+Mat $>$ \&}]{faces, }
+\item[{Q\+String\+List \&}]{labels, }
+\item[{{\bf Landmarks} \&}]{avg\+Landmarks}
+\end{DoxyParamCaption}
+)}}\label{class_controller_aa4582c4f3bdab75cdb2f9eacefba5e02}
+
+
+Compute average landmarks position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em faces} & Vector of faces \\
+\hline
+{\em labels} & Labels of faces \\
+\hline
+{\em avg\+Landmarks} & Computed average landmarks \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_controller_a8146448bc74ad8c910ad445e7756e881}{\index{Controller@{Controller}!create\+Depthmap@{create\+Depthmap}}
+\index{create\+Depthmap@{create\+Depthmap}!Controller@{Controller}}
+\subsubsection[{create\+Depthmap}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::create\+Depthmap (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh} \&}]{face, }
+\item[{{\bf Mesh} \&}]{model\+Face, }
+\item[{cv\+::\+Mat \&}]{depthmap, }
+\item[{double \&}]{distance, }
+\item[{int \&}]{iterations}
+\end{DoxyParamCaption}
+)}}\label{class_controller_a8146448bc74ad8c910ad445e7756e881}
+
+
+Align face and create depthmap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em face} & Input mesh \\
+\hline
+{\em model\+Face} & Average face model \\
+\hline
+{\em depthmap} & Created depthmap \\
+\hline
+{\em distance} & Distance between align face and average face model \\
+\hline
+{\em iterations} & Count of iterations to align face \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_controller_a7d88f572ad677e2d4a70a5c928c0c323}{\index{Controller@{Controller}!create\+Pca\+Subspaces@{create\+Pca\+Subspaces}}
+\index{create\+Pca\+Subspaces@{create\+Pca\+Subspaces}!Controller@{Controller}}
+\subsubsection[{create\+Pca\+Subspaces}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::create\+Pca\+Subspaces (
+\begin{DoxyParamCaption}
+\item[{Q\+Vector$<$ cv\+::\+Mat $>$ \&}]{faces, }
+\item[{{\bf Landmarks} \&}]{avg\+Landmarks, }
+\item[{{\bf Eigen\+Face} \&}]{eigenface, }
+\item[{{\bf Face\+Divider\+::\+Divide\+Method}}]{method}
+\end{DoxyParamCaption}
+)}}\label{class_controller_a7d88f572ad677e2d4a70a5c928c0c323}
+
+
+Create P\+C\+A subspaces from sets of faces. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em faces} & Vector of faces \\
+\hline
+{\em avg\+Landmarks} & Average landmarks \\
+\hline
+{\em eigenface} & Created P\+C\+A subspaces \\
+\hline
+{\em method} & Method to divide \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_controller_af285e4f21427f26328d52737b5d12c01}{\index{Controller@{Controller}!detect\+Landmarks@{detect\+Landmarks}}
+\index{detect\+Landmarks@{detect\+Landmarks}!Controller@{Controller}}
+\subsubsection[{detect\+Landmarks}]{\setlength{\rightskip}{0pt plus 5cm}bool Controller\+::detect\+Landmarks (
+\begin{DoxyParamCaption}
+\item[{const cv\+::\+Mat \&}]{depthmap, }
+\item[{{\bf Landmarks} \&}]{landmarks}
+\end{DoxyParamCaption}
+)}}\label{class_controller_af285e4f21427f26328d52737b5d12c01}
+
+
+Detect landmarks of depthmap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depthmap} & Depthmap \\
+\hline
+{\em landmarks} & Detected landmarks \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if process of detection finish successful, otherwise false 
+\end{DoxyReturn}
+\hypertarget{class_controller_a89bf452ab9c99fc47b7ac6c2eba0eb15}{\index{Controller@{Controller}!proces\+Face\+Arena@{proces\+Face\+Arena}}
+\index{proces\+Face\+Arena@{proces\+Face\+Arena}!Controller@{Controller}}
+\subsubsection[{proces\+Face\+Arena}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::proces\+Face\+Arena (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{depthmap, }
+\item[{Q\+String}]{label, }
+\item[{{\bf Landmarks} \&}]{average\+Landmarks, }
+\item[{bool \&}]{result, }
+\item[{{\bf Face\+Divider\+::\+Divide\+Method}}]{method, }
+\item[{Q\+Vector$<$ cv\+::\+Mat $>$ \&}]{features\+Vector}
+\end{DoxyParamCaption}
+)}}\label{class_controller_a89bf452ab9c99fc47b7ac6c2eba0eb15}
+
+
+Detect landmarks and divide depthmap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depthmap} & Input depthmap \\
+\hline
+{\em label} & Label of depthmap \\
+\hline
+{\em average\+Landmarks} & Average landmarks \\
+\hline
+{\em result} & Set to true if process succesful \\
+\hline
+{\em method} & Divide method \\
+\hline
+{\em features\+Vector} & Vector of face areas \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_controller_ac9ea7dc4bb53fd4c360405b881ebeef4}{\index{Controller@{Controller}!process\+Face@{process\+Face}}
+\index{process\+Face@{process\+Face}!Controller@{Controller}}
+\subsubsection[{process\+Face}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::process\+Face (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Mat \&}]{depthmap, }
+\item[{Q\+String}]{label, }
+\item[{{\bf Landmarks} \&}]{average\+Landmarks, }
+\item[{bool \&}]{result, }
+\item[{{\bf Face\+Divider\+::\+Divide\+Method}}]{method, }
+\item[{{\bf Eigen\+Face} \&}]{subspaces, }
+\item[{t\+Features \&}]{features\+Vector, }
+\item[{bool}]{show\+Back\+Projections = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{class_controller_ac9ea7dc4bb53fd4c360405b881ebeef4}
+
+
+Detect landmarks, divide depthmap and project areas to P\+C\+A subspaces. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depthmap} & Input depthmap \\
+\hline
+{\em label} & Label of depthmap \\
+\hline
+{\em average\+Landmarks} & Average landmarks \\
+\hline
+{\em result} & Set to true if process succesful \\
+\hline
+{\em method} & Divide method \\
+\hline
+{\em subspaces} & P\+C\+A subspaces to project \\
+\hline
+{\em features\+Vector} & Vector of features \\
+\hline
+{\em show\+Back\+Projections} & If True, back projection is show \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+controller.\+h\item 
+controller.\+cpp\end{DoxyCompactItemize}

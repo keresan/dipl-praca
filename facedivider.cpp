@@ -1,5 +1,11 @@
 #include "facedivider.h"
 
+/**
+ * @brief Constructor. Initialize inner structure.
+ * @param depthMap Depthmap to divide
+ * @param landmarks Landmarks for divide
+ * @param averageLandmarks Average landmarks for scale areas
+ */
 FaceDivider::FaceDivider(cv::Mat &depthMap, Landmarks &landmarks, Landmarks &averageLandmarks) {
 
 	this->_depthmap = depthMap;
@@ -7,6 +13,11 @@ FaceDivider::FaceDivider(cv::Mat &depthMap, Landmarks &landmarks, Landmarks &ave
 	this->_averageLandmarks = averageLandmarks;
 }
 
+/**
+ * @brief Divide face by particular method.
+ * @param method Divide method
+ * @param areas Divide areas
+ */
 void FaceDivider::divide(DivideMethod method, tFaceAreas &areas) {
 	switch(method) {
 		case method0:
@@ -35,6 +46,10 @@ void FaceDivider::divide(DivideMethod method, tFaceAreas &areas) {
 	}
 }
 
+/**
+ * @brief Scale landmarks position
+ * @param finalWidth Final width of depthmap
+ */
 void FaceDivider::setResizeParam(int finalWidth) {
 	//compute scale factor by width
 	float scaleFactor = (float)finalWidth / _depthmap.cols;
@@ -51,6 +66,10 @@ void FaceDivider::setResizeParam(int finalWidth) {
 
 
 
+/**
+ * @brief Divide method 0
+ * @param areas Divided areas
+ */
 void FaceDivider::divideByMethod0(tFaceAreas &areas) {
 	cv::Mat face;
 	_depthmap.copyTo(face);
@@ -58,6 +77,10 @@ void FaceDivider::divideByMethod0(tFaceAreas &areas) {
 	areas.append(face);
 }
 
+/**
+ * @brief Divide method 1
+ * @param areas Divided areas
+ */
 void FaceDivider::divideByMethod1(tFaceAreas &areas) {
 
 	assert(_landmarks.is(Landmarks::NoseBottom));
@@ -86,6 +109,10 @@ void FaceDivider::divideByMethod1(tFaceAreas &areas) {
 
 }
 
+/**
+ * @brief Divide method 1rigid
+ * @param areas Divided areas
+ */
 void FaceDivider::divideByMethod1rigid(tFaceAreas &areas) {
 	int divideYcoord = _depthmap.rows / 2;
 
@@ -96,6 +123,10 @@ void FaceDivider::divideByMethod1rigid(tFaceAreas &areas) {
 	areas.append(mouthArea);
 }
 
+/**
+ * @brief Divide method 2
+ * @param areas Divided areas
+ */
 void FaceDivider::divideByMethod2(tFaceAreas &areas) {
 	assert(_landmarks.is(Landmarks::NoseBottom));
 	assert(_landmarks.is(Landmarks::NoseCornerLeft));
@@ -143,6 +174,10 @@ void FaceDivider::divideByMethod2(tFaceAreas &areas) {
 
 }
 
+/**
+ * @brief Divide method 2rigid
+ * @param areas Divided areas
+ */
 void FaceDivider::divideByMethod2rigid(tFaceAreas &areas) {
 	int divideYcoord1 = _depthmap.rows / 3;
 	int divideYcoord2 = _depthmap.rows / 3 * 2;
@@ -157,6 +192,10 @@ void FaceDivider::divideByMethod2rigid(tFaceAreas &areas) {
 
 }
 
+/**
+ * @brief Divide method 3
+ * @param areas Divided areas
+ */
 void FaceDivider::divideByMethod3(tFaceAreas &areas) {
 	assert(_landmarks.is(Landmarks::NoseBottom));
 	assert(_landmarks.is(Landmarks::NoseCornerLeft));
@@ -236,6 +275,10 @@ void FaceDivider::divideByMethod3(tFaceAreas &areas) {
 
 }
 
+/**
+ * @brief Divide method 3rigid
+ * @param areas Divided areas
+ */
 void FaceDivider::divideByMethod3rigid(tFaceAreas &areas) {
 	int divideYcoord1 = _depthmap.rows / 3;
 	int divideYcoord2 = _depthmap.rows / 3 * 2;
@@ -264,6 +307,13 @@ void FaceDivider::divideByMethod3rigid(tFaceAreas &areas) {
 
 }
 
+/**
+ * @brief Resize area.
+ * @param src Source matrix
+ * @param dst Resized matrix
+ * @param width Final width
+ * @param height Final height
+ */
 void FaceDivider::resizeArea(cv::Mat &src, cv::Mat &dst, int width, int height) {
 
 	cv::resize(src,dst,cv::Size(width, height),0,0,cv::INTER_LINEAR);
